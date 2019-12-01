@@ -8,4 +8,99 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- MAIN STYLE -->
+
+    <style parent="AppTheme" name="AppTheme.Main">
+
+    <item name="android:windowTranslucentStatus">true</item>
+
+</style>
+
+    <!-- WELCOME STYLE -->
+
+    <style parent="AppTheme" name="AppTheme.Welcome">
+
+    <item name="android:textSize">@dimen/text_size</item>
+
+</style>
+
+    <!-- SETTINGS STYLE -->
+
+    <style parent="AppTheme" name="AppTheme.Settings">
+
+    <item name="android:textSize">@dimen/text_size</item>
+
+</style>
+
+    <!-- RESTAURANT CARD STYLE -->
+
+    <style parent="AppTheme" name="AppTheme.RestaurantCard">
+
+    <item name="colorPrimaryDark">@color/restaurant_card_status_bar</item>
+
+    <item name="android:windowTranslucentStatus">true</item>
+
+</style>
+
+    <!-- TOOLBAR THEME -->
+
+    <style parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar" name="ToolbarTheme">
+
+    <!-- Color of the title text in the Toolbar -->
+
+
+    <item name="android:textColorPrimary">@android:color/white</item>
+
+</style>
+
+    <!-- TOOLBAR TITLE THEME -->
+
+    <style parent="TextAppearance.Widget.AppCompat.Toolbar.Title" name="Toolbar.TitleText">
+
+    <item name="android:textSize">21sp</item>
+
+    <item name="android:textStyle">normal</item>
+
+</style>
+
+    <!-- STYLE SIGN-IN ACTIVITY -->
+
+    <style parent="AppTheme" name="LoginTheme">
+
+    <item name="colorButtonNormal">@color/colorAccent</item>
+
+    <item name="colorControlNormal">@android:color/darker_gray</item>
+
+    <item name="colorControlActivated">@android:color/darker_gray</item>
+
+    <item name="colorControlHighlight">@android:color/darker_gray</item>
+
+    <item name="android:textColor">@android:color/white</item>
+
+    <item name="android:textColorPrimary">@android:color/darker_gray</item>
+
+    <item name="android:textColorSecondary">@android:color/darker_gray</item>
+
+    <item name="android:windowBackground">@android:color/white</item>
+
+    <item name="windowActionBar">false</item>
+
+    <item name="windowNoTitle">true</item>
+
+    <item name="android:textColorHint">@android:color/white</item>
+
+</style>
+
+    <!-- TEXT STYLE -->
+    <style name="NormalItalicText">
+
+    <item name="android:textStyle">italic</item>
+
+</style>
+    <style name="NormalBoldText">
+
+    <item name="android:textStyle">bold</item>
+
+</style>
+
 </resources>

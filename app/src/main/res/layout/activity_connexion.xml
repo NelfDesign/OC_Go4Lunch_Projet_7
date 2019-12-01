@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    tools:context=".ui.activity.ConnexionActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- BACKGROUND PICTURE -->
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/pic_restaurant"
+            android:gravity="center"
+            android:scaleType="centerCrop"
+            android:scaleX="1.2" />
+        <!-- MAIN CONTAINER -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <!-- LOGO GO4LUNCH and slogan -->
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="50dp"
+                app:srcCompat="@drawable/ic_bol" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/go4lunch"
+                android:textColor="@android:color/white"
+                android:textSize="63sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/slogan"
+                android:textColor="@android:color/white"
+                android:textSize="13sp"
+                android:textStyle="italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/main_activity_email_login_button"
+                    android:layout_width="200dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="@dimen/start_margin"
+                    android:layout_marginTop="@dimen/top_margin"
+                    android:layout_marginEnd="@dimen/end_margin"
+                    android:padding="10dp"
+                    android:text="Email"
+                    android:background="@drawable/email_button_radius"
+                    android:drawableStart="@drawable/ic_email"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_button"
+                    android:textStyle="normal"/>
+                <Button
+                    android:id="@+id/main_activity_google_login_button"
+                    android:layout_width="200dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="@dimen/start_margin"
+                    android:layout_marginTop="@dimen/top_margin"
+                    android:layout_marginEnd="@dimen/end_margin"
+                    android:padding="10dp"
+                    android:background="@drawable/button_google_radius_primary_color"
+                    android:text="Google"
+                    android:drawableLeft="@drawable/ic_google_plus"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_button"
+                    android:textStyle="normal"/>
+
+                <Button
+                    android:id="@+id/main_activity_facebook_login_button"
+                    android:layout_width="200dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="@dimen/start_margin"
+                    android:layout_marginTop="@dimen/top_margin"
+                    android:layout_marginEnd="@dimen/end_margin"
+                    android:padding="10dp"
+                    android:background="@drawable/button_facebook_radius_primary_color"
+                    android:text="Facebook"
+                    android:drawableStart="@drawable/ic_facebook"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_button"
+                    android:textStyle="normal" />
+
+                <Button
+                    android:id="@+id/main_activity_twitter_login_button"
+                    android:layout_width="200dp"
+                    android:layout_height="45dp"
+                    android:padding="10dp"
+                    android:layout_marginStart="@dimen/start_margin"
+                    android:layout_marginTop="@dimen/top_margin"
+                    android:layout_marginEnd="@dimen/end_margin"
+                    android:background="@drawable/button_twitter_radius_primary_color"
+                    android:text="Twitter"
+                    android:drawableStart="@drawable/ic_twitter"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_button"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

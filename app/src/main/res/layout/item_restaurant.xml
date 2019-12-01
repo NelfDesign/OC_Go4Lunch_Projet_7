@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="60"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:id="@+id/restaurant_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="le zinc"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/restaurant_category_and_adresse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="french - 21 rue du bordage lucas"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/restaurant_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="open"
+                    android:textStyle="italic"
+                    android:textSize="16sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="20">
+
+                <TextView
+                    android:id="@+id/restaurant_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="120m"
+                    android:textSize="18sp"
+                    android:textColor="@color/background"
+                    android:textStyle="italic|bold"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_perm_identity_black_24dp"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/workers_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="(2)"
+                        android:textSize="18sp"
+                        android:layout_gravity="center"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/stars"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/star-1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_yellow_star_32dp"/>
+
+                    <ImageView
+                        android:id="@+id/star-2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_yellow_star_32dp"/>
+
+                    <ImageView
+                        android:id="@+id/star-3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_yellow_star_32dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/restaurant_image"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="20"
+                android:src="@drawable/pic_logo_restaurant_400x400"
+                />
+
+        </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>

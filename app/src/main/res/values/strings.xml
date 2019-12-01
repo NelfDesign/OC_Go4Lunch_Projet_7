@@ -1,3 +1,23 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Go4Lunch</string>
+    <string name="go4lunch">Go4Lunch</string>
+    <string name="slogan">Find a nice restaurant and invite your co-workers for lunch!</string>
+
+    <!-- FACEBOOK PURPOSE -->
+    <string name="facebook_application_id" translatable="false">613243062576965</string>
+    <string name="fb_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb613243062576965</string>
+
+    <!-- TWITTER PURPOSE -->
+    <string name="twitter_consumer_key" translatable="false">CJX8uuSPhgPN518yDkNOagKvi</string>
+    <string name="twitter_consumer_secret" translatable="false">3aS9ou6dMhlpUhwQj97nN5M3iAfSbwDA1fIg8fHZzsMh7j490W</string>
+
+    <!-- Menu -->
+    <string name="Map">Map fragment in progress</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_map">Map View</string>
+    <string name="title_list">List View</string>
+    <string name="title_workers">Workmates</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
