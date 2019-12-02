@@ -7,12 +7,9 @@
     tools:context=".ui.fragments.MapFragment"
     android:id="@+id/map_Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <FrameLayout
+        android:id="@+id/content_map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="36sp"
-        android:text="@string/Map" />
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

@@ -17,6 +17,14 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAj3a12pmSXgQJL_jAqyEWJ0Dnjz95hP2k"/>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity android:name=".ui.activity.ConnexionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

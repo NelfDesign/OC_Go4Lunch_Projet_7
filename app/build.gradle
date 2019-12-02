@@ -6,6 +6,7 @@ android {
         applicationId "fr.nelfdesign.go4lunch"
         minSdkVersion 19
         targetSdkVersion 29
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -49,6 +50,13 @@ dependencies {
     // FACEBOOK and Twitter LOGIN SUPPORT
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     implementation 'com.twitter.sdk.android:twitter-core:3.3.0'
+
+    //Google maps
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.libraries.places:places:2.1.0'
+    def multidex_version = "2.0.1"
+    implementation "androidx.multidex:multidex:$multidex_version"
 
     //ButterKnife
     implementation 'com.jakewharton:butterknife:10.2.0'
