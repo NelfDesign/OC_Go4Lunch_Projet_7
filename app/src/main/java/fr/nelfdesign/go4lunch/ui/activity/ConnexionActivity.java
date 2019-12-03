@@ -5,12 +5,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.util.Log;
+import android.view.View;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 
 import java.util.Collections;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -20,22 +23,14 @@ import fr.nelfdesign.go4lunch.utils.Utils;
 
 public class ConnexionActivity extends BaseActivity {
 
-    @BindView(R.id.layout_main)
-    ConstraintLayout mConstraintLayout;
+    @BindView(R.id.layout_main) ConstraintLayout mConstraintLayout;
 
     //FOR DATA
     private static final int RC_SIGN_IN = 123;
 
+    // base activity method
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (this.isCurrentUserLogged()){
-            this.startMainActivity();
-        }
-    }
-
-    @Override
-    public int getFragmentLayout() {
+    public int getActivityLayout() {
         return R.layout.activity_connexion;
     }
 
@@ -45,25 +40,37 @@ public class ConnexionActivity extends BaseActivity {
         return null;
     }
 
-    @OnClick(R.id.main_activity_google_login_button)
-    public void onClickLoginButton() {
-        this.startSignInActivityGoogle();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Checks if user is signed in (non-null)
+        if (this.isCurrentUserLogged()){
+           this.startMainActivity();
+            Log.i("on start", Objects.requireNonNull(mFirebaseAuth.getCurrentUser().getDisplayName()));
+        }
     }
 
-    @OnClick(R.id.main_activity_facebook_login_button)
-    public void onClickFacebookLoginButton() {
-        this.startSignInActivityFacebook();
+    @OnClick({R.id.main_activity_google_login_button,
+            R.id.main_activity_facebook_login_button,
+            R.id.main_activity_twitter_login_button,
+            R.id.main_activity_email_login_button})
+    public void onClickLogginButton(View view){
+        switch (view.getId()){
+            case R.id.main_activity_google_login_button:
+                this.startSignInActivityGoogle();
+                break;
+            case R.id.main_activity_facebook_login_button:
+                this.startSignInActivityFacebook();
+                break;
+            case R.id.main_activity_twitter_login_button:
+                this.startSignInActivityTwitter();
+                break;
+            case R.id.main_activity_email_login_button:
+                this.startSignInActivityMail();
+                break;
+        }
     }
 
-    @OnClick(R.id.main_activity_twitter_login_button)
-    public void onClickTwitterLoginButton() {
-        this.startSignInActivityTwitter();
-    }
-
-    @OnClick(R.id.main_activity_email_login_button)
-    public void onClickMailLoginButton() {
-        this.startSignInActivityMail();
-    }
     // --------------------
     // Authentification
     // --------------------
@@ -112,19 +119,41 @@ public class ConnexionActivity extends BaseActivity {
                 RC_SIGN_IN);
     }
 
+    /**
+     * Signs out the current user of Firebase
+     */
+    private void signOutCurrentUser() {
+        Utils.showSnackBar(this.mConstraintLayout, "sign out");
+
+        mFirebaseAuth.signOut();
+    }
+
+    /**
+     * Deletes the current user account
+     */
+    private void deleteCurrentUserAccount() {
+        mFirebaseAuth.getCurrentUser()
+                .delete()
+                .addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()) {
+                        Utils.showSnackBar(this.mConstraintLayout,"Deleted account");
+                    }
+                });
+    }
+
     private void startMainActivity(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode,@Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // 4 - Handle SignIn Activity response on activity result
+        // Handle SignIn Activity response on activity result
         this.handleResponseAfterSignIn(requestCode, resultCode, data);
     }
 
-    // 3 - Method that handles response after SignIn Activity close
+    // Method that handles response after SignIn Activity close
     private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data){
 
         IdpResponse response = IdpResponse.fromResultIntent(data);
@@ -136,7 +165,7 @@ public class ConnexionActivity extends BaseActivity {
             } else { // ERRORS
                 if (response == null) {
                     Utils.showSnackBar(this.mConstraintLayout, getString(R.string.error_authentication_canceled));
-                } else if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
+                } else if (Objects.requireNonNull(response.getError()).getErrorCode() == ErrorCodes.NO_NETWORK) {
                     Utils.showSnackBar(this.mConstraintLayout, getString(R.string.error_no_internet));
                 } else if (response.getError().getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
                     Utils.showSnackBar(this.mConstraintLayout, getString(R.string.error_unknown_error));

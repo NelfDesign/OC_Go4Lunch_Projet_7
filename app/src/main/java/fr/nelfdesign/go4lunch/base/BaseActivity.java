@@ -5,7 +5,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -21,20 +20,27 @@ import fr.nelfdesign.go4lunch.R;
  * fr.nelfdesign.go4lunch.base
  */
 public abstract class BaseActivity extends AppCompatActivity {
+
+    // fields
+    protected FirebaseAuth mFirebaseAuth;
+
+    // Methods
+    public abstract int getActivityLayout();
+    @Nullable
+    protected abstract Toolbar getToolbar();
+
     // --------------------
-    // LIFE CYCLE
+    // Activity
     // --------------------
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(this.getFragmentLayout());
+        this.setContentView(this.getActivityLayout());
         ButterKnife.bind(this); //Configure Butterknife
+        this.configureFirebaseAuth(); // configure firebase
     }
 
-    public abstract int getFragmentLayout();
-    @Nullable
-    protected abstract Toolbar getToolbar();
 
     // --------------------
     // UI
@@ -47,12 +53,19 @@ public abstract class BaseActivity extends AppCompatActivity {
             setSupportActionBar(this.getToolbar());
         }
     }
+
+    /**
+     * Configures the {@link FirebaseAuth}
+     */
+    private void configureFirebaseAuth() {
+        this.mFirebaseAuth = FirebaseAuth.getInstance();
+    }
     // --------------------
     // UTILS
     // --------------------
 
     @Nullable
-    protected FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
+    protected FirebaseUser getCurrentUser(){ return mFirebaseAuth.getCurrentUser(); }
 
     protected Boolean isCurrentUserLogged(){ return (this.getCurrentUser() != null); }
 

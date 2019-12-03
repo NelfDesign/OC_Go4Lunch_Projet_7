@@ -24,8 +24,20 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.nav_view) BottomNavigationView navView;
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+
+    // base activity method
+    @Override
+    public int getActivityLayout() {
+        return R.layout.activity_main;
+    }
+
+    @Nullable
+    @Override
+    protected Toolbar getToolbar() {
+        return mToolbar;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +58,6 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-    }
-
-    @Override
-    public int getFragmentLayout() {
-        return R.layout.activity_main;
-    }
-
-    @Nullable
-    @Override
-    protected Toolbar getToolbar() {
-        return mToolbar;
     }
 
     private Boolean updateMainFragment(Integer integer){
@@ -91,6 +92,6 @@ public class MainActivity extends BaseActivity {
         }else {
             super.onBackPressed();
         }
-
     }
+
 }

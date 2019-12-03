@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="fr.nelfdesign.go4lunch">
 
-    <!-- Using to make internet requests -->
+    <!-- permission for internet -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- permission for location -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
