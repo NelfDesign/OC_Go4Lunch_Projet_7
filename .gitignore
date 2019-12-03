@@ -12,3 +12,6 @@
 /captures
 .externalNativeBuild
 .cxx
+# API Keys
+/gradle.properties
+
