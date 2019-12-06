@@ -16,6 +16,7 @@
     <string name="title_map">Map View</string>
     <string name="title_list">List View</string>
     <string name="title_workers">Workmates</string>
+    <string name="title_search">Search</string>
 
     <!-- MAIN ACTIVITY -->
     <string name="error_not_connected">Vous devez vous connecter !</string>
@@ -23,7 +24,9 @@
     <string name="error_no_internet">Aucune connexion internet !</string>
     <string name="error_unknown_error">Une erreur inconnue s\'est produite&#8230;</string>
     <string name="connection_succeed">Authentification réussie !</string>
-    
+    <string name="no_name_found">No name found</string>
+    <string name="no_mail_found">No mail found</string>
+
     <!-- navigation drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

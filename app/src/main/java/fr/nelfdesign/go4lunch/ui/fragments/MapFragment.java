@@ -1,23 +1,31 @@
 package fr.nelfdesign.go4lunch.ui.fragments;
 
-
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 import fr.nelfdesign.go4lunch.R;
-
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,8 +33,10 @@ import fr.nelfdesign.go4lunch.R;
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMapOptions mapOptions;
-    private SupportMapFragment mMapFragment;
-    private GoogleMap mGoogleMap;
+
+    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
+    private static final float DEFAULT_ZOOM = 13f;
 
     public MapFragment() { }
 
@@ -36,7 +46,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapOptions = new GoogleMapOptions()
                 .mapType(GoogleMap.MAP_TYPE_NORMAL)
                 .zoomControlsEnabled(true)
-                .zoomGesturesEnabled(true);
+                .zoomGesturesEnabled(true)
+                .minZoomPreference(DEFAULT_ZOOM);
+
+        updateLocation();
     }
 
     @Override
@@ -45,18 +58,61 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_Fragment);
-        if(mMapFragment == null){
-            mMapFragment = SupportMapFragment.newInstance(mapOptions);
-            getFragmentManager().beginTransaction().replace(R.id.map_Fragment, mMapFragment).commit();
-        }
-        mMapFragment.getMapAsync(this);
         return view;
-
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mGoogleMap = googleMap;
+        //Add marker on Nantes
+        LatLng nantes = new LatLng(47.21,-1.55);
+        googleMap.addMarker(new MarkerOptions().position(nantes).title("Marker on Nantes"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(nantes));
     }
+
+    private void updateLocation() {
+        if (!checkLocationPermission()){
+            return;
+        }
+        initMap();
+    }
+
+    private boolean checkLocationPermission() {
+        Timber.d("getLocationPermission: getting location permissions");
+        String[] permissions = {FINE_LOCATION};
+
+        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(this.getContext()),
+                FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(Objects.requireNonNull(
+                    this.getActivity()),
+                    permissions,
+                    LOCATION_PERMISSION_REQUEST_CODE);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
+        if (grantResults[0] != PackageManager.PERMISSION_GRANTED){
+            Timber.i("need to access location");
+        }else if (requestCode == LOCATION_PERMISSION_REQUEST_CODE){
+            this.updateLocation();
+        }
+    }
+
+    //initialisation de la carte
+    private void initMap() {
+        Timber.d( "initMap: initializing map");
+        SupportMapFragment mapFragment = null;
+
+            mapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.map_Fragment);
+
+        if(mapFragment == null){
+            mapFragment = SupportMapFragment.newInstance(mapOptions);
+            getFragmentManager().beginTransaction().replace(R.id.map_Fragment, mapFragment).commit();
+        }
+        mapFragment.getMapAsync(this);
+    }
+
 }

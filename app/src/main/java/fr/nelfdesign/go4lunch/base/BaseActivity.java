@@ -60,14 +60,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void configureFirebaseAuth() {
         this.mFirebaseAuth = FirebaseAuth.getInstance();
     }
+
     // --------------------
     // UTILS
     // --------------------
 
-    @Nullable
+   @Nullable
     protected FirebaseUser getCurrentUser(){ return mFirebaseAuth.getCurrentUser(); }
 
-    protected Boolean isCurrentUserLogged(){ return (this.getCurrentUser() != null); }
+    protected boolean isCurrentUserLogged(){ return (this.getCurrentUser() != null); }
 
     // --------------------
     // ERROR HANDLER

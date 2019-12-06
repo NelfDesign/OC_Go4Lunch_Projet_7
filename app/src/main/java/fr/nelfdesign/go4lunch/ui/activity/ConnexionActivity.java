@@ -5,12 +5,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -20,6 +20,7 @@ import butterknife.OnClick;
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
 import fr.nelfdesign.go4lunch.utils.Utils;
+import timber.log.Timber;
 
 public class ConnexionActivity extends BaseActivity {
 
@@ -40,13 +41,13 @@ public class ConnexionActivity extends BaseActivity {
         return null;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+   @Override
+    protected void onResume() {
+       super.onResume();
         // Checks if user is signed in (non-null)
-        if (this.isCurrentUserLogged()){
+        if (FirebaseAuth.getInstance().getCurrentUser() != null){
            this.startMainActivity();
-            Log.i("on start", Objects.requireNonNull(mFirebaseAuth.getCurrentUser().getDisplayName()));
+            Timber.i(Objects.requireNonNull(this.getCurrentUser().getDisplayName()));
         }
     }
 
@@ -117,28 +118,6 @@ public class ConnexionActivity extends BaseActivity {
                         .setIsSmartLockEnabled(false, true)
                         .build(),
                 RC_SIGN_IN);
-    }
-
-    /**
-     * Signs out the current user of Firebase
-     */
-    private void signOutCurrentUser() {
-        Utils.showSnackBar(this.mConstraintLayout, "sign out");
-
-        mFirebaseAuth.signOut();
-    }
-
-    /**
-     * Deletes the current user account
-     */
-    private void deleteCurrentUserAccount() {
-        mFirebaseAuth.getCurrentUser()
-                .delete()
-                .addOnCompleteListener((task) -> {
-                    if (task.isSuccessful()) {
-                        Utils.showSnackBar(this.mConstraintLayout,"Deleted account");
-                    }
-                });
     }
 
     private void startMainActivity(){
