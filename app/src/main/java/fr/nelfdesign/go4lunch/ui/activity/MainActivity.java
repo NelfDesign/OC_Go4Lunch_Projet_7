@@ -7,7 +7,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -15,26 +22,23 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-
 import butterknife.BindView;
+import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
 import fr.nelfdesign.go4lunch.ui.fragments.MapFragment;
-import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.ui.fragments.RestaurantListFragment;
 import fr.nelfdesign.go4lunch.ui.fragments.WorkersFragment;
 import fr.nelfdesign.go4lunch.utils.Utils;
 import timber.log.Timber;
 
+import static androidx.core.view.GravityCompat.START;
+
 public class MainActivity extends BaseActivity {
 
     //FIELDS
     private Fragment mFragment;
+    final MapFragment mapFragment = new MapFragment();
+    final RestaurantListFragment listFragment = new RestaurantListFragment();
     private ImageView mImageViewNav;
     private TextView mTextViewNavName;
     private TextView mTextViewNavMail;
@@ -44,6 +48,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.navigation_view) NavigationView mNavigationView;
+    @BindView(R.id.search_view) SearchView mSearchView;
 
     // base activity method
     @Override
@@ -63,7 +68,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         if (mFragment == null){
-            mFragment = new MapFragment();
+            mFragment = mapFragment;
         }
 
         user = this.getCurrentUser();
@@ -94,34 +99,43 @@ public class MainActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.toolbar_search:
                 Timber.i( "Search");
-                return true;
+                mSearchView.setVisibility(View.VISIBLE);
+                break;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
     private Boolean updateMainFragment(MenuItem menuItem){
         switch (menuItem.getItemId()) {
             case R.id.navigation_map:
-                this.mFragment = new MapFragment();
+                this.mFragment = mapFragment;
                 configureFragment(mFragment);
+                mToolbar.setTitle("I'm hungry");
                 break;
-            case R.id.navigation_list | R.id.nav_lunch:
-                this.mFragment = new RestaurantListFragment();
+            case R.id.navigation_list:
+                this.mFragment = listFragment;
+                //searchNearbyRestaurants();
                 configureFragment(mFragment);
+                mToolbar.setTitle("I'm hungry");
                 break;
             case R.id.navigation_workers:
                 this.mFragment = new WorkersFragment();
                 configureFragment(mFragment);
+                mToolbar.setTitle("Workers");
                 break;
             case R.id.logout:
-                this.deleteCurrentUserAccount();
+                this.signOutCurrentUser();
+                break;
+            case R.id.nav_lunch:
+
                 break;
         }
-        // Closes the NavigationView at the end of the user action
-        if (this.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            this.mDrawerLayout.closeDrawer(GravityCompat.START);
+        // Closes the DrawerNavigationView when the user click on an item
+        if (this.mDrawerLayout.isDrawerOpen(START)) {
+            this.mDrawerLayout.closeDrawer(START);
         }
         return true;
     }
@@ -135,8 +149,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)){
-            mDrawerLayout.closeDrawer(GravityCompat.START);
+        if (mDrawerLayout.isDrawerOpen(START)){
+            mDrawerLayout.closeDrawer(START);
         }else {
             super.onBackPressed();
         }
@@ -186,8 +200,11 @@ public class MainActivity extends BaseActivity {
      */
     private void signOutCurrentUser() {
         Utils.showSnackBar(this.mDrawerLayout, "sign out");
-
-        FirebaseAuth.getInstance().signOut();
+        if (user != null){
+            FirebaseAuth.getInstance().signOut();
+            startAuthActivity();
+            finishAffinity();
+        }
     }
 
     /**
@@ -209,5 +226,4 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent(this, ConnexionActivity.class);
         startActivity(intent);
     }
-
 }

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_margin="2dp"
     xmlns:tools="http://schemas.android.com/tools">
 
         <LinearLayout
@@ -25,14 +25,14 @@
                     android:layout_height="wrap_content"
                     tools:text="le zinc"
                     android:textStyle="bold"
-                    android:textSize="20sp"/>
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/restaurant_category_and_adresse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="french - 21 rue du bordage lucas"
-                    android:textSize="16sp"/>
+                    android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/restaurant_hour"

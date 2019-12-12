@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -48,8 +47,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 .zoomControlsEnabled(true)
                 .zoomGesturesEnabled(true)
                 .minZoomPreference(DEFAULT_ZOOM);
-
-        updateLocation();
     }
 
     @Override
@@ -57,7 +54,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-
+        updateLocation();
         return view;
     }
 
@@ -83,8 +80,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (ContextCompat.checkSelfPermission(Objects.requireNonNull(this.getContext()),
                 FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(Objects.requireNonNull(
-                    this.getActivity()),
+            requestPermissions(
                     permissions,
                     LOCATION_PERMISSION_REQUEST_CODE);
             return false;
@@ -97,20 +93,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (grantResults[0] != PackageManager.PERMISSION_GRANTED){
             Timber.i("need to access location");
         }else if (requestCode == LOCATION_PERMISSION_REQUEST_CODE){
-            this.updateLocation();
+            updateLocation();
         }
     }
 
     //initialisation de la carte
     private void initMap() {
         Timber.d( "initMap: initializing map");
-        SupportMapFragment mapFragment = null;
-
-            mapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.map_Fragment);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_Fragment);
 
         if(mapFragment == null){
             mapFragment = SupportMapFragment.newInstance(mapOptions);
-            getFragmentManager().beginTransaction().replace(R.id.map_Fragment, mapFragment).commit();
+            if (getFragmentManager() != null) {
+                getFragmentManager().beginTransaction().replace(R.id.map_Fragment, mapFragment).commit();
+            }
         }
         mapFragment.getMapAsync(this);
     }

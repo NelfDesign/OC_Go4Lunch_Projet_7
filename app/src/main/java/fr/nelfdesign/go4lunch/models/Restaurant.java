@@ -1,5 +1,7 @@
 package fr.nelfdesign.go4lunch.models;
 
+import com.google.android.libraries.places.api.model.OpeningHours;
+
 /**
  * Created by Nelfdesign at 28/11/2019
  * fr.nelfdesign.go4lunch
@@ -7,18 +9,20 @@ package fr.nelfdesign.go4lunch.models;
 public class Restaurant {
 
     private String name;
-    private String category;
-    private String hour;
-    private String urlImage;
+    private String icon;
+    private String address;
+    private OpeningHours hour;
+    private String photoReference;
     private String distance;
     private int workers;
     private int stars;
 
-    public Restaurant(String name, String category, String hour, String urlImage, String distance, int workers, int stars) {
+    public Restaurant(String name, String address, String icon, OpeningHours hour, String urlImage, String distance, int workers, int stars) {
         this.name = name;
-        this.category = category;
+        this.icon = icon;
+        this.address = address;
         this.hour = hour;
-        this.urlImage = urlImage;
+        this.photoReference = urlImage;
         this.distance = distance;
         this.workers = workers;
         this.stars = stars;
@@ -32,28 +36,36 @@ public class Restaurant {
         this.name = name;
     }
 
-    public String getCategory() {
-        return category;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
-    public String getHour() {
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public OpeningHours getHour() {
         return hour;
     }
 
-    public void setHour(String hour) {
+    public void setHour(OpeningHours hour) {
         this.hour = hour;
     }
 
-    public String getUrlImage() {
-        return urlImage;
+    public String getPhotoReference() {
+        return photoReference;
     }
 
-    public void setUrlImage(String urlImage) {
-        this.urlImage = urlImage;
+    public void setPhotoReference(String photoReference) {
+        this.photoReference = photoReference;
     }
 
     public String getDistance() {
