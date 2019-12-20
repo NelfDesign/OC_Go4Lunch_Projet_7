@@ -2,12 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="fr.nelfdesign.go4lunch">
-
     <!-- permission for internet -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <!-- permission for location
-    It's not necessary to ask for COARSE LOCATION because we have the FINE LOCATION PERMISSION-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--
+ permission for location
+    It's not necessary to ask for COARSE LOCATION because we have the FINE LOCATION PERMISSION
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".base.App"
@@ -18,11 +19,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ui.activity.RestaurantDetail"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
-
+            android:value="@string/google_maps_key" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -34,11 +35,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.MainActivity"
-            android:label="@string/title_activity_main2"/>
-
+            android:label="@string/title_activity_main2" />
     </application>
 
 </manifest>
