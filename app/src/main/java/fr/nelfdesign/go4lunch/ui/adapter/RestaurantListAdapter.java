@@ -58,15 +58,19 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             this.mRestaurantName.setText(restaurantDetail.getName());
             this.mCategory.setText(restaurantDetail.getAddress());
 
+            String path2 = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
+                    + restaurantDetail.getPhotoReference() +
+                    "&key=" + BuildConfig.google_maps_key;
+
             // Images
-            if (restaurantDetail.getPhotoReference() != null && !restaurantDetail.getPhotoReference().isEmpty()){
-                glide.load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+
-                        restaurantDetail.getPhotoReference() + "&key=" + BuildConfig.google_maps_key)
+            if (restaurantDetail.getPhotoReference() != null){
+                glide.load(path2)
+                        .error(R.drawable.pic_logo_restaurant_400x400)
                         .into(mRestaurantImage);
-            } else {
+            }
+            else {
                 this.mRestaurantImage.setImageResource(R.drawable.ic_bol);
             }
-
         }
     }
 
@@ -81,11 +85,18 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     @Override
     public void onBindViewHolder(@NonNull RestaurantItemViewHolder holder, int position) {
 
-        holder.updateWithDetailRestaurant(this.mRestaurantList.get(position),this.glide);
+            holder.updateWithDetailRestaurant(this.mRestaurantList.get(position),this.glide);
+
     }
 
     @Override
     public int getItemCount() {
         return restaurantSize;
     }
+
+
+    /*public void updateListRestaurant(@NonNull final List<Restaurant> restaurants) {
+        this.mRestaurantList = restaurants;
+        notifyDataSetChanged();
+    }*/
 }

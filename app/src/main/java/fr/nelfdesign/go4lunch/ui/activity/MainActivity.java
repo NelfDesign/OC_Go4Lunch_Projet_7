@@ -22,6 +22,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
@@ -88,6 +90,13 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.map_Fragment);
+        Objects.requireNonNull(fragment).onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Creates a MenuInflater to add the menu xml file into the Toolbar
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
@@ -117,7 +126,6 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.navigation_list:
                 this.mFragment = listFragment;
-                //searchNearbyRestaurants();
                 configureFragment(mFragment);
                 mToolbar.setTitle("I'm hungry");
                 break;

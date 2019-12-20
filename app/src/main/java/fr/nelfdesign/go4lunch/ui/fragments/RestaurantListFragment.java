@@ -9,6 +9,9 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fr.nelfdesign.go4lunch.BuildConfig;
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.apiGoogleMap.NearbyPlaces;
 import fr.nelfdesign.go4lunch.base.App;
@@ -28,6 +32,7 @@ import fr.nelfdesign.go4lunch.models.Restaurant;
 import fr.nelfdesign.go4lunch.pojos.RestaurantsResult;
 import fr.nelfdesign.go4lunch.ui.adapter.RestaurantListAdapter;
 import fr.nelfdesign.go4lunch.utils.Utils;
+import fr.nelfdesign.go4lunch.viewModels.MapViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,12 +42,13 @@ import timber.log.Timber;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RestaurantListFragment extends Fragment implements NearbyPlaces {
+public class RestaurantListFragment extends Fragment implements NearbyPlaces{
 
     private RecyclerView mRecyclerView;
     private RestaurantListAdapter adapter;
     List<Restaurant> mRestaurantList;
     private String myLocation = "47.21,-1.55";
+
 
     public RestaurantListFragment() {
     }
@@ -50,6 +56,7 @@ public class RestaurantListFragment extends Fragment implements NearbyPlaces {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         configureRetrofitCall();
     }
 
@@ -66,7 +73,7 @@ public class RestaurantListFragment extends Fragment implements NearbyPlaces {
     }
 
     private void initListAdapter(List<Restaurant> restaurants) {
-        adapter = new RestaurantListAdapter(mRestaurantList, Glide.with(mRecyclerView), restaurants.size(), myLocation);
+        adapter = new RestaurantListAdapter(mRestaurantList, Glide.with(this), restaurants.size(), myLocation);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(adapter);
     }
@@ -84,7 +91,7 @@ public class RestaurantListFragment extends Fragment implements NearbyPlaces {
 
         Call<RestaurantsResult> mListCall;
 
-        mListCall = App.retrofitCall().getNearByRestaurant(parameters);
+        mListCall = App.retrofitCall().getNearByRestaurant(myLocation,getString(R.string.google_maps_key));
 
         mListCall.enqueue(new Callback<RestaurantsResult>() {
             @Override
@@ -103,7 +110,7 @@ public class RestaurantListFragment extends Fragment implements NearbyPlaces {
 
                     Utils.mapRestaurantResultToRestaurant(resultsListRestaurants, mRestaurantList);
                     initListAdapter(mRestaurantList);
-                    Timber.i("Restaurant = %s", mRestaurantList);
+                    Timber.i("Restaurant = %s", mRestaurantList.get(0).getName());
                 }
             }
 
@@ -114,4 +121,5 @@ public class RestaurantListFragment extends Fragment implements NearbyPlaces {
             }
         });
     }
+
 }

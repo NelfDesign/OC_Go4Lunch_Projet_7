@@ -16,18 +16,15 @@ import retrofit2.http.QueryMap;
 
 public interface RestaurantService {
 
-    @GET("nearbysearch/json?")
-    Call<List<RestaurantsResult>> getNearByRestaurant(@Query("location") String location,
-                                                      @Query("radius") int radius,
-                                                      @Query("type") String type,
-                                                      @Query("keyword") String keyword,
-                                                      @Query("key") String key);
+    @GET("nearbysearch/json?radius=1500&type=restaurant")
+    Call<RestaurantsResult> getNearByRestaurant(@Query("location") String location,
+                                                @Query("key") String key);
 
-    @GET("nearbysearch/json?")
+    @GET("nearbysearch/json?radius=1500")
     Call<RestaurantsResult> getNearByRestaurant(@QueryMap Map<String, String> parameters);
 
     @GET("details/json?")
-    Call<List<RestaurantsResult>> getRestaurantDetail(@Query("key") String apiKey,
+    Call<RestaurantsResult> getRestaurantDetail(@Query("key") String apiKey,
                                                @Query("placeid") String restaurantId,
                                                @Query("fields") String fields);
 }

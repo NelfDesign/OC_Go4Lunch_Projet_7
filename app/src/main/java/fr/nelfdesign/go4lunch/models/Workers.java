@@ -1,22 +1,24 @@
 package fr.nelfdesign.go4lunch.models;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Nelfdesign at 30/11/2019
  * fr.nelfdesign.go4lunch.models
  */
 public class Workers {
 
-    /** Id */
-    String uid;
     /** Fullname */
     private String name;
     /** Avatar */
+
     private String avatarUrl;
     /** Restaurant chosen */
     private boolean restaurantChoice;
 
-    public Workers(String uid, String name, String avatarUrl) {
-        this.uid = uid;
+    public Workers(){}
+
+    public Workers (String name, String avatarUrl) {
         this.name = name;
         this.avatarUrl = avatarUrl;
         restaurantChoice = false;

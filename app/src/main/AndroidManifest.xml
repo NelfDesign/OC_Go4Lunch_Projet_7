@@ -4,7 +4,7 @@
     package="fr.nelfdesign.go4lunch">
 
     <!-- permission for internet -->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <!-- permission for location
     It's not necessary to ask for COARSE LOCATION because we have the FINE LOCATION PERMISSION-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
