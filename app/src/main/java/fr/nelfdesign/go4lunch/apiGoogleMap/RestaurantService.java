@@ -1,6 +1,7 @@
 package fr.nelfdesign.go4lunch.apiGoogleMap;
 
-import java.util.List;
+import androidx.lifecycle.LiveData;
+
 import java.util.Map;
 
 import fr.nelfdesign.go4lunch.pojos.RestaurantsResult;
@@ -20,7 +21,7 @@ public interface RestaurantService {
     Call<RestaurantsResult> getNearByRestaurant(@Query("location") String location,
                                                 @Query("key") String key);
 
-    @GET("nearbysearch/json?radius=1500")
+    @GET("nearbysearch/json?radius=2000&type=restaurant")
     Call<RestaurantsResult> getNearByRestaurant(@QueryMap Map<String, String> parameters);
 
     @GET("details/json?")

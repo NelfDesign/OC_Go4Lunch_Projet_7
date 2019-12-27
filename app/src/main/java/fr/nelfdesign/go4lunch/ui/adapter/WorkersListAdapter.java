@@ -25,19 +25,35 @@ import fr.nelfdesign.go4lunch.models.Workers;
  */
 public class WorkersListAdapter extends FirestoreRecyclerAdapter<Workers, WorkersListAdapter.WorkersItemViewholder> {
 
-    public class WorkersItemViewholder extends RecyclerView.ViewHolder {
+    public interface workerClickListener{
+        void onClickItemWorker(int position);
+    }
+
+    private workerClickListener mWorkerClickListener;
+
+    public class WorkersItemViewholder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.worker_avatar) ImageView mImageView;
         @BindView(R.id.worker_name) TextView mTextView;
 
-        public WorkersItemViewholder(@NonNull View itemView) {
+        workerClickListener mWorkerClickListener;
+
+        public WorkersItemViewholder(@NonNull View itemView, workerClickListener listener) {
             super(itemView);
+            this.mWorkerClickListener = listener;
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mWorkerClickListener.onClickItemWorker(getAdapterPosition());
         }
     }
 
-    public WorkersListAdapter(@NonNull FirestoreRecyclerOptions<Workers> options) {
+    public WorkersListAdapter(@NonNull FirestoreRecyclerOptions<Workers> options, workerClickListener mWorkerListener) {
         super(options);
+        this.mWorkerClickListener = mWorkerListener;
     }
 
     @NonNull
@@ -45,7 +61,7 @@ public class WorkersListAdapter extends FirestoreRecyclerAdapter<Workers, Worker
     public WorkersItemViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_worker,parent, false);
-        return new WorkersItemViewholder(view);
+        return new WorkersItemViewholder(view, mWorkerClickListener);
     }
 
     @Override

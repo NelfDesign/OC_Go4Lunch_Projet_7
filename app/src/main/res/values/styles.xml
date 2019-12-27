@@ -28,7 +28,7 @@
 
     <style parent="AppTheme" name="AppTheme.Settings">
 
-    <item name="android:textSize">@dimen/text_size</item>
+    <item name="android:textSize">@dimen/text_size_button</item>
 
 </style>
 

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,19 +26,15 @@ import fr.nelfdesign.go4lunch.models.Restaurant;
  */
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAdapter.RestaurantItemViewHolder> {
 
-    List<Restaurant> mRestaurantList;
+    private ArrayList<Restaurant> mRestaurantList;
     private RequestManager glide;
-    private int restaurantSize;
-    private String mLatLng;
 
-    public RestaurantListAdapter(List<Restaurant> restaurantList, RequestManager glide, int size, String latLng) {
+    public RestaurantListAdapter(ArrayList<Restaurant> restaurantList, RequestManager glide) {
         mRestaurantList = restaurantList;
         this.glide = glide;
-        this.restaurantSize = size;
-        this.mLatLng = latLng;
     }
 
-    public class RestaurantItemViewHolder extends RecyclerView.ViewHolder {
+    class RestaurantItemViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.restaurant_name) TextView mRestaurantName;
         @BindView(R.id.restaurant_category_and_adresse) TextView mCategory;
@@ -48,12 +44,12 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         @BindView(R.id.stars) LinearLayout mStars;
         @BindView(R.id.workers_number) TextView mWorkersNumbers;
 
-        public RestaurantItemViewHolder(@NonNull View itemView) {
+        RestaurantItemViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
 
-        public void updateWithDetailRestaurant(Restaurant restaurantDetail, RequestManager glide){
+        void updateWithDetailRestaurant(Restaurant restaurantDetail, RequestManager glide){
 
             this.mRestaurantName.setText(restaurantDetail.getName());
             this.mCategory.setText(restaurantDetail.getAddress());
@@ -91,12 +87,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     @Override
     public int getItemCount() {
-        return restaurantSize;
+        return (mRestaurantList != null) ? mRestaurantList.size() : 0;
     }
 
-
-    /*public void updateListRestaurant(@NonNull final List<Restaurant> restaurants) {
-        this.mRestaurantList = restaurants;
-        notifyDataSetChanged();
-    }*/
 }

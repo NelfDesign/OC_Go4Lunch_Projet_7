@@ -23,7 +23,8 @@
 
     <!-- colors of the Navigation Drawer -->
 
-    <color name="navigationDrawerBackground">#de6a5a</color>
+    <color name="navigationDrawerBackground">#FF8A50</color>
+    <color name="white_text">#FFF</color>
 
     <!-- Stars Color -->
     <color name="stars">#dedc6d</color>

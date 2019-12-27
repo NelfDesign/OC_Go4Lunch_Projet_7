@@ -2,12 +2,17 @@ package fr.nelfdesign.go4lunch.models;
 
 import com.google.android.libraries.places.api.model.OpeningHours;
 
+import fr.nelfdesign.go4lunch.pojos.Location;
+
 /**
  * Created by Nelfdesign at 28/11/2019
  * fr.nelfdesign.go4lunch
  */
 public class Restaurant {
 
+    /*private double latitude;
+    private double longitude;*/
+    private Location mLocation;
     private String name;
     private String icon;
     private String address;
@@ -17,7 +22,8 @@ public class Restaurant {
     private int workers;
     private int stars;
 
-    public Restaurant(String name, String address, String icon, OpeningHours hour, String urlImage, String distance, int workers, int stars) {
+    public Restaurant(Location location, String name, String address, String icon, OpeningHours hour, String urlImage, String distance, int workers, int stars) {
+        this.mLocation = location;
         this.name = name;
         this.icon = icon;
         this.address = address;
@@ -26,6 +32,14 @@ public class Restaurant {
         this.distance = distance;
         this.workers = workers;
         this.stars = stars;
+    }
+
+    public Location getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(Location location) {
+        mLocation = location;
     }
 
     public String getName() {

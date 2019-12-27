@@ -1,9 +1,9 @@
 package fr.nelfdesign.go4lunch.apiGoogleMap;
 
 
-import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import fr.nelfdesign.go4lunch.models.Restaurant;
 
@@ -13,6 +13,6 @@ import fr.nelfdesign.go4lunch.models.Restaurant;
  */
 public interface NearbyPlaces {
 
-    void configureRetrofitCall();
+    MutableLiveData<ArrayList<Restaurant>> configureRetrofitCall();
 
 }

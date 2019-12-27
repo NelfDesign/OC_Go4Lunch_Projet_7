@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Nelfdesign at 09/12/2019
  * fr.nelfdesign.go4lunch.models
  */
-class Location {
+public class Location {
 
     @SerializedName("lat")
     @Expose

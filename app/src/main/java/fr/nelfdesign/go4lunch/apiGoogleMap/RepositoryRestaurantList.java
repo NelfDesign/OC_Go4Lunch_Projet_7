@@ -1,12 +1,11 @@
 package fr.nelfdesign.go4lunch.apiGoogleMap;
 
-import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import fr.nelfdesign.go4lunch.BuildConfig;
@@ -23,22 +22,18 @@ import timber.log.Timber;
  * Created by Nelfdesign at 16/12/2019
  * fr.nelfdesign.go4lunch.apiGoogleMap
  */
-public class RepositoryRestaurantList {
+public class RepositoryRestaurantList implements NearbyPlaces {
 
-    private List<Restaurant> mRestaurantList;
+    private MutableLiveData<ArrayList<Restaurant>> mRestaurantList = new MutableLiveData<>();
 
-   /* @Override
-    public LiveData<List<Restaurant>> configureRetrofitCall() {
-        mRestaurantList = new ArrayList<>();
+    @Override
+    public MutableLiveData<ArrayList<Restaurant>> configureRetrofitCall() {
 
         Map<String, String> parameters = new HashMap<>();
         parameters.put("location", "47.21,-1.55");
-        parameters.put("type", "restaurant");
         parameters.put("key", BuildConfig.google_maps_key);
 
-        Call<RestaurantsResult> mListCall;
-
-        mListCall = App.retrofitCall().getNearByRestaurant(parameters);
+        Call<RestaurantsResult> mListCall = App.retrofitCall().getNearByRestaurant(parameters);
 
         mListCall.enqueue(new Callback<RestaurantsResult>() {
             @Override
@@ -46,7 +41,7 @@ public class RepositoryRestaurantList {
                                    @NotNull Response<RestaurantsResult> response) {
 
                 if (!response.isSuccessful()) {
-                    Timber.i("onResponse: erreur");
+                    Timber.e("onResponse: erreur");
                     return;
                 }
 
@@ -54,17 +49,17 @@ public class RepositoryRestaurantList {
 
                 if (resultsListRestaurants != null) {
 
-                    Utils.mapRestaurantResultToRestaurant(resultsListRestaurants, mRestaurantList);
-
-                    Timber.i("Restaurant = %s", mRestaurantList.get(0).getPhotoReference());
+                   mRestaurantList.setValue(Utils.mapRestaurantResultToRestaurant(resultsListRestaurants));
+                   Timber.i("Restaurant photo = %s", mRestaurantList.getValue().get(0).getPhotoReference());
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<RestaurantsResult> call, @NotNull Throwable t) {
-                Timber.i(t.toString());
+                Timber.e("erreur on failure = %s", t.toString());
             }
         });
-        return (LiveData<List<Restaurant>>) mRestaurantList;
-    }*/
+
+        return this.mRestaurantList;
+    }
 }

@@ -1,6 +1,7 @@
 package fr.nelfdesign.go4lunch.ui.activity;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -86,6 +87,10 @@ public class MainActivity extends BaseActivity {
 
     private void configureNavigationHeader() {
         mNavigationView.setNavigationItemSelectedListener(this::updateMainFragment);
+        mNavigationView.setItemTextColor(ColorStateList.valueOf(getResources().getColor(R.color.white_text)));
+        mNavigationView.setItemTextAppearance(R.style.AppTheme_Settings);
+        mNavigationView.setItemIconTintList(ColorStateList.valueOf(getResources().getColor(R.color.white_text)));
+        mNavigationView.setBackgroundColor(getResources().getColor(R.color.navigationDrawerBackground));
         this.updateNavigationHeader();
     }
 

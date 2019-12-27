@@ -1,5 +1,6 @@
 package fr.nelfdesign.go4lunch.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,13 +23,14 @@ import java.util.List;
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
 import fr.nelfdesign.go4lunch.models.Workers;
+import fr.nelfdesign.go4lunch.ui.activity.RestaurantDetail;
 import fr.nelfdesign.go4lunch.ui.adapter.WorkersListAdapter;
 import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WorkersFragment extends Fragment {
+public class WorkersFragment extends Fragment implements WorkersListAdapter.workerClickListener {
 
     private RecyclerView mRecyclerView;
     private WorkersListAdapter adapter;
@@ -66,7 +68,7 @@ public class WorkersFragment extends Fragment {
                 .setQuery(query, Workers.class)
                 .build();
 
-        adapter = new WorkersListAdapter(options);
+        adapter = new WorkersListAdapter(options, this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(adapter);
@@ -103,5 +105,11 @@ public class WorkersFragment extends Fragment {
                         Timber.w("Error getting documents."+ task.getException());
                     }
                 });
+    }
+
+    @Override
+    public void onClickItemWorker(int position) {
+        Intent intent = new Intent(this.getContext(), RestaurantDetail.class);
+        startActivity(intent);
     }
 }

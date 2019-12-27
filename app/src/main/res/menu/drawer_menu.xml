@@ -7,7 +7,7 @@
         <item
             android:id="@+id/nav_lunch"
             android:icon="@drawable/ic_restaurant_menu_white_24dp"
-            android:title="Your Lunch" />
+            android:title="Your Lunch"/>
 
         <item
             android:id="@+id/nav_settings"
