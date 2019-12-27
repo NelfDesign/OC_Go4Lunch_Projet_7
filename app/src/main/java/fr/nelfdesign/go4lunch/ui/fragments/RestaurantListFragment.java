@@ -1,6 +1,7 @@
 package fr.nelfdesign.go4lunch.ui.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import java.util.Objects;
 
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.models.Restaurant;
+import fr.nelfdesign.go4lunch.ui.activity.RestaurantDetail;
 import fr.nelfdesign.go4lunch.ui.adapter.RestaurantListAdapter;
 import fr.nelfdesign.go4lunch.viewModels.MapViewModel;
 
@@ -26,7 +28,7 @@ import fr.nelfdesign.go4lunch.viewModels.MapViewModel;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RestaurantListFragment extends Fragment {
+public class RestaurantListFragment extends Fragment implements RestaurantListAdapter.onClickRestaurantitemListener{
 
     //FIELD
     private RecyclerView mRecyclerView;
@@ -61,9 +63,14 @@ public class RestaurantListFragment extends Fragment {
     }
 
     private void initListAdapter(ArrayList<Restaurant> restaurants) {
-        RestaurantListAdapter adapter = new RestaurantListAdapter(restaurants, Glide.with(this));
+        RestaurantListAdapter adapter = new RestaurantListAdapter(restaurants, Glide.with(this), this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public void onClickRestaurantItem(int position) {
+        Intent intent = new Intent(this.getContext(), RestaurantDetail.class);
+        startActivity(intent);
+    }
 }

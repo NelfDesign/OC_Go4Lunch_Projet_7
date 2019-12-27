@@ -24,10 +24,12 @@ import timber.log.Timber;
  */
 public class RepositoryRestaurantList implements NearbyPlaces {
 
-    private MutableLiveData<ArrayList<Restaurant>> mRestaurantList = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Restaurant>> mRestaurantList;
 
     @Override
     public MutableLiveData<ArrayList<Restaurant>> configureRetrofitCall() {
+
+        mRestaurantList = new MutableLiveData<>();
 
         Map<String, String> parameters = new HashMap<>();
         parameters.put("location", "47.21,-1.55");
@@ -50,7 +52,6 @@ public class RepositoryRestaurantList implements NearbyPlaces {
                 if (resultsListRestaurants != null) {
 
                    mRestaurantList.setValue(Utils.mapRestaurantResultToRestaurant(resultsListRestaurants));
-                   Timber.i("Restaurant photo = %s", mRestaurantList.getValue().get(0).getPhotoReference());
                 }
             }
 

@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -23,16 +24,21 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.models.LocationData;
 import fr.nelfdesign.go4lunch.models.LocationLiveData;
+import fr.nelfdesign.go4lunch.models.Poi;
+import fr.nelfdesign.go4lunch.models.Restaurant;
 import fr.nelfdesign.go4lunch.viewModels.MapViewModel;
 import timber.log.Timber;
 
@@ -50,7 +56,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     //Constant
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final int LOCATION_START_UPDATE_REQUEST_CODE = 200;
-    private static final float DEFAULT_ZOOM = 13f;
+    private static final float DEFAULT_ZOOM = 14f;
     private static final int REQUEST_CODE_LOCATION_SETTING = 100;
 
     public MapFragment() { }
@@ -65,13 +71,40 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 .minZoomPreference(DEFAULT_ZOOM);
 
         mLocationLiveData = new LocationLiveData(Objects.requireNonNull(this.getContext()));
-        mLocationLiveData.observe(this, locationData -> {
-            handleLocationData(locationData);
-        });
+        mLocationLiveData.observe(this, this::handleLocationData);
 
         mMapViewModel = ViewModelProviders.of(Objects.requireNonNull(this.getActivity())).get(MapViewModel.class);
+        mMapViewModel.getAllRestaurants().observe(this.getActivity(), this::generatePoisRestaurant);
 
         initMap();
+    }
+
+    private void generatePoisRestaurant(ArrayList<Restaurant> restaurants) {
+       List<Poi> listPoi = generatePOI(restaurants);
+
+       for (Poi p : listPoi){
+           LatLng latLng = new LatLng(p.getLat(),p.getLong());
+           mGoogleMap.addMarker(new MarkerOptions()
+                   .position(latLng)
+                   .title(p.getTitle())
+                   .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_resto_red)));
+       }
+
+    }
+
+    private List<Poi> generatePOI(ArrayList<Restaurant> restaurants){
+        List<Poi> pois = new ArrayList<>();
+
+        for (int i =0; i < restaurants.size(); i++){
+            Poi p = new Poi(
+                    restaurants.get(i).getName(),
+                    restaurants.get(i).getLocation().getLat(),
+                    restaurants.get(i).getLocation().getLng(),
+                    R.drawable.ic_resto_red
+            );
+            pois.add(p);
+        }
+        return pois;
     }
 
     @Override
@@ -103,7 +136,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (mGoogleMap != null){
             //Add marker on Nantes
             LatLng nantes = new LatLng(47.21,-1.55);
-            mGoogleMap.addMarker(new MarkerOptions().position(nantes).title("Marker on Nantes"));
+            mGoogleMap.addMarker(new MarkerOptions().position(nantes).title("Marker on Nantes")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marquer)));
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(nantes));
         }
 

@@ -26,15 +26,21 @@ import fr.nelfdesign.go4lunch.models.Restaurant;
  */
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAdapter.RestaurantItemViewHolder> {
 
-    private ArrayList<Restaurant> mRestaurantList;
-    private RequestManager glide;
-
-    public RestaurantListAdapter(ArrayList<Restaurant> restaurantList, RequestManager glide) {
-        mRestaurantList = restaurantList;
-        this.glide = glide;
+    public interface onClickRestaurantitemListener{
+        void onClickRestaurantItem(int position);
     }
 
-    class RestaurantItemViewHolder extends RecyclerView.ViewHolder {
+    private ArrayList<Restaurant> mRestaurantList;
+    private RequestManager glide;
+    private onClickRestaurantitemListener mOnClickRestaurantitemListener;
+
+    public RestaurantListAdapter(ArrayList<Restaurant> restaurantList, RequestManager glide, onClickRestaurantitemListener onClickRestaurantitemListener) {
+        mRestaurantList = restaurantList;
+        this.glide = glide;
+        this.mOnClickRestaurantitemListener = onClickRestaurantitemListener;
+    }
+
+    class RestaurantItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.restaurant_name) TextView mRestaurantName;
         @BindView(R.id.restaurant_category_and_adresse) TextView mCategory;
@@ -44,9 +50,13 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         @BindView(R.id.stars) LinearLayout mStars;
         @BindView(R.id.workers_number) TextView mWorkersNumbers;
 
-        RestaurantItemViewHolder(@NonNull View itemView) {
+        onClickRestaurantitemListener mListener;
+
+        RestaurantItemViewHolder(@NonNull View itemView, onClickRestaurantitemListener listener) {
             super(itemView);
+            this.mListener = listener;
             ButterKnife.bind(this,itemView);
+            itemView.setOnClickListener(this);
         }
 
         void updateWithDetailRestaurant(Restaurant restaurantDetail, RequestManager glide){
@@ -68,6 +78,11 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
                 this.mRestaurantImage.setImageResource(R.drawable.ic_bol);
             }
         }
+
+        @Override
+        public void onClick(View v) {
+            mListener.onClickRestaurantItem(getAdapterPosition());
+        }
     }
 
     @NonNull
@@ -75,7 +90,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     public RestaurantItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_restaurant, parent, false);
-        return new RestaurantItemViewHolder(view);
+        return new RestaurantItemViewHolder(view, mOnClickRestaurantitemListener);
     }
 
     @Override
