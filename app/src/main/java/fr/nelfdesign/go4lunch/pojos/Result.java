@@ -32,6 +32,9 @@ public class Result {
     @SerializedName("place_id")
     @Expose
     private String placeId;
+    @SerializedName("rating")
+    @Expose
+    private double rating;
     @SerializedName("reference")
     @Expose
     private String reference;
@@ -41,6 +44,15 @@ public class Result {
     @SerializedName("vicinity")
     @Expose
     private String vicinity;
+
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
 
     public Geometry getGeometry() {
         return geometry;

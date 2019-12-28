@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Nelfdesign at 09/12/2019
  * fr.nelfdesign.go4lunch.models
  */
-class OpeningHours {
+public class OpeningHours {
 
     @SerializedName("open_now")
     @Expose

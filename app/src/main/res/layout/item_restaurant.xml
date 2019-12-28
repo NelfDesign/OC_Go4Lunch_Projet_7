@@ -25,14 +25,16 @@
                     android:layout_height="wrap_content"
                     tools:text="le zinc"
                     android:textStyle="bold"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:maxLength="30"/>
 
                 <TextView
                     android:id="@+id/restaurant_category_and_adresse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="french - 21 rue du bordage lucas"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp"
+                    android:maxLines="1"/>
 
                 <TextView
                     android:id="@+id/restaurant_hour"
@@ -87,22 +89,22 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/star-1"
+                        android:id="@+id/star_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_yellow_star_32dp"/>
+                        app:srcCompat="@drawable/ic_yellow_star_32dp" />
 
                     <ImageView
-                        android:id="@+id/star-2"
+                        android:id="@+id/star_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_yellow_star_32dp"/>
+                        app:srcCompat="@drawable/ic_yellow_star_32dp" />
 
                     <ImageView
-                        android:id="@+id/star-3"
+                        android:id="@+id/star_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_yellow_star_32dp"/>
+                        app:srcCompat="@drawable/ic_yellow_star_32dp" />
 
                 </LinearLayout>
 
@@ -114,10 +116,8 @@
                 android:layout_height="80dp"
                 android:layout_weight="20"
                 android:src="@drawable/pic_logo_restaurant_400x400"
-                />
+                android:layout_margin="5dp" />
 
         </LinearLayout>
-
-
 
 </androidx.cardview.widget.CardView>

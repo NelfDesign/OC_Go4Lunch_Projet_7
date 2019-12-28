@@ -34,18 +34,31 @@ public abstract class Utils {
         for (int i = 0; i < restaurantsResult.getResults().size(); i++){
             Result restaurantFirst = restaurantsResult.getResults().get(i);
 
+            Boolean openNow = false;
+            if (restaurantFirst.getOpeningHours() == null){
+                openNow = false;
+            }else {
+                openNow = restaurantFirst.getOpeningHours().getOpenNow();
+            }
+
+            String photo = "";
+            if (restaurantFirst.getPhotos() == null){
+                photo = "";
+            }else {
+                photo = restaurantFirst.getPhotos().get(0).getPhotoReference();
+            }
             Restaurant r = new Restaurant(
                                 restaurantFirst.getGeometry().getLocation(),
                                 restaurantFirst.getName(),
                                 restaurantFirst.getVicinity(),
                                 restaurantFirst.getIcon(),
-                                null,
-                                restaurantFirst.getPhotos().get(0).getPhotoReference(),
+                                openNow,
+                                photo,
                                 null,
                                 2,
-                                0
+                                restaurantFirst.getRating()
                              );
-            Timber.i("Restaurant 1 : %s", r.getLocation().getLat() + " "+ r.getAddress());
+            Timber.i("Restaurant : %s", r.getLocation().getLat() + " "+ r.getAddress());
            resto.add(r);
 
         }

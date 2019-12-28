@@ -135,10 +135,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
         if (mGoogleMap != null){
             //Add marker on Nantes
-            LatLng nantes = new LatLng(47.21,-1.55);
-            mGoogleMap.addMarker(new MarkerOptions().position(nantes).title("Marker on Nantes")
+            //LatLng nantes = new LatLng(47.21,-1.55);
+            LatLng stJunien = new LatLng(45.8833, 0.9);
+            mGoogleMap.addMarker(new MarkerOptions().position(stJunien).title("Marker on Nantes")
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marquer)));
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(nantes));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(stJunien));
         }
 
     }

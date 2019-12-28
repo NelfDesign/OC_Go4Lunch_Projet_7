@@ -10,19 +10,18 @@ import fr.nelfdesign.go4lunch.pojos.Location;
  */
 public class Restaurant {
 
-    /*private double latitude;
-    private double longitude;*/
     private Location mLocation;
     private String name;
     private String icon;
     private String address;
-    private OpeningHours hour;
+    private Boolean hour;
     private String photoReference;
     private String distance;
     private int workers;
-    private int stars;
+    private double rating;
 
-    public Restaurant(Location location, String name, String address, String icon, OpeningHours hour, String urlImage, String distance, int workers, int stars) {
+    public Restaurant(Location location, String name, String address, String icon, boolean hour, String urlImage,
+                      String distance, int workers, double rating) {
         this.mLocation = location;
         this.name = name;
         this.icon = icon;
@@ -31,7 +30,7 @@ public class Restaurant {
         this.photoReference = urlImage;
         this.distance = distance;
         this.workers = workers;
-        this.stars = stars;
+        this.rating = rating;
     }
 
     public Location getLocation() {
@@ -62,24 +61,12 @@ public class Restaurant {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public OpeningHours getHour() {
+    public boolean getHour() {
         return hour;
-    }
-
-    public void setHour(OpeningHours hour) {
-        this.hour = hour;
     }
 
     public String getPhotoReference() {
         return photoReference;
-    }
-
-    public void setPhotoReference(String photoReference) {
-        this.photoReference = photoReference;
     }
 
     public String getDistance() {
@@ -98,11 +85,8 @@ public class Restaurant {
         this.workers = workers;
     }
 
-    public int getStars() {
-        return stars;
+    public double getRating() {
+        return rating;
     }
 
-    public void setStars(int stars) {
-        this.stars = stars;
-    }
 }

@@ -32,7 +32,8 @@ public class RepositoryRestaurantList implements NearbyPlaces {
         mRestaurantList = new MutableLiveData<>();
 
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("location", "47.21,-1.55");
+        //parameters.put("location", "47.21,-1.55");
+        parameters.put("location", "45.8833, 0.9");
         parameters.put("key", BuildConfig.google_maps_key);
 
         Call<RestaurantsResult> mListCall = App.retrofitCall().getNearByRestaurant(parameters);
