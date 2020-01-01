@@ -1,7 +1,5 @@
 package fr.nelfdesign.go4lunch.models;
 
-import com.google.android.libraries.places.api.model.OpeningHours;
-
 import fr.nelfdesign.go4lunch.pojos.Location;
 
 /**
@@ -12,7 +10,7 @@ public class Restaurant {
 
     private Location mLocation;
     private String name;
-    private String icon;
+    private String placeId;
     private String address;
     private Boolean hour;
     private String photoReference;
@@ -20,11 +18,11 @@ public class Restaurant {
     private int workers;
     private double rating;
 
-    public Restaurant(Location location, String name, String address, String icon, boolean hour, String urlImage,
+    public Restaurant(Location location, String name, String address, String placeId, boolean hour, String urlImage,
                       String distance, int workers, double rating) {
         this.mLocation = location;
         this.name = name;
-        this.icon = icon;
+        this.placeId = placeId;
         this.address = address;
         this.hour = hour;
         this.photoReference = urlImage;
@@ -49,12 +47,12 @@ public class Restaurant {
         this.name = name;
     }
 
-    public String getIcon() {
-        return icon;
+    public String getPlaceId() {
+        return placeId;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 
     public String getAddress() {

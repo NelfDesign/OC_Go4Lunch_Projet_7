@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 
 import fr.nelfdesign.go4lunch.apiGoogleMap.RepositoryRestaurantList;
+import fr.nelfdesign.go4lunch.models.DetailRestaurant;
 import fr.nelfdesign.go4lunch.models.Restaurant;
 
 /**
@@ -16,7 +17,11 @@ public class MapViewModel extends ViewModel {
 
     private RepositoryRestaurantList mRepositoryRestaurantList = new RepositoryRestaurantList();
 
-    public MutableLiveData<ArrayList<Restaurant>> getAllRestaurants(){
-        return this.mRepositoryRestaurantList.configureRetrofitCall();
+    public MutableLiveData<ArrayList<Restaurant>> getAllRestaurants(double lat, double lng){
+        return this.mRepositoryRestaurantList.configureRetrofitCall(lat, lng);
+    }
+
+    public MutableLiveData<DetailRestaurant> getDetailRestaurant(String placeId){
+        return this.mRepositoryRestaurantList.configureDetailRestaurant(placeId);
     }
 }

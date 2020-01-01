@@ -8,13 +8,16 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Workers {
 
-    /** Fullname */
+    // Fullname
     private String name;
-    /** Avatar */
-
+    // Avatar
     private String avatarUrl;
-    /** Restaurant chosen */
+    // Restaurant chosen
     private boolean restaurantChoice;
+    // Restaurant name
+    private String restaurantName;
+    //Restaurant placeId
+    private String placeId;
 
     public Workers(){}
 
@@ -22,6 +25,22 @@ public class Workers {
         this.name = name;
         this.avatarUrl = avatarUrl;
         restaurantChoice = false;
+    }
+
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 
     public boolean isRestaurantChoice() {

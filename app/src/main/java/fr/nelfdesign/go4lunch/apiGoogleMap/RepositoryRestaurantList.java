@@ -10,7 +10,10 @@ import java.util.Map;
 
 import fr.nelfdesign.go4lunch.BuildConfig;
 import fr.nelfdesign.go4lunch.base.App;
+import fr.nelfdesign.go4lunch.models.DetailRestaurant;
 import fr.nelfdesign.go4lunch.models.Restaurant;
+import fr.nelfdesign.go4lunch.pojos.Detail;
+import fr.nelfdesign.go4lunch.pojos.DetailsResult;
 import fr.nelfdesign.go4lunch.pojos.RestaurantsResult;
 import fr.nelfdesign.go4lunch.utils.Utils;
 import retrofit2.Call;
@@ -25,15 +28,15 @@ import timber.log.Timber;
 public class RepositoryRestaurantList implements NearbyPlaces {
 
     private MutableLiveData<ArrayList<Restaurant>> mRestaurantList;
+    private MutableLiveData<DetailRestaurant> mDetailRestaurantLiveData;
 
     @Override
-    public MutableLiveData<ArrayList<Restaurant>> configureRetrofitCall() {
+    public MutableLiveData<ArrayList<Restaurant>> configureRetrofitCall(double lat, double lng) {
 
         mRestaurantList = new MutableLiveData<>();
 
         Map<String, String> parameters = new HashMap<>();
-        //parameters.put("location", "47.21,-1.55");
-        parameters.put("location", "45.8833, 0.9");
+        parameters.put("location", lat + ","+ lng );
         parameters.put("key", BuildConfig.google_maps_key);
 
         Call<RestaurantsResult> mListCall = App.retrofitCall().getNearByRestaurant(parameters);
@@ -51,7 +54,6 @@ public class RepositoryRestaurantList implements NearbyPlaces {
                 RestaurantsResult resultsListRestaurants = response.body();
 
                 if (resultsListRestaurants != null) {
-
                    mRestaurantList.setValue(Utils.mapRestaurantResultToRestaurant(resultsListRestaurants));
                 }
             }
@@ -63,5 +65,54 @@ public class RepositoryRestaurantList implements NearbyPlaces {
         });
 
         return this.mRestaurantList;
+    }
+
+    @Override
+    public MutableLiveData<DetailRestaurant> configureDetailRestaurant(String placeId) {
+
+        mDetailRestaurantLiveData = new MutableLiveData<>();
+
+        Map<String, String> parameters = new HashMap<>();
+
+        parameters.put("place_id", placeId);
+        parameters.put("key", BuildConfig.google_maps_key);
+
+        Call<Detail> mListCall = App.retrofitCall().getDetailRestaurant(parameters);
+
+        mListCall.enqueue(new Callback<Detail>() {
+            @Override
+            public void onResponse(@NotNull Call<Detail> call,
+                                   @NotNull Response<Detail> response) {
+
+                if (!response.isSuccessful()) {
+                    Timber.e("onResponse: erreur");
+                    return;
+                }
+
+                Detail resultsDetailRestaurants = response.body();
+
+                if (resultsDetailRestaurants != null) {
+                    DetailsResult detailsResult = resultsDetailRestaurants.getResult();
+
+                   DetailRestaurant restaurant = new DetailRestaurant(
+                            detailsResult.getFormattedAddress(),
+                            detailsResult.getFormattedPhoneNumber(),
+                            detailsResult.getName(),
+                            detailsResult.getPlaceId(),
+                            detailsResult.getPhotos().get(0).getPhotoReference(),
+                            detailsResult.getRating(),
+                            detailsResult.getWebsite()
+                    );
+                   mDetailRestaurantLiveData.setValue(restaurant);
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Detail> call, @NotNull Throwable t) {
+                Timber.e("erreur on failure = %s", t.toString());
+            }
+        });
+
+        return mDetailRestaurantLiveData;
     }
 }

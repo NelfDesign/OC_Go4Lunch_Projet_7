@@ -1,6 +1,7 @@
 package fr.nelfdesign.go4lunch.utils;
 
 import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -34,14 +35,14 @@ public abstract class Utils {
         for (int i = 0; i < restaurantsResult.getResults().size(); i++){
             Result restaurantFirst = restaurantsResult.getResults().get(i);
 
-            Boolean openNow = false;
+            Boolean openNow;
             if (restaurantFirst.getOpeningHours() == null){
                 openNow = false;
             }else {
                 openNow = restaurantFirst.getOpeningHours().getOpenNow();
             }
 
-            String photo = "";
+            String photo;
             if (restaurantFirst.getPhotos() == null){
                 photo = "";
             }else {
@@ -51,18 +52,50 @@ public abstract class Utils {
                                 restaurantFirst.getGeometry().getLocation(),
                                 restaurantFirst.getName(),
                                 restaurantFirst.getVicinity(),
-                                restaurantFirst.getIcon(),
+                                restaurantFirst.getPlaceId(),
                                 openNow,
                                 photo,
                                 null,
                                 2,
                                 restaurantFirst.getRating()
                              );
-            Timber.i("Restaurant : %s", r.getLocation().getLat() + " "+ r.getAddress());
            resto.add(r);
-
         }
         return resto;
     }
 
+    public static int starsAccordingToRating(double rating){
+        if ( rating <= 2){
+            return 1;
+        }else if (rating < 3.7){
+            return 2;
+        }else {
+            return 3;
+        }
+    }
+
+    public static void starsView(int rating, ImageView s1, ImageView s2, ImageView s3){
+        switch (rating){
+            case 0 :
+                s1.setVisibility(View.GONE);
+                s2.setVisibility(View.GONE);
+                s3.setVisibility(View.GONE);
+                break;
+            case 1 :
+                s1.setVisibility(View.VISIBLE);
+                s2.setVisibility(View.GONE);
+                s3.setVisibility(View.GONE);
+                break;
+            case 2:
+                s1.setVisibility(View.VISIBLE);
+                s2.setVisibility(View.VISIBLE);
+                s3.setVisibility(View.GONE);
+                break;
+            case 3:
+                s1.setVisibility(View.VISIBLE);
+                s2.setVisibility(View.VISIBLE);
+                s3.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
 }

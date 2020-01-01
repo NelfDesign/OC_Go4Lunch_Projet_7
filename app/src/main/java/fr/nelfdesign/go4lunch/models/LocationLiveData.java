@@ -2,6 +2,7 @@ package fr.nelfdesign.go4lunch.models;
 
 import android.content.Context;
 import android.location.Location;
+import android.os.Looper;
 
 import androidx.lifecycle.LiveData;
 
@@ -13,6 +14,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 
 /**
@@ -29,6 +31,7 @@ public class LocationLiveData extends LiveData<LocationData> {
     private LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
 
+    private LatLng currentLocation;
     private boolean isFirstSubscriber = true;
 
     // CONSTRUCTORS --------------------------------------------------------------------------------
@@ -40,7 +43,7 @@ public class LocationLiveData extends LiveData<LocationData> {
     public LocationLiveData(Context context) {
         this.appContext = context.getApplicationContext();
 
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.appContext);
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(appContext);
         this.configureLocationRequest();
         this.configureLocationCallback();
     }
@@ -69,12 +72,13 @@ public class LocationLiveData extends LiveData<LocationData> {
 
     /**
      * Creates the locationRequest
+     * to configure the update interval of the map
      */
     private void configureLocationRequest() {
         mLocationRequest = LocationRequest.create();
-        mLocationRequest.setInterval(10000)
-                            .setFastestInterval(5000)
-                            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
     /**
@@ -88,8 +92,17 @@ public class LocationLiveData extends LiveData<LocationData> {
                     return;
                 }
 
+                currentLocation = new LatLng(locationResult.getLastLocation().getLatitude(),
+                                            locationResult.getLastLocation().getLongitude());
+
                 for (Location location : locationResult.getLocations()) {
+                    // Update UI with location data
+                    if (currentLocation.latitude == location.getLatitude()
+                            && currentLocation.longitude == location.getLongitude()){
+                        return;
+                    }
                     setValue(new LocationData(location, null));
+                    currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 }
             }
         };
@@ -113,7 +126,7 @@ public class LocationLiveData extends LiveData<LocationData> {
      */
     public void requestUpdateLocation() {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(this.mLocationRequest);
+                .addLocationRequest(mLocationRequest);
 
         SettingsClient client = LocationServices.getSettingsClient(appContext);
 
@@ -134,7 +147,7 @@ public class LocationLiveData extends LiveData<LocationData> {
         try {
             mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest,
                     mLocationCallback,
-                    null);
+                    Looper.getMainLooper());
         }catch (SecurityException e){
             setValue(new LocationData(null, e));
         }

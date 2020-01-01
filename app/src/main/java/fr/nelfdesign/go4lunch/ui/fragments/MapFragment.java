@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -39,6 +40,8 @@ import fr.nelfdesign.go4lunch.models.LocationData;
 import fr.nelfdesign.go4lunch.models.LocationLiveData;
 import fr.nelfdesign.go4lunch.models.Poi;
 import fr.nelfdesign.go4lunch.models.Restaurant;
+import fr.nelfdesign.go4lunch.pojos.Location;
+import fr.nelfdesign.go4lunch.ui.activity.MainActivity;
 import fr.nelfdesign.go4lunch.viewModels.MapViewModel;
 import timber.log.Timber;
 
@@ -52,11 +55,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMapOptions mapOptions;
     private LocationLiveData mLocationLiveData;
     private MapViewModel mMapViewModel;
+    private LatLng currentPosition;
+
 
     //Constant
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final int LOCATION_START_UPDATE_REQUEST_CODE = 200;
-    private static final float DEFAULT_ZOOM = 14f;
+    private static final float DEFAULT_ZOOM = 13f;
     private static final int REQUEST_CODE_LOCATION_SETTING = 100;
 
     public MapFragment() { }
@@ -64,47 +69,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mapOptions = new GoogleMapOptions()
                 .mapType(GoogleMap.MAP_TYPE_NORMAL)
                 .zoomControlsEnabled(true)
                 .zoomGesturesEnabled(true)
                 .minZoomPreference(DEFAULT_ZOOM);
 
-        mLocationLiveData = new LocationLiveData(Objects.requireNonNull(this.getContext()));
-        mLocationLiveData.observe(this, this::handleLocationData);
-
-        mMapViewModel = ViewModelProviders.of(Objects.requireNonNull(this.getActivity())).get(MapViewModel.class);
-        mMapViewModel.getAllRestaurants().observe(this.getActivity(), this::generatePoisRestaurant);
-
-        initMap();
-    }
-
-    private void generatePoisRestaurant(ArrayList<Restaurant> restaurants) {
-       List<Poi> listPoi = generatePOI(restaurants);
-
-       for (Poi p : listPoi){
-           LatLng latLng = new LatLng(p.getLat(),p.getLong());
-           mGoogleMap.addMarker(new MarkerOptions()
-                   .position(latLng)
-                   .title(p.getTitle())
-                   .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_resto_red)));
-       }
-
-    }
-
-    private List<Poi> generatePOI(ArrayList<Restaurant> restaurants){
-        List<Poi> pois = new ArrayList<>();
-
-        for (int i =0; i < restaurants.size(); i++){
-            Poi p = new Poi(
-                    restaurants.get(i).getName(),
-                    restaurants.get(i).getLocation().getLat(),
-                    restaurants.get(i).getLocation().getLng(),
-                    R.drawable.ic_resto_red
-            );
-            pois.add(p);
-        }
-        return pois;
     }
 
     @Override
@@ -112,12 +83,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
+        initMap();
         return view;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mGoogleMap = googleMap;
+        this.mGoogleMap = googleMap;
+        Timber.i("Map ready");
+        mLocationLiveData = new LocationLiveData(Objects.requireNonNull(this.getContext()));
+        mLocationLiveData.observe(Objects.requireNonNull(this.getActivity()), this::handleLocationData);
+
+        mMapViewModel = ViewModelProviders.of(Objects.requireNonNull(this.getActivity())).get(MapViewModel.class);
     }
 
     @Override
@@ -125,7 +102,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
             case REQUEST_CODE_LOCATION_SETTING:
-                mLocationLiveData.requestUpdateLocation();
+                this.mLocationLiveData.requestUpdateLocation();
         }
     }
 
@@ -133,15 +110,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (handleLocationException(locationData.getException()) || locationData.getLocation() == null){
             return;
         }
-        if (mGoogleMap != null){
-            //Add marker on Nantes
-            //LatLng nantes = new LatLng(47.21,-1.55);
-            LatLng stJunien = new LatLng(45.8833, 0.9);
-            mGoogleMap.addMarker(new MarkerOptions().position(stJunien).title("Marker on Nantes")
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marquer)));
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(stJunien));
-        }
 
+        currentPosition = new LatLng(locationData.getLocation().getLatitude(),
+                locationData.getLocation().getLongitude());
+
+        if (mGoogleMap != null){
+
+            LatLng latLng = new LatLng(locationData.getLocation().getLatitude(),
+                    locationData.getLocation().getLongitude());
+
+            moveCameraToPosition(currentPosition);
+
+            if (!currentPosition.equals(latLng)){
+                currentPosition = latLng;
+            }
+
+            mMapViewModel.getAllRestaurants(currentPosition.latitude,currentPosition.longitude)
+                    .observe(Objects.requireNonNull(this.getActivity()), this::generatePoisRestaurant);
+
+            Timber.i("Current position is : " + currentPosition.latitude + ", " + currentPosition.longitude);
+        }
     }
 
     private boolean handleLocationException(@Nullable Exception exception) {
@@ -195,7 +183,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         switch (requestCode){
             case LOCATION_START_UPDATE_REQUEST_CODE :
-                mLocationLiveData.requestUpdateLocation();
+                this.mLocationLiveData.requestUpdateLocation();
                 break;
         }
     }
@@ -203,15 +191,51 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     //initialisation de la carte
     private void initMap() {
         Timber.d( "initMap: initializing map");
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_Fragment);
+            SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_Fragment);
 
-        if(mapFragment == null){
-            mapFragment = SupportMapFragment.newInstance(mapOptions);
-            if (getFragmentManager() != null) {
-                getFragmentManager().beginTransaction().replace(R.id.map_Fragment, mapFragment).commit();
-            }
+                if(mapFragment == null){
+                    //add option to the map
+                    mapFragment = SupportMapFragment.newInstance(mapOptions);
+                    if (getFragmentManager() != null) {
+                        getFragmentManager().beginTransaction().replace(R.id.map_Fragment, mapFragment).commit();
+                    }
+                    Timber.i("MapFragment new");
+                }
+                mapFragment.getMapAsync(this);
+    }
+
+    private void moveCameraToPosition(LatLng latLng){
+        mGoogleMap.addMarker(new MarkerOptions().position(latLng).title("My position")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marquer)));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+    }
+
+    private void generatePoisRestaurant(ArrayList<Restaurant> restaurants) {
+        List<Poi> listPoi = generatePOI(restaurants);
+
+        for (Poi p : listPoi){
+            LatLng latLng = new LatLng(p.getLat(),p.getLong());
+            mGoogleMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(p.getTitle())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_resto_red)));
         }
-        mapFragment.getMapAsync(this);
+
+    }
+
+    private List<Poi> generatePOI(ArrayList<Restaurant> restaurants){
+        List<Poi> pois = new ArrayList<>();
+
+        for (int i =0; i < restaurants.size(); i++){
+            Poi p = new Poi(
+                    restaurants.get(i).getName(),
+                    restaurants.get(i).getLocation().getLat(),
+                    restaurants.get(i).getLocation().getLng(),
+                    R.drawable.ic_resto_red
+            );
+            pois.add(p);
+        }
+        return pois;
     }
 
 }
