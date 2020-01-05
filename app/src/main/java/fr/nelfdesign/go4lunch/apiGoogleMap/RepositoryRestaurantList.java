@@ -4,24 +4,19 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import fr.nelfdesign.go4lunch.BuildConfig;
-import fr.nelfdesign.go4lunch.R;
-import fr.nelfdesign.go4lunch.base.App;
 import fr.nelfdesign.go4lunch.models.DetailRestaurant;
 import fr.nelfdesign.go4lunch.models.Restaurant;
 import fr.nelfdesign.go4lunch.pojos.Detail;
 import fr.nelfdesign.go4lunch.pojos.DetailsResult;
 import fr.nelfdesign.go4lunch.pojos.RestaurantsResult;
 import fr.nelfdesign.go4lunch.utils.Utils;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import timber.log.Timber;
 
 /**
@@ -32,6 +27,7 @@ public class RepositoryRestaurantList implements NearbyPlaces {
 
     private MutableLiveData<ArrayList<Restaurant>> mRestaurantList;
     private MutableLiveData<DetailRestaurant> mDetailRestaurantLiveData;
+    private Disposable disposable;
 
     @Override
     public MutableLiveData<ArrayList<Restaurant>> configureRetrofitCall(LatLng latLng) {
@@ -42,30 +38,26 @@ public class RepositoryRestaurantList implements NearbyPlaces {
         parameters.put("location", latLng.latitude + ","+ latLng.longitude );
         parameters.put("key", BuildConfig.google_maps_key);
 
-        Call<RestaurantsResult> mListCall = App.retrofitCall().getNearByRestaurant(parameters);
+        disposable = PlaceStream.streamGetNearByRestaurant(parameters)
+                .subscribeWith(new DisposableObserver<RestaurantsResult>() {
+                    @Override
+                    public void onNext(RestaurantsResult restaurantsResult) {
 
-        mListCall.enqueue(new Callback<RestaurantsResult>() {
-            @Override
-            public void onResponse(@NotNull Call<RestaurantsResult> call,
-                                   @NotNull Response<RestaurantsResult> response) {
+                        if (restaurantsResult != null) {
+                            mRestaurantList.setValue(Utils.mapRestaurantResultToRestaurant(restaurantsResult));
+                        }
+                    }
 
-                if (!response.isSuccessful()) {
-                    Timber.e("onResponse: erreur");
-                    return;
-                }
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e("error : %s", e.getMessage());
+                    }
 
-                RestaurantsResult resultsListRestaurants = response.body();
-
-                if (resultsListRestaurants != null) {
-                   mRestaurantList.setValue(Utils.mapRestaurantResultToRestaurant(resultsListRestaurants));
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<RestaurantsResult> call, @NotNull Throwable t) {
-                Timber.e("erreur on failure = %s", t.toString());
-            }
-        });
+                    @Override
+                    public void onComplete() {
+                        Timber.i("on Complete");
+                    }
+                });
 
         return this.mRestaurantList;
     }
@@ -80,47 +72,42 @@ public class RepositoryRestaurantList implements NearbyPlaces {
         parameters.put("place_id", placeId);
         parameters.put("key", BuildConfig.google_maps_key);
 
-        Call<Detail> mListCall = App.retrofitCall().getDetailRestaurant(parameters);
+        disposable = PlaceStream.streamGetDetailRestaurant(parameters)
+                .subscribeWith(new DisposableObserver<Detail>() {
+                    @Override
+                    public void onNext(Detail detail) {
+                        if (detail != null) {
+                            DetailsResult detailsResult = detail.getResult();
 
-        mListCall.enqueue(new Callback<Detail>() {
-            @Override
-            public void onResponse(@NotNull Call<Detail> call,
-                                   @NotNull Response<Detail> response) {
-
-                if (!response.isSuccessful()) {
-                    Timber.e("onResponse: erreur");
-                    return;
-                }
-
-                Detail resultsDetailRestaurants = response.body();
-
-                if (resultsDetailRestaurants != null) {
-                    DetailsResult detailsResult = resultsDetailRestaurants.getResult();
-
-                    String photo;
-                    if (detailsResult.getPhotos() == null){
-                        photo = "";
-                    }else {
-                        photo = detailsResult.getPhotos().get(0).getPhotoReference();
+                            String photo;
+                            if (detailsResult.getPhotos() == null){
+                                photo = "";
+                            }else {
+                                photo = detailsResult.getPhotos().get(0).getPhotoReference();
+                            }
+                            DetailRestaurant restaurant = new DetailRestaurant(
+                                    detailsResult.getFormattedAddress(),
+                                    detailsResult.getFormattedPhoneNumber(),
+                                    detailsResult.getName(),
+                                    detailsResult.getPlaceId(),
+                                    photo,
+                                    (detailsResult.getRating() != null)? detailsResult.getRating() : 0,
+                                    detailsResult.getWebsite()
+                            );
+                            mDetailRestaurantLiveData.setValue(restaurant);
+                        }
                     }
-                   DetailRestaurant restaurant = new DetailRestaurant(
-                            detailsResult.getFormattedAddress(),
-                            detailsResult.getFormattedPhoneNumber(),
-                            detailsResult.getName(),
-                            detailsResult.getPlaceId(),
-                            photo,
-                           (detailsResult.getRating() != null)? detailsResult.getRating() : 0,
-                            detailsResult.getWebsite()
-                    );
-                   mDetailRestaurantLiveData.setValue(restaurant);
-                }
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<Detail> call, @NotNull Throwable t) {
-                Timber.e("erreur on failure = %s", t.toString());
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e("error : %s", e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Timber.i("on Complete");
+                    }
+                });
 
         return mDetailRestaurantLiveData;
     }

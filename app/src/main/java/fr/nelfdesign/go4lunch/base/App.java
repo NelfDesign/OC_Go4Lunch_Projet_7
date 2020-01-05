@@ -6,6 +6,7 @@ import fr.nelfdesign.go4lunch.apiGoogleMap.RestaurantService;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
@@ -32,10 +33,9 @@ public class App extends Application {
                 .client(okHttpClient)
                 .baseUrl("https://maps.googleapis.com/maps/api/place/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
-        RestaurantService googleMapService = retrofit.create(RestaurantService.class);
-
-        return googleMapService;
+        return retrofit.create(RestaurantService.class);
     }
 }

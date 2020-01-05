@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import fr.nelfdesign.go4lunch.models.Restaurant;
 import fr.nelfdesign.go4lunch.pojos.RestaurantsResult;
 import fr.nelfdesign.go4lunch.pojos.Result;
-import timber.log.Timber;
 
 /**
  * Created by Nelfdesign at 01/12/2019

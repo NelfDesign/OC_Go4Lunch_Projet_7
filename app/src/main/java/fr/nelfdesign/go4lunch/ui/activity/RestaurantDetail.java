@@ -46,7 +46,7 @@ public class RestaurantDetail extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        //get placeid and location
+        //get placeid extra intent
         String placeId = getIntent().getStringExtra("placeId");
 
         MapViewModel mapViewModel = ViewModelProviders.of(this).get(MapViewModel.class);

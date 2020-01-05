@@ -75,6 +75,7 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
                     if (location != null) {
                         // get the location phone
                         currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+                        //observe restaurants data
                         mMapViewModel.getAllRestaurants(currentPosition)
                                 .observe(Objects.requireNonNull(this), this::getRestaurantList);
                     }
