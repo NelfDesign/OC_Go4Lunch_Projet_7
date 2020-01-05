@@ -12,9 +12,12 @@
 
     <style parent="AppTheme" name="AppTheme.Main">
 
-    <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
 
-</style>
+    </style>
+
+    <!-- APPBAR THEME FOR DETAIL PAGE -->
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <!-- WELCOME STYLE -->
 

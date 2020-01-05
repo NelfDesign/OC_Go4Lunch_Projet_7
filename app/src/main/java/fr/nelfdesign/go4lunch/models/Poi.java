@@ -7,15 +7,23 @@ package fr.nelfdesign.go4lunch.models;
 public class Poi {
 
     private String title;
+    private String placeId;
     private double lat;
     private double mLong;
-    private int iconId;
 
-    public Poi(String title, double lat, double aLong, int iconId) {
+    public Poi(String title, String placeId, double lat, double aLong) {
         this.title = title;
+        this.placeId = placeId;
         this.lat = lat;
         mLong = aLong;
-        this.iconId = iconId;
+    }
+
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 
     public String getTitle() {
@@ -42,11 +50,4 @@ public class Poi {
         mLong = aLong;
     }
 
-    public int getIconId() {
-        return iconId;
-    }
-
-    public void setIconId(int iconId) {
-        this.iconId = iconId;
-    }
 }

@@ -65,9 +65,11 @@ public abstract class Utils {
     }
 
     public static int starsAccordingToRating(double rating){
-        if ( rating <= 2){
+        if (rating == 0){
+            return 0;
+        }else if ( rating > 0 && rating <= 2){
             return 1;
-        }else if (rating < 3.7){
+        }else if (rating > 2 && rating < 3.7){
             return 2;
         }else {
             return 3;

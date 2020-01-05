@@ -37,7 +37,12 @@
             android:name=".ui.activity.MainActivity"
             android:label="@string/title_activity_main2" />
 
-        <activity android:name=".ui.activity.RestaurantDetail"/>
+        <activity android:name=".ui.activity.RestaurantDetail"
+            android:parentActivityName=".ui.activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.MainActivity" />
+        </activity>
 
     </application>
 

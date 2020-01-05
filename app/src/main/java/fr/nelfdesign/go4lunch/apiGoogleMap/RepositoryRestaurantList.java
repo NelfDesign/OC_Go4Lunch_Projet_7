@@ -2,6 +2,8 @@ package fr.nelfdesign.go4lunch.apiGoogleMap;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.nelfdesign.go4lunch.BuildConfig;
+import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.base.App;
 import fr.nelfdesign.go4lunch.models.DetailRestaurant;
 import fr.nelfdesign.go4lunch.models.Restaurant;
@@ -31,12 +34,12 @@ public class RepositoryRestaurantList implements NearbyPlaces {
     private MutableLiveData<DetailRestaurant> mDetailRestaurantLiveData;
 
     @Override
-    public MutableLiveData<ArrayList<Restaurant>> configureRetrofitCall(double lat, double lng) {
+    public MutableLiveData<ArrayList<Restaurant>> configureRetrofitCall(LatLng latLng) {
 
         mRestaurantList = new MutableLiveData<>();
 
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("location", lat + ","+ lng );
+        parameters.put("location", latLng.latitude + ","+ latLng.longitude );
         parameters.put("key", BuildConfig.google_maps_key);
 
         Call<RestaurantsResult> mListCall = App.retrofitCall().getNearByRestaurant(parameters);
@@ -94,13 +97,19 @@ public class RepositoryRestaurantList implements NearbyPlaces {
                 if (resultsDetailRestaurants != null) {
                     DetailsResult detailsResult = resultsDetailRestaurants.getResult();
 
+                    String photo;
+                    if (detailsResult.getPhotos() == null){
+                        photo = "";
+                    }else {
+                        photo = detailsResult.getPhotos().get(0).getPhotoReference();
+                    }
                    DetailRestaurant restaurant = new DetailRestaurant(
                             detailsResult.getFormattedAddress(),
                             detailsResult.getFormattedPhoneNumber(),
                             detailsResult.getName(),
                             detailsResult.getPlaceId(),
-                            detailsResult.getPhotos().get(0).getPhotoReference(),
-                            detailsResult.getRating(),
+                            photo,
+                           (detailsResult.getRating() != null)? detailsResult.getRating() : 0,
                             detailsResult.getWebsite()
                     );
                    mDetailRestaurantLiveData.setValue(restaurant);

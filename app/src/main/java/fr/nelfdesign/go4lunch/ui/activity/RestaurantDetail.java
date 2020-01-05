@@ -5,9 +5,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,6 +23,7 @@ import fr.nelfdesign.go4lunch.viewModels.MapViewModel;
 
 public class RestaurantDetail extends AppCompatActivity {
 
+    @BindView(R.id.toolbarDetails) Toolbar mToolbar;
     @BindView(R.id.imageRestaurant) ImageView mImageView;
     @BindView(R.id.restaurant_text_name) TextView mRestaurantTextname;
     @BindView(R.id.restaurant_text_adress) TextView mRestaurantTextadress;
@@ -32,6 +37,16 @@ public class RestaurantDetail extends AppCompatActivity {
         setContentView(R.layout.activity_restaurant_detail);
 
         ButterKnife.bind(this);
+
+        //Add toolbar and return arrow
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+        if (mToolbar != null){
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        //get placeid and location
         String placeId = getIntent().getStringExtra("placeId");
 
         MapViewModel mapViewModel = ViewModelProviders.of(this).get(MapViewModel.class);
@@ -40,15 +55,28 @@ public class RestaurantDetail extends AppCompatActivity {
     }
 
     private void updateUi(DetailRestaurant detailRestaurant) {
-        String path = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
-                + detailRestaurant.getPhotoReference() +
-                "&key=" + BuildConfig.google_maps_key;
+        String path;
+        if (detailRestaurant.getPhotoReference() == null){
+            path = "https://www.chilhoweerv.com/storage/app/public/blog/noimage930.png";
+        }else{
+            path = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
+                    + detailRestaurant.getPhotoReference() +
+                    "&key=" + BuildConfig.google_maps_key;
+        }
 
         Glide.with(this)
                 .load(path)
+                .apply(RequestOptions.centerCropTransform())
                 .into(mImageView);
 
-        mRestaurantTextname.setText(detailRestaurant.getName());
+
+        String name;
+        if (detailRestaurant.getName().length() > 23){
+            name = detailRestaurant.getName().substring(0, 23) + " ...";
+        }else {
+            name = detailRestaurant.getName();
+        }
+        mRestaurantTextname.setText(name);
         mRestaurantTextadress.setText(detailRestaurant.getFormatted_address());
 
         Utils.starsView(Utils.starsAccordingToRating(detailRestaurant.getRating()), mRestaurantStar1, mRestaurantStar2, mRestaurantStar3);
