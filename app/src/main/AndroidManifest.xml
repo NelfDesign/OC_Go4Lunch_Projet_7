@@ -9,6 +9,9 @@
     It's not necessary to ask for COARSE LOCATION because we have the FINE LOCATION PERMISSION -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <!-- permission call -->
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+
     <application
         android:name=".base.App"
         android:allowBackup="true"

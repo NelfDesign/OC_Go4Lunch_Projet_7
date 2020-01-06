@@ -15,9 +15,19 @@ import retrofit2.http.QueryMap;
 
 public interface RestaurantService {
 
+    /**
+     * GET call for retrofit
+     * @param parameters map of parameters
+     * @return Observable Restaurant result
+     */
     @GET("nearbysearch/json?radius=1000&type=restaurant")
     Observable<RestaurantsResult> getNearByRestaurant(@QueryMap Map<String, String> parameters);
 
+    /**
+     * GET call for retrofit
+     * @param parameters map of parameters
+     * @return Observable Detail result
+     */
     @GET("details/json?fields=name,rating,formatted_address,formatted_phone_number,photos,website")
     Observable<Detail> getDetailRestaurant(@QueryMap Map<String, String> parameters);
 }

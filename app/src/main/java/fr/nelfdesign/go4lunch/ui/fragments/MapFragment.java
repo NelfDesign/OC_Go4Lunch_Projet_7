@@ -21,6 +21,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.karumi.dexter.Dexter;
@@ -85,6 +86,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mGoogleMap = googleMap;
+        mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this.getContext(), R.raw.maps_style));
         Timber.i("Map ready");
 
         Dexter.withActivity(getActivity())
@@ -189,7 +191,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         createUserMarker(mMapViewModel.generateUserPoi(latLng.latitude, latLng.longitude),
                 mGoogleMap);
         //move camera to user position
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14f));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
         //set my position and enable position button
         mGoogleMap.setMyLocationEnabled(true);
         //observe ViewModel restaurants data

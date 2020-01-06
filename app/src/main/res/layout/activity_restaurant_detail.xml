@@ -146,13 +146,15 @@
                     android:id="@+id/call_image"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:srcCompat="@drawable/ic_call" />
 
                 <TextView
                     android:id="@+id/text_call"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="CALL"
+                    android:text="@string/call"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -171,14 +173,17 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
+                    android:id="@+id/like"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:srcCompat="@drawable/ic_star_detail" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="LIKE"
+                    android:text="@string/like"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -197,14 +202,17 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
+                    android:id="@+id/website"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    app:srcCompat="@drawable/ic_earth" />
+                    app:srcCompat="@drawable/ic_earth"
+                    android:clickable="true"
+                    android:focusable="true"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="WEB SITE"
+                    android:text="@string/web_site"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />

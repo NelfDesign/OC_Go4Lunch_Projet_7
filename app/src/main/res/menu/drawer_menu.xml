@@ -6,7 +6,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_lunch"
-            android:icon="@drawable/ic_restaurant_menu_white_24dp"
+            android:icon="@drawable/pic_logo_restaurant_400x400"
             android:title="Your Lunch"/>
 
         <item
