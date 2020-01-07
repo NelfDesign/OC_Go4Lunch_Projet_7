@@ -1,6 +1,5 @@
 package fr.nelfdesign.go4lunch.ui.adapter;
 
-import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +38,7 @@ public class WorkersListAdapter extends FirestoreRecyclerAdapter<Workers, Worker
 
         workerClickListener mWorkerClickListener;
 
-        public WorkersItemViewholder(@NonNull View itemView, workerClickListener listener) {
+        WorkersItemViewholder(@NonNull View itemView, workerClickListener listener) {
             super(itemView);
             this.mWorkerClickListener = listener;
             ButterKnife.bind(this, itemView);

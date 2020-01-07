@@ -5,47 +5,57 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
+import android.text.method.KeyListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.snackbar.Snackbar;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.sql.Array;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fr.nelfdesign.go4lunch.BuildConfig;
 import fr.nelfdesign.go4lunch.R;
+import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
+import fr.nelfdesign.go4lunch.base.BaseActivity;
 import fr.nelfdesign.go4lunch.models.DetailRestaurant;
+import fr.nelfdesign.go4lunch.models.Restaurant;
+import fr.nelfdesign.go4lunch.models.Workers;
+import fr.nelfdesign.go4lunch.ui.adapter.DetailWorkerAdapter;
+import fr.nelfdesign.go4lunch.ui.adapter.RestaurantListAdapter;
+import fr.nelfdesign.go4lunch.ui.adapter.WorkersListAdapter;
 import fr.nelfdesign.go4lunch.utils.Utils;
-import fr.nelfdesign.go4lunch.viewModels.MapViewModel;
+import fr.nelfdesign.go4lunch.ui.viewModels.MapViewModel;
+import timber.log.Timber;
 
-public class RestaurantDetail extends AppCompatActivity {
+public class RestaurantDetail extends BaseActivity {
 
     private static final int PERMISSION_CALL = 100;
     private String phonenumber;
     private String websiteUrl;
+    private DetailWorkerAdapter adapter;
+    private List<Workers> mWorkers;
+    String nameResto;
+    String placeId;
 
     @BindView(R.id.toolbarDetails) Toolbar mToolbar;
     @BindView(R.id.imageRestaurant) ImageView mImageView;
@@ -56,28 +66,42 @@ public class RestaurantDetail extends AppCompatActivity {
     @BindView(R.id.restaurant_detail_star3) ImageView mRestaurantStar3;
     @BindView(R.id.call_image) ImageView callPhone;
     @BindView(R.id.website) ImageView websiteButton;
+    @BindView(R.id.recyclerView_workers_restaurant_detail) RecyclerView mRecyclerView;
+
+    @Override
+    public int getActivityLayout() {
+        return R.layout.activity_restaurant_detail;
+    }
+
+    @Nullable
+    @Override
+    protected Toolbar getToolbar() {
+        return mToolbar;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurant_detail);
-
-        ButterKnife.bind(this);
 
         //Add toolbar and return arrow
-        mToolbar.setTitle("");
-        setSupportActionBar(mToolbar);
+        this.configureToolBar("");
+
         if (mToolbar != null) {
             Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        //get placeid extra intent
-        String placeId = getIntent().getStringExtra("placeId");
+        //get placeid and name extra intent
+        placeId = getIntent().getStringExtra("placeId");
+        nameResto = getIntent().getStringExtra("restaurantName");
+
+        //received workers list
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+        initListAdapter();
 
         MapViewModel mapViewModel = ViewModelProviders.of(this).get(MapViewModel.class);
         mapViewModel.getDetailRestaurant(placeId).observe(this, this::updateUi);
-
 
     }
 
@@ -105,7 +129,6 @@ public class RestaurantDetail extends AppCompatActivity {
                 .load(path)
                 .apply(RequestOptions.centerCropTransform())
                 .into(mImageView);
-
 
         String name;
         if (detailRestaurant.getName().length() > 23) {
@@ -147,6 +170,9 @@ public class RestaurantDetail extends AppCompatActivity {
         });
 
         //configure click on like image
+
+        //configure adapter
+        this.adapter.notifyDataSetChanged();
     }
 
     private void callWebsiteUrl() {
@@ -158,6 +184,36 @@ public class RestaurantDetail extends AppCompatActivity {
     private void callPhone() {
         Intent intentCall = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phonenumber));
         startActivity(intentCall);
+    }
+
+    private void initListAdapter() {
+        mWorkers = new ArrayList<>();
+        Query query = WorkersHelper.getAllWorkers().orderBy("name");
+        query.get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            String name = document.getString("name");
+                            String url = document.getString("avatarUrl");
+                            String resto = document.getString("restaurantName");
+                            String placeId = document.getString("placeId");
+                            Workers w = new Workers(name, url, resto, placeId);
+
+                            if (Objects.equals(w.getPlaceId(), this.placeId)){
+                                mWorkers.add(w);
+                                Timber.i("Workers list : %s", mWorkers.size());
+                            }
+
+                            Timber.d(document.getId() + " => " + document.getData());
+
+                        }
+                    } else {
+                        Timber.w("Error getting documents : %s", task.getException());
+                    }
+                });
+
+        adapter = new DetailWorkerAdapter(mWorkers);
+        mRecyclerView.setAdapter(adapter);
     }
 
 }

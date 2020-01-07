@@ -35,9 +35,9 @@ public class RestaurantItemViewHolder extends RecyclerView.ViewHolder implements
     @BindView(R.id.star_3) ImageView mStars3;
     @BindView(R.id.workers_number) TextView mWorkersNumbers;
 
-    private RestaurantListAdapter.onClickRestaurantitemListener mListener;
+    private RestaurantListAdapter.onClickRestaurantItemListener mListener;
 
-    RestaurantItemViewHolder(@NonNull View itemView, RestaurantListAdapter.onClickRestaurantitemListener listener) {
+    RestaurantItemViewHolder(@NonNull View itemView, RestaurantListAdapter.onClickRestaurantItemListener listener) {
         super(itemView);
         this.mListener = listener;
         ButterKnife.bind(this,itemView);

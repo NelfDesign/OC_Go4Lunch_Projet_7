@@ -19,6 +19,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
@@ -41,12 +42,11 @@ public class WorkersFragment extends Fragment implements WorkersListAdapter.work
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+       /* FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setTimestampsInSnapshotsEnabled(true)
                 .build();
-        firestore.setFirestoreSettings(settings);
-        getAllWorkersFromDatabase();
+        firestore.setFirestoreSettings(settings);*/
     }
 
     @Override
@@ -64,17 +64,29 @@ public class WorkersFragment extends Fragment implements WorkersListAdapter.work
 
     private void initListAdapter() {
         Query query = WorkersHelper.getWorkersCollection().orderBy("name");
+        query.get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            String name = document.getString("name");
+                            String url = document.getString("avatarUrl");
+                            String resto = document.getString("restaurantName");
+                            String placeId = document.getString("placeId");
+                            Workers w = new Workers(name,url,resto, placeId);
+                            mWorkers.add(w);
+                            Timber.d(document.getId() + " => " + document.getData());
+                        }
+                    } else {
+                        Timber.w("Error getting documents."+ task.getException());
+                    }
+                });
         FirestoreRecyclerOptions<Workers> options = new FirestoreRecyclerOptions.Builder<Workers>()
                 .setQuery(query, Workers.class)
                 .build();
 
         adapter = new WorkersListAdapter(options, this);
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(adapter);
     }
-
-
 
     @Override
     public void onStart() {
@@ -88,28 +100,11 @@ public class WorkersFragment extends Fragment implements WorkersListAdapter.work
         adapter.stopListening();
     }
 
-    private void getAllWorkersFromDatabase(){
-        Query query = WorkersHelper.getAllWorkers();
-        query.get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            String name = document.getString("name");
-                            String url = document.getString("avatarUrl");
-                            Workers w = new Workers(name,url);
-                            mWorkers.add(w);
-                            Timber.d(document.getId() + " => " + document.getData());
-
-                        }
-                    } else {
-                        Timber.w("Error getting documents."+ task.getException());
-                    }
-                });
-    }
-
     @Override
     public void onClickItemWorker(int position) {
         Intent intent = new Intent(this.getContext(), RestaurantDetail.class);
+        intent.putExtra("placeId", mWorkers.get(position).getPlaceId());
+        intent.putExtra("restaurantName", mWorkers.get(position).getRestaurantName());
         startActivity(intent);
     }
 }

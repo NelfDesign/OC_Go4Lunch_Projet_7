@@ -20,17 +20,17 @@ import fr.nelfdesign.go4lunch.models.Restaurant;
  */
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantItemViewHolder> {
 
-    public interface onClickRestaurantitemListener{
+    public interface onClickRestaurantItemListener{
         void onClickRestaurantItem(int position);
     }
 
     private ArrayList<Restaurant> mRestaurantList;
     private RequestManager glide;
-    private onClickRestaurantitemListener mOnClickRestaurantitemListener;
+    private onClickRestaurantItemListener mOnClickRestaurantitemListener;
 
     public RestaurantListAdapter(ArrayList<Restaurant> restaurantList,
                                  RequestManager glide,
-                                 onClickRestaurantitemListener onClickRestaurantitemListener) {
+                                 onClickRestaurantItemListener onClickRestaurantitemListener) {
 
         mRestaurantList = restaurantList;
         this.glide = glide;

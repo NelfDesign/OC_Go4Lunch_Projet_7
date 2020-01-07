@@ -1,4 +1,4 @@
-package fr.nelfdesign.go4lunch.viewModels;
+package fr.nelfdesign.go4lunch.ui.viewModels;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -14,7 +14,7 @@ import fr.nelfdesign.go4lunch.models.Restaurant;
 
 /**
  * Created by Nelfdesign at 16/12/2019
- * fr.nelfdesign.go4lunch.viewModels
+ * fr.nelfdesign.go4lunch.ui.viewModels
  */
 public class MapViewModel extends ViewModel {
 

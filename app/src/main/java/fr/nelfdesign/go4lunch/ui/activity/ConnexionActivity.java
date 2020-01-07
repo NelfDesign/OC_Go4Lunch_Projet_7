@@ -18,6 +18,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.OnClick;
 import fr.nelfdesign.go4lunch.R;
+import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
 import fr.nelfdesign.go4lunch.utils.Utils;
 import timber.log.Timber;
@@ -28,6 +29,8 @@ public class ConnexionActivity extends BaseActivity {
 
     //FOR DATA
     private static final int RC_SIGN_IN = 123;
+    // Creating identifier to identify REST REQUEST (Update username)
+    private static final int UPDATE_USERNAME = 30;
 
     // base activity method
     @Override
@@ -140,6 +143,7 @@ public class ConnexionActivity extends BaseActivity {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) { // SUCCESS
                 Utils.showSnackBar(this.mConstraintLayout, getString(R.string.connection_succeed));
+                this.createUserInFirestore();
                 this.startMainActivity();
             } else { // ERRORS
                 if (response == null) {
@@ -152,5 +156,18 @@ public class ConnexionActivity extends BaseActivity {
             }
         }
     }
+
+    // Http request that create user in firestore
+    private void createUserInFirestore(){
+
+        if (this.getCurrentUser() != null){
+
+            String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
+            String username = this.getCurrentUser().getDisplayName();
+
+            WorkersHelper.createWorker(username, urlPicture, null, null).addOnFailureListener(this.onFailureListener());
+        }
+    }
+
 
 }

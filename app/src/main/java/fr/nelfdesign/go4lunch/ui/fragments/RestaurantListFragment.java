@@ -27,13 +27,13 @@ import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.models.Restaurant;
 import fr.nelfdesign.go4lunch.ui.activity.RestaurantDetail;
 import fr.nelfdesign.go4lunch.ui.adapter.RestaurantListAdapter;
-import fr.nelfdesign.go4lunch.viewModels.MapViewModel;
+import fr.nelfdesign.go4lunch.ui.viewModels.MapViewModel;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RestaurantListFragment extends Fragment implements RestaurantListAdapter.onClickRestaurantitemListener{
+public class RestaurantListFragment extends Fragment implements RestaurantListAdapter.onClickRestaurantItemListener{
 
     //FIELD
     private ArrayList<Restaurant> mRestaurants;
@@ -89,15 +89,14 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
     private void initListAdapter(ArrayList<Restaurant> restaurants) {
         mRestaurants = restaurants;
         RestaurantListAdapter adapter = new RestaurantListAdapter(mRestaurants, Glide.with(this), this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onClickRestaurantItem(int position) {
-        String placeId = mRestaurants.get(position).getPlaceId();
         Intent intent = new Intent(this.getContext(), RestaurantDetail.class);
-        intent.putExtra("placeId", placeId);
+        intent.putExtra("placeId", mRestaurants.get(position).getPlaceId());
+        intent.putExtra("restaurantName", mRestaurants.get(position).getName());
         startActivity(intent);
     }
 }

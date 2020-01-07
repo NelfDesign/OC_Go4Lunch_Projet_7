@@ -5,6 +5,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import fr.nelfdesign.go4lunch.models.Workers;
 
@@ -24,15 +25,15 @@ public class WorkersHelper {
 
     // --- CREATE ---
 
-    public static Task<Void> createWorker(String name, String avatar) {
-        Workers workerToCreate = new Workers(name, avatar);
+    public static Task<Void> createWorker(String name, String avatar, String resto, String placeId) {
+        Workers workerToCreate = new Workers(name, avatar, resto, placeId);
         return WorkersHelper.getWorkersCollection().document().set(workerToCreate);
     }
 
     // --- GET ---
 
-    public static Task<DocumentSnapshot> getWorker(String uid){
-        return WorkersHelper.getWorkersCollection().document(uid).get();
+    public static Task<QuerySnapshot> getWorker(String restaurant){
+        return WorkersHelper.getWorkersCollection().document().collection(restaurant).get();
     }
 
     // -- GET ALL Workers --
@@ -42,8 +43,8 @@ public class WorkersHelper {
 
     // --- UPDATE ---
 
-    public static Task<Void> updateRestaurantChoice(String uid, Boolean isChosen) {
-        return WorkersHelper.getWorkersCollection().document(uid).update("restaurantChoice", isChosen);
+    public static Task<Void> updateRestaurantChoice(String uid, String restoName) {
+        return WorkersHelper.getWorkersCollection().document(uid).update("restaurantName", restoName);
     }
 
     // --- DELETE ---

@@ -39,7 +39,7 @@ import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.models.Poi;
 import fr.nelfdesign.go4lunch.models.Restaurant;
 import fr.nelfdesign.go4lunch.ui.activity.RestaurantDetail;
-import fr.nelfdesign.go4lunch.viewModels.MapViewModel;
+import fr.nelfdesign.go4lunch.ui.viewModels.MapViewModel;
 import timber.log.Timber;
 
 /**

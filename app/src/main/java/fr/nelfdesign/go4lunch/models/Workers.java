@@ -1,7 +1,5 @@
 package fr.nelfdesign.go4lunch.models;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Created by Nelfdesign at 30/11/2019
  * fr.nelfdesign.go4lunch.models
@@ -21,9 +19,11 @@ public class Workers {
 
     public Workers(){}
 
-    public Workers (String name, String avatarUrl) {
+    public Workers (String name, String avatarUrl, String resto, String placeId) {
         this.name = name;
         this.avatarUrl = avatarUrl;
+        this.restaurantName = resto;
+        this.placeId = placeId;
         restaurantChoice = false;
     }
 
