@@ -164,8 +164,9 @@ public class ConnexionActivity extends BaseActivity {
 
             String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
             String username = this.getCurrentUser().getDisplayName();
+            String uid = this.getCurrentUser().getUid();
 
-            WorkersHelper.createWorker(username, urlPicture, null, null).addOnFailureListener(this.onFailureListener());
+            WorkersHelper.createWorker(uid, username, urlPicture, null, null).addOnFailureListener(this.onFailureListener());
         }
     }
 

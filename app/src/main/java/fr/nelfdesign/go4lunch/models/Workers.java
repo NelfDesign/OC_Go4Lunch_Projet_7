@@ -6,6 +6,7 @@ package fr.nelfdesign.go4lunch.models;
  */
 public class Workers {
 
+    private String uid;
     // Fullname
     private String name;
     // Avatar
@@ -19,12 +20,21 @@ public class Workers {
 
     public Workers(){}
 
-    public Workers (String name, String avatarUrl, String resto, String placeId) {
+    public Workers (String uid,String name, String avatarUrl, String resto, String placeId) {
+        this.uid = uid;
         this.name = name;
         this.avatarUrl = avatarUrl;
         this.restaurantName = resto;
         this.placeId = placeId;
         restaurantChoice = false;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getPlaceId() {

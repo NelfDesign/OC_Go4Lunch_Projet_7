@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.RestaurantDetail">
+    tools:context=".ui.activity.RestaurantDetail"
+    android:id="@+id/coordinator_detail">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -142,12 +144,13 @@
                 app:layout_constraintRight_toLeftOf="@+id/linearLayout2"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/call_image"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:clickable="true"
                     android:focusable="true"
+                    android:background="@color/fui_transparent"
                     app:srcCompat="@drawable/ic_call" />
 
                 <TextView
@@ -172,19 +175,41 @@
                 app:layout_constraintRight_toLeftOf="@+id/linearLayout4"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/like"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:clickable="true"
                     android:focusable="true"
-                    app:srcCompat="@drawable/ic_star_detail" />
+                    android:background="@color/fui_transparent"
+                    app:srcCompat="@drawable/ic_star_detail"/>
 
                 <TextView
+                    android:id="@+id/text_Like"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/like"
                     android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/favorite_restaurant"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="gone"
+                    android:background="@color/fui_transparent"
+                    app:srcCompat="@drawable/ic_list_color"/>
+
+                <TextView
+                    android:id="@+id/text_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/your_favorite"
+                    android:textColor="@color/colorPrimary"
+                    android:visibility="gone"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -201,13 +226,14 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/website"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    app:srcCompat="@drawable/ic_earth"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:clickable="true"
-                    android:focusable="true"/>
+                    android:focusable="true"
+                    android:background="@color/fui_transparent"
+                    app:srcCompat="@drawable/ic_earth"/>
 
                 <TextView
                     android:layout_width="wrap_content"

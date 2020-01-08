@@ -33,4 +33,6 @@
     <string name="call">CALL</string>
     <string name="like">LIKE</string>
     <string name="web_site">WEB SITE</string>
+    <string name="favorite_restaurant_message">Restaurant added to your favorite list</string>
+    <string name="your_favorite">Your Favorite</string>
 </resources>

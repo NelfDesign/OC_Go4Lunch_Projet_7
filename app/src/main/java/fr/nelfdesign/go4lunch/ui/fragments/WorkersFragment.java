@@ -42,11 +42,10 @@ public class WorkersFragment extends Fragment implements WorkersListAdapter.work
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       /* FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setTimestampsInSnapshotsEnabled(true)
                 .build();
-        firestore.setFirestoreSettings(settings);*/
+        firestore.setFirestoreSettings(settings);
     }
 
     @Override
@@ -68,11 +67,12 @@ public class WorkersFragment extends Fragment implements WorkersListAdapter.work
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            String uid = document.getId();
                             String name = document.getString("name");
                             String url = document.getString("avatarUrl");
                             String resto = document.getString("restaurantName");
                             String placeId = document.getString("placeId");
-                            Workers w = new Workers(name,url,resto, placeId);
+                            Workers w = new Workers(uid, name,url,resto, placeId);
                             mWorkers.add(w);
                             Timber.d(document.getId() + " => " + document.getData());
                         }
