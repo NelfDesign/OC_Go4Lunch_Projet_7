@@ -40,8 +40,6 @@ public class MainActivity extends BaseActivity {
 
     //FIELDS
     private Fragment mFragment;
-    final MapFragment mapFragment = new MapFragment();
-    final RestaurantListFragment listFragment = new RestaurantListFragment();
     private ImageView mImageViewNav;
     private TextView mTextViewNavName;
     private TextView mTextViewNavMail;
@@ -70,7 +68,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         if (mFragment == null){
-            mFragment = mapFragment;
+            mFragment = new MapFragment();
         }
 
         user = this.getCurrentUser();
@@ -124,12 +122,12 @@ public class MainActivity extends BaseActivity {
     private Boolean updateMainFragment(MenuItem menuItem){
         switch (menuItem.getItemId()) {
             case R.id.navigation_map:
-                this.mFragment = mapFragment;
+                this.mFragment = new MapFragment();
                 configureFragment(mFragment);
                 mToolbar.setTitle("I'm hungry");
                 break;
             case R.id.navigation_list:
-                this.mFragment = listFragment;
+                this.mFragment = new RestaurantListFragment();
                 configureFragment(mFragment);
                 mToolbar.setTitle("I'm hungry");
                 break;

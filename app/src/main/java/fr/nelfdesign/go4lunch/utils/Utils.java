@@ -6,8 +6,10 @@ import android.widget.ImageView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fr.nelfdesign.go4lunch.models.Restaurant;
+import fr.nelfdesign.go4lunch.models.Workers;
 import fr.nelfdesign.go4lunch.pojos.RestaurantsResult;
 import fr.nelfdesign.go4lunch.pojos.Result;
 
@@ -98,5 +100,21 @@ public abstract class Utils {
                 s3.setVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+    public static List<Restaurant> getChoicedRestaurants(List<Restaurant> resto, List<Workers> workers){
+        List<Restaurant> restaurants = new ArrayList<>();
+        int worker = 0;
+        for (Restaurant r : resto){
+            for (Workers w : workers){
+                if (r.getPlaceId().equalsIgnoreCase(w.getPlaceId())){
+                    worker++;
+                    r.setChoice(true);
+                    r.setWorkers(worker);
+                }
+                restaurants.add(r);
+            }
+        }
+        return restaurants;
     }
 }

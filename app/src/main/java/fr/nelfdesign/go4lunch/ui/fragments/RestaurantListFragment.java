@@ -36,7 +36,7 @@ import fr.nelfdesign.go4lunch.ui.viewModels.MapViewModel;
 public class RestaurantListFragment extends Fragment implements RestaurantListAdapter.onClickRestaurantItemListener{
 
     //FIELD
-    private ArrayList<Restaurant> mRestaurants;
+    private ArrayList<Restaurant> mRestaurants = new ArrayList<>();
     private MapViewModel mMapViewModel;
     private LatLng currentPosition;
     private FusedLocationProviderClient mFusedLocationClient;
@@ -94,7 +94,7 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
 
     @Override
     public void onClickRestaurantItem(int position) {
-        Intent intent = new Intent(this.getContext(), RestaurantDetail.class);
+        Intent intent = new Intent(getContext(), RestaurantDetail.class);
         intent.putExtra("placeId", mRestaurants.get(position).getPlaceId());
         intent.putExtra("restaurantName", mRestaurants.get(position).getName());
         startActivity(intent);

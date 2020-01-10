@@ -20,8 +20,7 @@ public class Workers {
 
     public Workers(){}
 
-    public Workers (String uid,String name, String avatarUrl, String resto, String placeId) {
-        this.uid = uid;
+    public Workers (String name, String avatarUrl, String resto, String placeId) {
         this.name = name;
         this.avatarUrl = avatarUrl;
         this.restaurantName = resto;

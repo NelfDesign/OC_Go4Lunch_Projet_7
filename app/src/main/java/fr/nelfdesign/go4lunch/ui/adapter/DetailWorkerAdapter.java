@@ -64,6 +64,6 @@ public class DetailWorkerAdapter extends RecyclerView.Adapter<DetailWorkerAdapte
 
     @Override
     public int getItemCount() {
-        return mWorkers.size();
+        return (mWorkers != null) ? mWorkers.size() : 0;
     }
 }

@@ -2,10 +2,8 @@ package fr.nelfdesign.go4lunch.apiFirebase;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,16 +25,9 @@ public class WorkersHelper {
     }
 
     // --- CREATE ---
-
-    public static Task<Void> createWorker(String uid,String name, String avatar, String resto, String placeId) {
-        Workers workerToCreate = new Workers(uid, name, avatar, resto, placeId);
+    public static Task<Void> createWorker(String name, String avatar, String resto, String placeId) {
+        Workers workerToCreate = new Workers(name, avatar, resto, placeId);
         return WorkersHelper.getWorkersCollection().document().set(workerToCreate);
-    }
-
-    // --- GET ---
-
-    public static Task<QuerySnapshot> getWorker(String restaurant){
-        return WorkersHelper.getWorkersCollection().document().collection(restaurant).get();
     }
 
     // -- GET ALL Workers --
@@ -45,14 +36,15 @@ public class WorkersHelper {
     }
 
     // --- UPDATE ---
-
     public static Task<Void> updateRestaurantChoice(String uid, String restoName, String placeId) {
-        return WorkersHelper.getWorkersCollection().document(uid).update("restaurantName", restoName,
-                                                                "placeId", placeId);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("restaurantName", restoName);
+        data.put("placeId", placeId);
+        return WorkersHelper.getWorkersCollection().document(uid).update(data);
     }
 
-    // --- DELETE ---
-
+    //DELETE
     public static Task<Void> deleteWorker(String uid) {
         return WorkersHelper.getWorkersCollection().document(uid).delete();
     }

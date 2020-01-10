@@ -119,6 +119,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     if (location != null) {
                         // get the location phone
                         lastPosition = new LatLng(location.getLatitude(), location.getLongitude());
+                        Timber.i("LastLocation : %s", lastPosition.latitude);
                         //Update UI with information
                         updateUiMap(lastPosition);
                     }

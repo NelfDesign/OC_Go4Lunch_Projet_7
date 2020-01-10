@@ -166,7 +166,7 @@ public class ConnexionActivity extends BaseActivity {
             String username = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
 
-            WorkersHelper.createWorker(uid, username, urlPicture, null, null).addOnFailureListener(this.onFailureListener());
+            WorkersHelper.createWorker(username, urlPicture, null, null).addOnFailureListener(this.onFailureListener());
         }
     }
 

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.method.KeyListener;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,33 +24,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import fr.nelfdesign.go4lunch.BuildConfig;
 import fr.nelfdesign.go4lunch.R;
+import fr.nelfdesign.go4lunch.apiFirebase.RepositoryFirebase;
 import fr.nelfdesign.go4lunch.apiFirebase.RestaurantsFavorisHelper;
 import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
 import fr.nelfdesign.go4lunch.models.DetailRestaurant;
-import fr.nelfdesign.go4lunch.models.Restaurant;
 import fr.nelfdesign.go4lunch.models.RestaurantFavoris;
 import fr.nelfdesign.go4lunch.models.Workers;
 import fr.nelfdesign.go4lunch.ui.adapter.DetailWorkerAdapter;
-import fr.nelfdesign.go4lunch.ui.adapter.RestaurantListAdapter;
-import fr.nelfdesign.go4lunch.ui.adapter.WorkersListAdapter;
-import fr.nelfdesign.go4lunch.utils.Utils;
 import fr.nelfdesign.go4lunch.ui.viewModels.MapViewModel;
+import fr.nelfdesign.go4lunch.utils.Utils;
 import timber.log.Timber;
 
 public class RestaurantDetail extends BaseActivity {
@@ -60,8 +52,8 @@ public class RestaurantDetail extends BaseActivity {
     private String phonenumber;
     private String websiteUrl;
     private DetailWorkerAdapter adapter;
-    private List<Workers> mWorkers;
-    private List<RestaurantFavoris> mRestaurantFavorises;
+    private ArrayList<Workers> mWorkers;
+    private ArrayList<RestaurantFavoris> mRestaurantFavorises = new ArrayList<>();
     String nameResto;
     String placeId;
 
@@ -109,15 +101,25 @@ public class RestaurantDetail extends BaseActivity {
         placeId = getIntent().getStringExtra("placeId");
         nameResto = getIntent().getStringExtra("restaurantName");
 
-        //received workers list
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+
 
         MapViewModel mapViewModel = ViewModelProviders.of(this).get(MapViewModel.class);
         mapViewModel.getDetailRestaurant(placeId).observe(this, this::updateUi);
 
-        initListAdapter();
-        initFavoriteListRestaurant();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //received workers list
+        mWorkers = initListWorkers();
+        Timber.i("List Workers : %s", mWorkers.size());
+        mRestaurantFavorises = initFavoriteListRestaurant();
+        Timber.i("List Favoris : %s", mRestaurantFavorises.size());
+        adapter = new DetailWorkerAdapter(mWorkers);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        mRecyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -192,7 +194,7 @@ public class RestaurantDetail extends BaseActivity {
 
         //configure click on star like
         for (RestaurantFavoris resto : mRestaurantFavorises){
-            if (r.getName().equals(resto.getName())){
+            if (r.getPlaceId().equals(resto.getPlaceId())){
                 favoriteButton.setVisibility(View.VISIBLE);
                 mTextFavorite.setVisibility(View.VISIBLE);
                 likeButton.setVisibility(View.GONE);
@@ -204,14 +206,25 @@ public class RestaurantDetail extends BaseActivity {
             }
         }
 
-        //configure adapter
-        this.adapter.notifyDataSetChanged();
         //configure click on FAB Button
         mFloatingActionButton.setOnClickListener(v ->{
-
-            WorkersHelper.updateRestaurantChoice(this.getCurrentUser().getUid(), detailRestaurant.getName(),detailRestaurant.getPlace_id());
-
+            Query query = WorkersHelper.getAllWorkers().whereEqualTo("name",
+                    Objects.requireNonNull(getCurrentUser()).getDisplayName());
+            query.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        String id = document.getId();
+                        WorkersHelper.updateRestaurantChoice(id,
+                                detailRestaurant.getName(),
+                                placeId);
+                    }
+                    Utils.showSnackBar(this.mCoordinatorLayout, getString(R.string.choosen_restaurant));
+                    mFloatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_checked));
+                    adapter.notifyDataSetChanged();
+                }
+            });
         });
+
     }
 
     private void saveRestaurantToFavorite(RestaurantFavoris r) {
@@ -239,38 +252,12 @@ public class RestaurantDetail extends BaseActivity {
         startActivity(intentCall);
     }
 
-    private void initListAdapter() {
-        mWorkers = new ArrayList<>();
-        Query query = WorkersHelper.getAllWorkers().orderBy("name");
-        query.get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                            String uid = this.getCurrentUser().getUid();
-                            String name = document.getString("name");
-                            String url = document.getString("avatarUrl");
-                            String resto = document.getString("restaurantName");
-                            String placeId = document.getString("placeId");
-                            Workers w = new Workers(uid, name, url, resto, placeId);
-
-                            if (Objects.equals(w.getPlaceId(), this.placeId)){
-                                mWorkers.add(w);
-                                Timber.i("Workers list : %s", mWorkers.size());
-                            }
-
-                            Timber.d(document.getId() + " => " + document.getData());
-
-                        }
-                    } else {
-                        Timber.w("Error getting documents : %s", task.getException());
-                    }
-                });
-
-        adapter = new DetailWorkerAdapter(mWorkers);
-        mRecyclerView.setAdapter(adapter);
+    private ArrayList<Workers> initListWorkers() {
+        ArrayList<Workers> workers = RepositoryFirebase.getQueryWorkersWithChoiceRestaurant(placeId);
+        return workers;
     }
 
-    private void initFavoriteListRestaurant() {
+    private ArrayList<RestaurantFavoris> initFavoriteListRestaurant() {
         mRestaurantFavorises = new ArrayList<>();
         Query query = RestaurantsFavorisHelper.getAllRestaurants();
         query.get()
@@ -290,6 +277,6 @@ public class RestaurantDetail extends BaseActivity {
                         Timber.w("Error getting documents : %s", task.getException());
                     }
                 });
-
+        return mRestaurantFavorises;
     }
 }

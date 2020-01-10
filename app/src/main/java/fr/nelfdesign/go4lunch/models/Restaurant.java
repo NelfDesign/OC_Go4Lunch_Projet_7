@@ -17,6 +17,7 @@ public class Restaurant {
     private String distance;
     private int workers;
     private double rating;
+    private boolean choice;
 
     public Restaurant(Location location, String name, String address, String placeId, boolean hour, String urlImage,
                       String distance, int workers, double rating) {
@@ -29,6 +30,15 @@ public class Restaurant {
         this.distance = distance;
         this.workers = workers;
         this.rating = rating;
+        this.choice = false;
+    }
+
+    public boolean isChoice() {
+        return choice;
+    }
+
+    public void setChoice(boolean choice) {
+        this.choice = choice;
     }
 
     public Location getLocation() {
