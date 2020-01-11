@@ -22,7 +22,6 @@ import timber.log.Timber;
  */
 public abstract class RepositoryFirebase {
 
-    static MutableLiveData<ArrayList<Workers>> finalMWorkers;
 
     public static Query getQueryWorkers(List<Workers> mWorkers){
         Query query = WorkersHelper.getWorkersCollection().orderBy("name");

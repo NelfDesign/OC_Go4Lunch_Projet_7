@@ -26,13 +26,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -40,10 +36,8 @@ import java.util.Objects;
 import butterknife.BindView;
 import fr.nelfdesign.go4lunch.BuildConfig;
 import fr.nelfdesign.go4lunch.R;
-import fr.nelfdesign.go4lunch.apiFirebase.RepositoryFirebase;
 import fr.nelfdesign.go4lunch.apiFirebase.RestaurantsFavorisHelper;
 import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
-import fr.nelfdesign.go4lunch.apiGoogleMap.RestaurantService;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
 import fr.nelfdesign.go4lunch.models.DetailRestaurant;
 import fr.nelfdesign.go4lunch.models.RestaurantFavoris;
@@ -51,7 +45,6 @@ import fr.nelfdesign.go4lunch.models.Workers;
 import fr.nelfdesign.go4lunch.ui.adapter.DetailWorkerAdapter;
 import fr.nelfdesign.go4lunch.ui.viewModels.MapViewModel;
 import fr.nelfdesign.go4lunch.utils.Utils;
-import io.reactivex.Observable;
 import timber.log.Timber;
 
 public class RestaurantDetail extends BaseActivity {
@@ -122,6 +115,12 @@ public class RestaurantDetail extends BaseActivity {
                     callPhone();
                 }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 
     private void updateUi(DetailRestaurant detailRestaurant) {
@@ -203,34 +202,67 @@ public class RestaurantDetail extends BaseActivity {
             mRestaurantFavorises = new ArrayList<>();
 
             for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
-                RestaurantFavoris resto = new RestaurantFavoris(data.get("name").toString(),
-                        data.get("placeId").toString(),
-                        data.get("address").toString(),
-                        data.get("photoReference").toString(),
-                        data.getDouble("rating"));
+                Timber.d("data resto: %s", data);
+                if (data.get("placeId") == null){
+                    return;
+                }else {
+                    String placeId = Objects.requireNonNull(data.get("placeId")).toString();
+                }
 
+               RestaurantFavoris resto = new RestaurantFavoris(
+                       data.get("name").toString(),
+                       placeId,
+                       data.get("address").toString(),
+                       data.get("photoReference").toString(),
+                       data.getDouble("rating")
+               );
                 mRestaurantFavorises.add(resto);
 
-                for (RestaurantFavoris restoFav : mRestaurantFavorises){
-                    if (restoFav.getPlaceId().equals(resto.getPlaceId())){
-                        favoriteButton.setVisibility(View.VISIBLE);
-                        mTextFavorite.setVisibility(View.VISIBLE);
-                        likeButton.setVisibility(View.GONE);
-                        mTextLike.setVisibility(View.GONE);
-                    }else{
-                        likeButton.setOnClickListener(v -> {
-                            saveRestaurantToFavorite(resto);
-                        });
-                    }
+                Timber.d("restofav list : %s", mRestaurantFavorises.size());
+            }
+            for (RestaurantFavoris restoFav : mRestaurantFavorises ){
+                Timber.i("placeId : %s", restoFav.getName());
+                Timber.i("detailresto : %s", detailRestaurant.getName());
+                if (restoFav.getName().equals(detailRestaurant.getName())){
+                    favoriteButton.setVisibility(View.VISIBLE);
+                    mTextFavorite.setVisibility(View.VISIBLE);
+                    likeButton.setVisibility(View.GONE);
+                    mTextLike.setVisibility(View.GONE);
                 }
             }
-            Timber.d("restofav list : %s", mRestaurantFavorises.size());
+
+        });
+
+        likeButton.setOnClickListener(v -> {
+            RestaurantFavoris resto = new RestaurantFavoris(
+                    detailRestaurant.getName(),
+                    placeId,
+                    detailRestaurant.getFormatted_address(),
+                    detailRestaurant.getPhotoReference(),
+                    detailRestaurant.getRating()
+            );
+            saveRestaurantToFavorite(resto);
         });
 
         //configure click on FAB Button
+
+        Query query = WorkersHelper.getAllWorkers().whereEqualTo("name",
+                Objects.requireNonNull(getCurrentUser()).getDisplayName());
+
+        query.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        if (detailRestaurant.getName().equalsIgnoreCase(document.get("restaurantName").toString())){
+                            mFloatingActionButton.setClickable(false);
+                            mFloatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_checked));
+                        }else{
+                            mFloatingActionButton.setClickable(true);
+                        }
+                    }
+                }
+        });
+
         mFloatingActionButton.setOnClickListener(v ->{
-            Query query = WorkersHelper.getAllWorkers().whereEqualTo("name",
-                    Objects.requireNonNull(getCurrentUser()).getDisplayName());
             query.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
@@ -241,17 +273,19 @@ public class RestaurantDetail extends BaseActivity {
                     }
                     Utils.showSnackBar(this.mCoordinatorLayout, getString(R.string.choosen_restaurant));
                     mFloatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_checked));
+                    mFloatingActionButton.setClickable(false);
                 }
             });
         });
     }
 
-    private void saveRestaurantToFavorite(RestaurantFavoris r) {
-        RestaurantsFavorisHelper.createFavoriteRestaurant(r.getName(),
-                        r.getPlaceId(),
-                        r.getAddress(),
-                        r.getPhotoReference(),
-                        r.getRating()).addOnFailureListener(this.onFailureListener());
+
+    private void saveRestaurantToFavorite(RestaurantFavoris resto) {
+        RestaurantsFavorisHelper.createFavoriteRestaurant(resto.getName(),
+                        resto.getPlaceId(),
+                        resto.getAddress(),
+                        resto.getPhotoReference(),
+                        resto.getRating()).addOnFailureListener(this.onFailureListener());
 
         Utils.showSnackBar(this.mCoordinatorLayout, getString(R.string.favorite_restaurant_message));
         favoriteButton.setVisibility(View.VISIBLE);
@@ -275,11 +309,6 @@ public class RestaurantDetail extends BaseActivity {
         adapter = new DetailWorkerAdapter(workers);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         mRecyclerView.setAdapter(adapter);
-    }
-
-    private ArrayList<RestaurantFavoris> initFavoriteListRestaurant() {
-        mRestaurantFavorises = RepositoryFirebase.getFavoritesRestaurant();
-        return mRestaurantFavorises;
     }
 
 }

@@ -88,8 +88,6 @@ public class RepositoryRestaurantList implements NearbyPlaces {
                                 photo = detailsResult.getPhotos().get(0).getPhotoReference();
                             }
 
-                          ArrayList<Workers>  workers = RepositoryFirebase.getQueryWorkersWithChoiceRestaurant(placeId);
-
                             DetailRestaurant restaurant = new DetailRestaurant(
                                     detailsResult.getFormattedAddress(),
                                     detailsResult.getFormattedPhoneNumber(),
@@ -97,8 +95,7 @@ public class RepositoryRestaurantList implements NearbyPlaces {
                                     detailsResult.getPlaceId(),
                                     photo,
                                     (detailsResult.getRating() != null)? detailsResult.getRating() : 0,
-                                    detailsResult.getWebsite(),
-                                    workers
+                                    detailsResult.getWebsite()
                             );
                             mDetailRestaurantLiveData.setValue(restaurant);
                         }

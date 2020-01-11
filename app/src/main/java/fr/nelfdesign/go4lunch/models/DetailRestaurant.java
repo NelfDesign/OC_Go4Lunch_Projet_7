@@ -15,10 +15,10 @@ public class DetailRestaurant {
     private String photo;
     private double rating;
     private String website;
-    private ArrayList<Workers> mWorkersArrayList;
+    //private ArrayList<Workers> mWorkersArrayList;
 
     public DetailRestaurant(String formatted_address, String formatted_phone_number, String name, String place_id,
-                            String photoReference, double rating, String website, ArrayList<Workers> workers) {
+                            String photoReference, double rating, String website) {
         this.formatted_address = formatted_address;
         this.formatted_phone_number = formatted_phone_number;
         this.name = name;
@@ -26,11 +26,7 @@ public class DetailRestaurant {
         this.place_id = place_id;
         this.rating = rating;
         this.website = website;
-        this.mWorkersArrayList = workers;
-    }
-
-    public ArrayList<Workers> getWorkersArrayList() {
-        return mWorkersArrayList;
+        //this.mWorkersArrayList = workers;
     }
 
     public String getFormatted_address() {
