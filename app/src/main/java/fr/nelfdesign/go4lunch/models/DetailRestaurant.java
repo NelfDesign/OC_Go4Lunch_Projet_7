@@ -1,5 +1,7 @@
 package fr.nelfdesign.go4lunch.models;
 
+import java.util.ArrayList;
+
 /**
  * Created by Nelfdesign at 29/12/2019
  * fr.nelfdesign.go4lunch.models
@@ -13,9 +15,10 @@ public class DetailRestaurant {
     private String photo;
     private double rating;
     private String website;
+    private ArrayList<Workers> mWorkersArrayList;
 
     public DetailRestaurant(String formatted_address, String formatted_phone_number, String name, String place_id,
-                            String photoReference, double rating, String website) {
+                            String photoReference, double rating, String website, ArrayList<Workers> workers) {
         this.formatted_address = formatted_address;
         this.formatted_phone_number = formatted_phone_number;
         this.name = name;
@@ -23,6 +26,11 @@ public class DetailRestaurant {
         this.place_id = place_id;
         this.rating = rating;
         this.website = website;
+        this.mWorkersArrayList = workers;
+    }
+
+    public ArrayList<Workers> getWorkersArrayList() {
+        return mWorkersArrayList;
     }
 
     public String getFormatted_address() {

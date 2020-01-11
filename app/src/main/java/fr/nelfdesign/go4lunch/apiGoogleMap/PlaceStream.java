@@ -42,4 +42,5 @@ class PlaceStream {
                 .observeOn(AndroidSchedulers.mainThread())
                 .timeout(10, TimeUnit.SECONDS);
     }
+
 }

@@ -9,8 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.nelfdesign.go4lunch.BuildConfig;
+import fr.nelfdesign.go4lunch.apiFirebase.RepositoryFirebase;
 import fr.nelfdesign.go4lunch.models.DetailRestaurant;
 import fr.nelfdesign.go4lunch.models.Restaurant;
+import fr.nelfdesign.go4lunch.models.Workers;
 import fr.nelfdesign.go4lunch.pojos.Detail;
 import fr.nelfdesign.go4lunch.pojos.DetailsResult;
 import fr.nelfdesign.go4lunch.pojos.RestaurantsResult;
@@ -85,6 +87,9 @@ public class RepositoryRestaurantList implements NearbyPlaces {
                             }else {
                                 photo = detailsResult.getPhotos().get(0).getPhotoReference();
                             }
+
+                          ArrayList<Workers>  workers = RepositoryFirebase.getQueryWorkersWithChoiceRestaurant(placeId);
+
                             DetailRestaurant restaurant = new DetailRestaurant(
                                     detailsResult.getFormattedAddress(),
                                     detailsResult.getFormattedPhoneNumber(),
@@ -92,7 +97,8 @@ public class RepositoryRestaurantList implements NearbyPlaces {
                                     detailsResult.getPlaceId(),
                                     photo,
                                     (detailsResult.getRating() != null)? detailsResult.getRating() : 0,
-                                    detailsResult.getWebsite()
+                                    detailsResult.getWebsite(),
+                                    workers
                             );
                             mDetailRestaurantLiveData.setValue(restaurant);
                         }

@@ -23,8 +23,8 @@ public class RestaurantsFavorisHelper {
 
     // --- CREATE ---
 
-    public static Task<Void> createFavoriteRestaurant(String name, String placeId, String adress, String photoReference, double rating) {
-        RestaurantFavoris restoToCreate = new RestaurantFavoris(name, placeId,adress, photoReference, rating);
+    public static Task<Void> createFavoriteRestaurant(String name, String placeId, String address, String photoReference, double rating) {
+        RestaurantFavoris restoToCreate = new RestaurantFavoris(name, placeId,address, photoReference, rating);
         return RestaurantsFavorisHelper.getRestaurantsCollection().document().set(restoToCreate);
     }
 

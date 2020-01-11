@@ -48,7 +48,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.nav_view) BottomNavigationView navView;
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.navigation_view) NavigationView mNavigationView;
+    @BindView(R.id.drawer_navigation) NavigationView mNavigationView;
     @BindView(R.id.search_view) SearchView mSearchView;
 
     // base activity method
@@ -84,10 +84,6 @@ public class MainActivity extends BaseActivity {
 
     private void configureNavigationHeader() {
         mNavigationView.setNavigationItemSelectedListener(this::updateMainFragment);
-        mNavigationView.setItemTextColor(ColorStateList.valueOf(getResources().getColor(R.color.white_text)));
-        mNavigationView.setItemTextAppearance(R.style.AppTheme_Settings);
-        mNavigationView.setItemIconTintList(ColorStateList.valueOf(getResources().getColor(R.color.white_text)));
-        mNavigationView.setBackgroundColor(getResources().getColor(R.color.navigationDrawerBackground));
         this.updateNavigationHeader();
     }
 
