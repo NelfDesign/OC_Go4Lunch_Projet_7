@@ -10,12 +10,22 @@ public class Poi {
     private String placeId;
     private double lat;
     private double mLong;
+    private boolean isChoosen;
 
     public Poi(String title, String placeId, double lat, double aLong) {
         this.title = title;
         this.placeId = placeId;
         this.lat = lat;
         mLong = aLong;
+        this.isChoosen = false;
+    }
+
+    public boolean isChoosen() {
+        return isChoosen;
+    }
+
+    public void setChoosen(boolean choosen) {
+        isChoosen = choosen;
     }
 
     public String getPlaceId() {

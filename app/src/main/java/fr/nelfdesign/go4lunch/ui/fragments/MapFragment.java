@@ -24,6 +24,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -36,10 +38,13 @@ import java.util.List;
 import java.util.Objects;
 
 import fr.nelfdesign.go4lunch.R;
+import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
 import fr.nelfdesign.go4lunch.models.Poi;
 import fr.nelfdesign.go4lunch.models.Restaurant;
+import fr.nelfdesign.go4lunch.models.Workers;
 import fr.nelfdesign.go4lunch.ui.activity.RestaurantDetail;
 import fr.nelfdesign.go4lunch.ui.viewModels.MapViewModel;
+import fr.nelfdesign.go4lunch.utils.Utils;
 import timber.log.Timber;
 
 /**
@@ -53,6 +58,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient mFusedLocationClient;
     private MapViewModel mMapViewModel;
     private LatLng lastPosition;
+    private ArrayList<Workers> mWorkersArrayList;
 
 
     public MapFragment() { }
@@ -109,6 +115,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     }
                 }).check();
 
+        final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
+        workersRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
+            mWorkersArrayList = new ArrayList<>();
+            for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
+
+                if(data.get("restaurantName") != null){
+                    Workers workers = data.toObject(Workers.class);
+                    mWorkersArrayList.add(workers);
+                    Timber.i("snap workers : %s", mWorkersArrayList.size());
+                }
+            }
+        });
+
         mMapViewModel = ViewModelProviders.of(Objects.requireNonNull(this.getActivity())).get(MapViewModel.class);
 
     }
@@ -150,13 +169,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void createRestaurantsMarker(Poi poi, GoogleMap map){
+        if (poi.isChoosen()){
+            setMarkerPoi(poi, map, R.drawable.ic_resto_green);
+        }else{
+            setMarkerPoi(poi, map, R.drawable.ic_resto_red);
+        }
+    }
+
+    private void setMarkerPoi(Poi poi, GoogleMap map, int icon){
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(new LatLng(poi.getLat(), poi.getLong()))
                 .title(poi.getTitle())
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_resto_red));
-       Marker marker = map.addMarker(markerOptions);
-       //Add tag to save restaurant placeId for earlier
-       marker.setTag(poi.getPlaceId());
+                .icon(BitmapDescriptorFactory.fromResource(icon));
+        Marker marker = map.addMarker(markerOptions);
+        //Add tag to save restaurant placeId for earlier
+        marker.setTag(poi.getPlaceId());
     }
 
 
@@ -174,14 +201,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private List<Poi> generatePois(ArrayList<Restaurant> restaurants){
         List<Poi> pois = new ArrayList<>();
+       List<Restaurant> restaurants1 = Utils.getChoicedRestaurants(restaurants, mWorkersArrayList);
 
-        for (int i =0; i < restaurants.size(); i++){
+        for (Restaurant resto : restaurants1){
             Poi p = new Poi(
-                    restaurants.get(i).getName(),
-                    restaurants.get(i).getPlaceId(),
-                    restaurants.get(i).getLocation().getLat(),
-                    restaurants.get(i).getLocation().getLng()
+                    resto.getName(),
+                    resto.getPlaceId(),
+                    resto.getLocation().getLat(),
+                    resto.getLocation().getLng()
             );
+
+            if (resto.isChoice()){
+                p.setChoosen(true);
+            }
+
             pois.add(p);
         }
         return pois;

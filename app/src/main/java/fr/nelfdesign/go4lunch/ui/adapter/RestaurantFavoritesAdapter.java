@@ -30,8 +30,6 @@ import static fr.nelfdesign.go4lunch.utils.Utils.starsAccordingToRating;
  */
 public class RestaurantFavoritesAdapter extends FirestoreRecyclerAdapter<RestaurantFavoris, RestaurantFavoritesAdapter.FavorisItemViewholder> {
 
-
-
     public interface favoritesClickListener{
         void onClickItemResto(int position);
     }
@@ -42,7 +40,6 @@ public class RestaurantFavoritesAdapter extends FirestoreRecyclerAdapter<Restaur
 
         @BindView(R.id.restaurant_name) TextView mRestaurantName;
         @BindView(R.id.restaurant_category_and_adress) TextView mAddress;
-        @BindView(R.id.worker_icon_item_restaurant) LinearLayout iconWorkers;
         @BindView(R.id.restaurant_image) ImageView mRestaurantImage;
         @BindView(R.id.star_1) ImageView mStars1;
         @BindView(R.id.star_2) ImageView mStars2;
@@ -78,7 +75,7 @@ public class RestaurantFavoritesAdapter extends FirestoreRecyclerAdapter<Restaur
     @Override
     public FavorisItemViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_restaurant,parent, false);
+                .inflate(R.layout.item_restaurant_favoris,parent, false);
         return new FavorisItemViewholder(view, mFavoritesClickListener);
     }
 
@@ -113,7 +110,6 @@ public class RestaurantFavoritesAdapter extends FirestoreRecyclerAdapter<Restaur
         }
 
         Utils.starsView(rating, holder.mStars1, holder.mStars2, holder.mStars3);
-        holder.iconWorkers.setVisibility(View.GONE);
 
     }
 

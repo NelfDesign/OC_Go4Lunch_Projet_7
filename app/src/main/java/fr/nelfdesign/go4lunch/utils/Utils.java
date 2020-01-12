@@ -57,7 +57,7 @@ public abstract class Utils {
                                 openNow,
                                 photo,
                                 null,
-                                2,
+                                0,
                                 restaurantFirst.getRating()
                              );
            resto.add(r);
@@ -102,7 +102,7 @@ public abstract class Utils {
         }
     }
 
-    public static List<Restaurant> getChoicedRestaurants(List<Restaurant> resto, List<Workers> workers){
+    public static List<Restaurant> getChoicedRestaurants(List<Restaurant> resto, ArrayList<Workers> workers){
         List<Restaurant> restaurants = new ArrayList<>();
         int worker = 0;
         for (Restaurant r : resto){
