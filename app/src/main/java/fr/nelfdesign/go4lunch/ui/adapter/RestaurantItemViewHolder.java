@@ -26,7 +26,7 @@ import static fr.nelfdesign.go4lunch.utils.Utils.starsAccordingToRating;
 public class RestaurantItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     @BindView(R.id.restaurant_name) TextView mRestaurantName;
-    @BindView(R.id.restaurant_category_and_adresse) TextView mCategory;
+    @BindView(R.id.restaurant_category_and_adress) TextView mCategory;
     @BindView(R.id.restaurant_hour) TextView mHourRestaurant;
     @BindView(R.id.restaurant_distance) TextView mDistance;
     @BindView(R.id.restaurant_image) ImageView mRestaurantImage;

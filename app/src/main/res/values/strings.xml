@@ -36,4 +36,5 @@
     <string name="favorite_restaurant_message">Restaurant added to your favorite list</string>
     <string name="your_favorite">Your Favorite</string>
     <string name="choosen_restaurant">You have Choosen this restaurant</string>
+    <string name="favorites_restaurant">My Favorites Restaurants</string>
 </resources>

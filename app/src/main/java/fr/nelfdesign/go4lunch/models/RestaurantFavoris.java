@@ -20,6 +20,10 @@ public class RestaurantFavoris {
         this.rating = rating;
     }
 
+    public RestaurantFavoris(){
+
+    }
+
     public String getName() {
         return name;
     }
@@ -40,16 +44,8 @@ public class RestaurantFavoris {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public String getPhotoReference() {
         return photoReference;
-    }
-
-    public void setPhotoReference(String photoReference) {
-        this.photoReference = photoReference;
     }
 
     public double getRating() {

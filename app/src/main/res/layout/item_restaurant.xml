@@ -29,7 +29,7 @@
                     android:maxLength="30"/>
 
                 <TextView
-                    android:id="@+id/restaurant_category_and_adresse"
+                    android:id="@+id/restaurant_category_and_adress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="french - 21 rue du bordage lucas"
@@ -62,6 +62,7 @@
                     android:textStyle="italic|bold"/>
 
                 <LinearLayout
+                    android:id="@+id/worker_icon_item_restaurant"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">

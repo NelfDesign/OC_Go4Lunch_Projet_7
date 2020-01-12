@@ -56,10 +56,6 @@ public class WorkersListAdapter extends FirestoreRecyclerAdapter<Workers, Worker
         this.mWorkerClickListener = mWorkerListener;
     }
 
-    public WorkersListAdapter(@NonNull FirestoreRecyclerOptions<Workers> options) {
-        super(options);
-    }
-
     @NonNull
     @Override
     public WorkersItemViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
