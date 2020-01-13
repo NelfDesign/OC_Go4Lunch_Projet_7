@@ -2,6 +2,7 @@ package fr.nelfdesign.go4lunch.ui.adapter;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,10 +31,11 @@ public class RestaurantItemViewHolder extends RecyclerView.ViewHolder implements
     @BindView(R.id.restaurant_hour) TextView mHourRestaurant;
     @BindView(R.id.restaurant_distance) TextView mDistance;
     @BindView(R.id.restaurant_image) ImageView mRestaurantImage;
+    @BindView(R.id.worker_icon_item_restaurant) LinearLayout mLinearLayout;
+    @BindView(R.id.workers_number) TextView getWorkersNumbers;
     @BindView(R.id.star_1) ImageView mStars1;
     @BindView(R.id.star_2) ImageView mStars2;
     @BindView(R.id.star_3) ImageView mStars3;
-    @BindView(R.id.workers_number) TextView mWorkersNumbers;
 
     private RestaurantListAdapter.onClickRestaurantItemListener mListener;
 
@@ -71,6 +73,21 @@ public class RestaurantItemViewHolder extends RecyclerView.ViewHolder implements
                     .error(R.drawable.pic_logo_restaurant_400x400)
                     .apply(RequestOptions.centerCropTransform())
                     .into(mRestaurantImage);
+        }
+
+        //distance
+        if (restaurantDetail.getDistance() > 0){
+            String dist = restaurantDetail.getDistance() + " m";
+            mDistance.setText(dist);
+        }
+
+        //workers
+        if (restaurantDetail.getWorkers() > 0){
+            mLinearLayout.setVisibility(View.VISIBLE);
+            String text = "(" + restaurantDetail.getWorkers() + ")";
+            getWorkersNumbers.setText(text);
+        }else{
+            mLinearLayout.setVisibility(View.INVISIBLE);
         }
 
         //Stars according to rating level

@@ -56,7 +56,7 @@ public abstract class Utils {
                                 restaurantFirst.getPlaceId(),
                                 openNow,
                                 photo,
-                                null,
+                                0,
                                 0,
                                 restaurantFirst.getRating()
                              );
@@ -102,18 +102,19 @@ public abstract class Utils {
         }
     }
 
-    public static List<Restaurant> getChoicedRestaurants(List<Restaurant> resto, ArrayList<Workers> workers){
-        List<Restaurant> restaurants = new ArrayList<>();
-        int worker = 0;
+    public static ArrayList<Restaurant> getChoicedRestaurants(List<Restaurant> resto, ArrayList<Workers> workers){
+        ArrayList<Restaurant> restaurants = new ArrayList<>();
+        restaurants.clear();
         for (Restaurant r : resto){
+            int worker = 0;
             for (Workers w : workers){
                 if (r.getPlaceId().equalsIgnoreCase(w.getPlaceId())){
                     worker++;
                     r.setChoice(true);
                     r.setWorkers(worker);
                 }
-                restaurants.add(r);
             }
+            restaurants.add(r);
         }
         return restaurants;
     }

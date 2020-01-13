@@ -14,13 +14,13 @@ public class Restaurant {
     private String address;
     private Boolean hour;
     private String photoReference;
-    private String distance;
+    private int distance;
     private int workers;
     private double rating;
     private boolean choice;
 
     public Restaurant(Location location, String name, String address, String placeId, boolean hour, String urlImage,
-                      String distance, int workers, double rating) {
+                      int distance, int workers, double rating) {
         this.mLocation = location;
         this.name = name;
         this.placeId = placeId;
@@ -77,11 +77,11 @@ public class Restaurant {
         return photoReference;
     }
 
-    public String getDistance() {
+    public int getDistance() {
         return distance;
     }
 
-    public void setDistance(String distance) {
+    public void setDistance(int distance) {
         this.distance = distance;
     }
 

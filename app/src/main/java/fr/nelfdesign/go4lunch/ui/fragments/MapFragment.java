@@ -161,18 +161,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void createUserMarker(Poi poi, GoogleMap map){
-        MarkerOptions markerOptions = new MarkerOptions()
-                .position(new LatLng(poi.getLat(), poi.getLong()))
-                .title(poi.getTitle())
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marquer));
-        map.addMarker(markerOptions);
+        setMarkerPoi(poi, map, R.drawable.ic_marquer);
     }
 
     private void createRestaurantsMarker(Poi poi, GoogleMap map){
         if (poi.isChoosen()){
-            setMarkerPoi(poi, map, R.drawable.ic_resto_green);
+            setMarkerPoi(poi, map, R.drawable.ic_resto_green2);
         }else{
-            setMarkerPoi(poi, map, R.drawable.ic_resto_red);
+            setMarkerPoi(poi, map, R.drawable.ic_resto_red2);
         }
     }
 
@@ -183,7 +179,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 .icon(BitmapDescriptorFactory.fromResource(icon));
         Marker marker = map.addMarker(markerOptions);
         //Add tag to save restaurant placeId for earlier
-        marker.setTag(poi.getPlaceId());
+        if ((poi.getPlaceId() != null)) {
+            marker.setTag(poi.getPlaceId());
+        }
     }
 
 
