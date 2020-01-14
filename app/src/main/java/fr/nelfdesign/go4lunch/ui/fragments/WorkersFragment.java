@@ -89,7 +89,7 @@ public class WorkersFragment extends Fragment implements WorkersListAdapter.work
     @Override
     public void onClickItemWorker(int position) {
         if (mWorkers.get(position).getPlaceId().equals("")){
-            Utils.showSnackBar(this.mRecyclerView, "You don't have choosen a restaurant");
+            Utils.showSnackBar(this.mRecyclerView, getString(R.string.no_choice_restaurant_workers));
         }else {
             Intent intent = new Intent(getContext(), RestaurantDetail.class);
             intent.putExtra("placeId", mWorkers.get(position).getPlaceId());

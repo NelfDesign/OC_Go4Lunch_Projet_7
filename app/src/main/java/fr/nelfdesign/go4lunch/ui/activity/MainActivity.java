@@ -22,11 +22,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Objects;
 
 import butterknife.BindView;
 import fr.nelfdesign.go4lunch.R;
+import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
 import fr.nelfdesign.go4lunch.ui.fragments.MapFragment;
 import fr.nelfdesign.go4lunch.ui.fragments.RestaurantListFragment;
@@ -136,7 +139,7 @@ public class MainActivity extends BaseActivity {
                 this.signOutCurrentUser();
                 break;
             case R.id.nav_lunch:
-
+                this.showMyrestaurantChoice();
                 break;
         }
         // Closes the DrawerNavigationView when the user click on an item
@@ -144,6 +147,25 @@ public class MainActivity extends BaseActivity {
             this.mDrawerLayout.closeDrawer(START);
         }
         return true;
+    }
+
+    private void showMyrestaurantChoice() {
+        Query query = WorkersHelper.getAllWorkers().whereEqualTo("name",
+                Objects.requireNonNull(getCurrentUser()).getDisplayName());
+
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                    if (document.get("placeId") != null){
+                        Intent intent = new Intent(this.getBaseContext(), RestaurantDetail.class);
+                        intent.putExtra("placeId", document.get("placeId").toString());
+                        startActivity(intent);
+                    }else {
+                        Utils.showSnackBar(this.mDrawerLayout, String.valueOf(R.string.no_choice_restaurant_workers));
+                    }
+                }
+            }
+        });
     }
 
     private void configureFragment(Fragment fragment){

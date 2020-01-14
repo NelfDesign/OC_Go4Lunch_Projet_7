@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
@@ -31,6 +33,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -198,29 +201,29 @@ public class RestaurantDetail extends BaseActivity {
         });
 
         //configure click on like star
-        final CollectionReference refResto = RestaurantsFavorisHelper.getRestaurantsCollection();
-        refResto.addSnapshotListener((queryDocumentSnapshots, e) -> {
-            mRestaurantFavorises = new ArrayList<>();
+        final Query refResto = RestaurantsFavorisHelper.
+                getAllRestaurantsFromWorkers(Objects.requireNonNull(getCurrentUser()).getDisplayName());
 
-            for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
-                Timber.d("data resto: %s", data.getData());
-                RestaurantFavoris resto = data.toObject(RestaurantFavoris.class);
-                mRestaurantFavorises.add(resto);
+        refResto.get()
+                .addOnCompleteListener(task -> {
+                    mRestaurantFavorises = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        RestaurantFavoris resto = document.toObject(RestaurantFavoris.class);
+                        mRestaurantFavorises.add(resto);
 
-                Timber.d("restofav list : %s", mRestaurantFavorises.size());
-            }
-            for (RestaurantFavoris restoFav : mRestaurantFavorises ){
-                Timber.i("placeId : %s", restoFav.getName());
-                Timber.i("detailresto : %s", detailRestaurant.getName());
-                if (restoFav.getName().equals(detailRestaurant.getName())){
-                    favoriteButton.setVisibility(View.VISIBLE);
-                    mTextFavorite.setVisibility(View.VISIBLE);
-                    likeButton.setVisibility(View.GONE);
-                    mTextLike.setVisibility(View.GONE);
-                }
-            }
-
-        });
+                        Timber.d("restofav list : %s", mRestaurantFavorises.size());
+                        for (RestaurantFavoris restoFav : mRestaurantFavorises ){
+                            Timber.i("placeId : %s", restoFav.getName());
+                            Timber.i("detailresto : %s", detailRestaurant.getName());
+                            if (restoFav.getName().equals(detailRestaurant.getName())){
+                                favoriteButton.setVisibility(View.VISIBLE);
+                                mTextFavorite.setVisibility(View.VISIBLE);
+                                likeButton.setVisibility(View.GONE);
+                                mTextLike.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                });
 
         likeButton.setOnClickListener(v -> saveRestaurantToFavorite( new RestaurantFavoris(
                 detailRestaurant.getName(),
@@ -273,7 +276,7 @@ public class RestaurantDetail extends BaseActivity {
     }
 
     private void saveRestaurantToFavorite(RestaurantFavoris resto) {
-        RestaurantsFavorisHelper.createFavoriteRestaurant(resto.getName(),
+        RestaurantsFavorisHelper.createFavoriteRestaurant(getCurrentUser().getDisplayName(),resto.getName(),
                         resto.getPlaceId(),
                         resto.getAddress(),
                         resto.getPhotoReference(),

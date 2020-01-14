@@ -2,6 +2,7 @@ package fr.nelfdesign.go4lunch.apiFirebase;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -23,9 +24,22 @@ public class RestaurantsFavorisHelper {
 
     // --- CREATE ---
 
-    public static Task<Void> createFavoriteRestaurant(String name, String placeId, String address, String photoReference, double rating) {
+    public static Task<DocumentReference> createFavoriteRestaurant(String user,String name, String placeId, String address, String photoReference, double rating) {
         RestaurantFavoris restoToCreate = new RestaurantFavoris(name, placeId, address, photoReference, rating);
-        return RestaurantsFavorisHelper.getRestaurantsCollection().document().set(restoToCreate);
+
+        //Store Message to Firestore
+        return WorkersHelper.getWorkersCollection()
+                .document(user)
+                .collection(COLLECTION_NAME)
+                .add(restoToCreate);
+    }
+
+    // --- GET ---
+
+    public static Query getAllRestaurantsFromWorkers(String name){
+        return WorkersHelper.getWorkersCollection()
+                .document(name)
+                .collection(COLLECTION_NAME);
     }
 
     // -- GET ALL Workers --

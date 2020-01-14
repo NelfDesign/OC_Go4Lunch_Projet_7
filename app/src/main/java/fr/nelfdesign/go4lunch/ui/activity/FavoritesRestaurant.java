@@ -14,6 +14,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import butterknife.BindView;
 import fr.nelfdesign.go4lunch.R;
@@ -86,8 +87,13 @@ public class FavoritesRestaurant extends BaseActivity implements RestaurantFavor
         return true;
     }
 
+    /**
+     * get only user favorite restaurant
+     */
     private void initListAdapter() {
-        Query query = RepositoryFirebase.getQueryFavoritesRestaurant(mRestaurantFavorisList);
+        Query query = RepositoryFirebase.getQueryFavoritesRestaurant(mRestaurantFavorisList,
+                Objects.requireNonNull(getCurrentUser()).getDisplayName());
+
         FirestoreRecyclerOptions<RestaurantFavoris> options = new FirestoreRecyclerOptions.Builder<RestaurantFavoris>()
                 .setQuery(query, RestaurantFavoris.class)
                 .build();

@@ -37,8 +37,8 @@ public abstract class RepositoryFirebase {
         return query;
     }
 
-    public static Query getQueryFavoritesRestaurant(List<RestaurantFavoris> favorises){
-        Query query = RestaurantsFavorisHelper.getAllRestaurants();
+    public static Query getQueryFavoritesRestaurant(List<RestaurantFavoris> favorises, String user){
+        Query query = RestaurantsFavorisHelper.getAllRestaurantsFromWorkers(user);
         query.get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -53,5 +53,6 @@ public abstract class RepositoryFirebase {
                 });
         return query;
     }
+
 
 }
