@@ -1,8 +1,11 @@
 package fr.nelfdesign.go4lunch.apiFirebase;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,7 +53,5 @@ public abstract class RepositoryFirebase {
                 });
         return query;
     }
-
-
 
 }

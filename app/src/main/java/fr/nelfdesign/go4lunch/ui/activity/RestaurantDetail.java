@@ -133,7 +133,8 @@ public class RestaurantDetail extends BaseActivity {
             mWorkers = new ArrayList<>();
             for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
 
-                if(Objects.requireNonNull(data.get("restaurantName")).toString().equals(detailRestaurant.getName())){
+                if (Objects.requireNonNull(data.get("restaurantName")).toString().equals(detailRestaurant.getName())) {
+
                     Workers workers = data.toObject(Workers.class);
                     mWorkers.add(workers);
                     Timber.i("snap workers : %s", mWorkers.size());

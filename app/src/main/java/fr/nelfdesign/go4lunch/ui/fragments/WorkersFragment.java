@@ -25,8 +25,10 @@ import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.apiFirebase.RepositoryFirebase;
 import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
 import fr.nelfdesign.go4lunch.models.Workers;
+import fr.nelfdesign.go4lunch.ui.activity.MainActivity;
 import fr.nelfdesign.go4lunch.ui.activity.RestaurantDetail;
 import fr.nelfdesign.go4lunch.ui.adapter.WorkersListAdapter;
+import fr.nelfdesign.go4lunch.utils.Utils;
 import timber.log.Timber;
 
 /**
@@ -86,9 +88,13 @@ public class WorkersFragment extends Fragment implements WorkersListAdapter.work
 
     @Override
     public void onClickItemWorker(int position) {
-        Intent intent = new Intent(getContext(), RestaurantDetail.class);
-        intent.putExtra("placeId", mWorkers.get(position).getPlaceId());
-        intent.putExtra("restaurantName", mWorkers.get(position).getRestaurantName());
-        startActivity(intent);
+        if (mWorkers.get(position).getPlaceId().equals("")){
+            Utils.showSnackBar(this.mRecyclerView, "You don't have choosen a restaurant");
+        }else {
+            Intent intent = new Intent(getContext(), RestaurantDetail.class);
+            intent.putExtra("placeId", mWorkers.get(position).getPlaceId());
+            intent.putExtra("restaurantName", mWorkers.get(position).getRestaurantName());
+            startActivity(intent);
+        }
     }
 }

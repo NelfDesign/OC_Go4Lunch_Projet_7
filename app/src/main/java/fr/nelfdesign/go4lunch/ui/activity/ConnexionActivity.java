@@ -11,7 +11,10 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -20,6 +23,7 @@ import butterknife.OnClick;
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
+import fr.nelfdesign.go4lunch.models.Workers;
 import fr.nelfdesign.go4lunch.utils.Utils;
 import timber.log.Timber;
 
@@ -30,7 +34,7 @@ public class ConnexionActivity extends BaseActivity {
     //FOR DATA
     private static final int RC_SIGN_IN = 123;
     // Creating identifier to identify REST REQUEST (Update username)
-    private static final int UPDATE_USERNAME = 30;
+    private ArrayList<Workers> mWorkersArrayList;
 
     // base activity method
     @Override
@@ -160,14 +164,26 @@ public class ConnexionActivity extends BaseActivity {
     // Http request that create user in firestore
     private void createUserInFirestore(){
 
+        final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
+        workersRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
+            mWorkersArrayList = new ArrayList<>();
+            for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
+                if(data.get("name") != null){
+                    Workers workers = data.toObject(Workers.class);
+                    mWorkersArrayList.add(workers);
+                    Timber.i("connection workers : %s", mWorkersArrayList.size());
+                }
+            }
+        });
+
         if (this.getCurrentUser() != null){
+                String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
+                String username = this.getCurrentUser().getDisplayName();
+                String resto = "";
+                String placeId = "";
+                WorkersHelper.createWorker(username, urlPicture, resto, placeId).addOnFailureListener(this.onFailureListener());
+            }
 
-            String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
-            String username = this.getCurrentUser().getDisplayName();
-            String uid = this.getCurrentUser().getUid();
-
-            WorkersHelper.createWorker(username, urlPicture, null, null).addOnFailureListener(this.onFailureListener());
-        }
     }
 
 

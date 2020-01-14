@@ -20,7 +20,7 @@ public interface RestaurantService {
      * @param parameters map of parameters
      * @return Observable Restaurant result
      */
-    @GET("nearbysearch/json?radius=1000&type=restaurant")
+    @GET("nearbysearch/json?radius=2500&type=restaurant")
     Observable<RestaurantsResult> getNearByRestaurant(@QueryMap Map<String, String> parameters);
 
     /**
