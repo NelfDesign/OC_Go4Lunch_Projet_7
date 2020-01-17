@@ -41,10 +41,6 @@ public class DetailRestaurant {
         return name;
     }
 
-    public String getPlace_id() {
-        return place_id;
-    }
-
     public double getRating() {
         return rating;
     }

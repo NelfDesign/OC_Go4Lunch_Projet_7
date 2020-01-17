@@ -18,13 +18,14 @@ public class RestaurantsFavorisHelper {
 
     // --- COLLECTION REFERENCE ---
 
-    public static CollectionReference getRestaurantsCollection(){
+    private static CollectionReference getRestaurantsCollection(){
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 
     // --- CREATE ---
 
-    public static Task<DocumentReference> createFavoriteRestaurant(String user,String name, String placeId, String address, String photoReference, double rating) {
+    public static Task<DocumentReference> createFavoriteRestaurant(String user,String name, String placeId,
+                                                                   String address, String photoReference, double rating) {
         RestaurantFavoris restoToCreate = new RestaurantFavoris(name, placeId, address, photoReference, rating);
 
         //Store Message to Firestore
@@ -40,11 +41,6 @@ public class RestaurantsFavorisHelper {
         return WorkersHelper.getWorkersCollection()
                 .document(name)
                 .collection(COLLECTION_NAME);
-    }
-
-    // -- GET ALL Workers --
-    public static Query getAllRestaurants(){
-        return RestaurantsFavorisHelper.getRestaurantsCollection();
     }
 
     // --- DELETE ---

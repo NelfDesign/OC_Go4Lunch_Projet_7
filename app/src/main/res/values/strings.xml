@@ -12,30 +12,68 @@
     <string name="twitter_consumer_secret" translatable="false">3aS9ou6dMhlpUhwQj97nN5M3iAfSbwDA1fIg8fHZzsMh7j490W</string>
 
     <!-- Menu -->
-    <string name="title_activity_main2">@string/app_name</string>
+    <string name="title_activity_main2" translatable="false">@string/app_name</string>
     <string name="title_map">Map View</string>
     <string name="title_list">List View</string>
     <string name="title_workers">Workmates</string>
     <string name="title_search">Search</string>
 
-    <!-- MAIN ACTIVITY -->
-    <string name="error_not_connected">Vous devez vous connecter !</string>
-    <string name="error_authentication_canceled">Authentification annulée&#8230;</string>
-    <string name="error_no_internet">Aucune connexion internet !</string>
-    <string name="error_unknown_error">Une erreur inconnue s\'est produite&#8230;</string>
-    <string name="connection_succeed">Authentification réussie !</string>
+    <!-- Connection ACTIVITY -->
+    <string name="error_not_connected">You must been connected !</string>
+    <string name="error_authentication_canceled">Authentification canceled !</string>
+    <string name="error_no_internet">No internet connexion!</string>
+    <string name="error_unknown_error">An erreur occurred</string>
+    <string name="connection_succeed">Authentification granted !</string>
     <string name="no_name_found">No name found</string>
     <string name="no_mail_found">No mail found</string>
+    <string name="email">Email</string>
+    <string name="google">Google</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+
 
     <!-- navigation drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="your_lunch">Your Lunch</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+
+    <!-- Detail activity -->
     <string name="call">CALL</string>
     <string name="like">LIKE</string>
     <string name="web_site">WEB SITE</string>
     <string name="favorite_restaurant_message">Restaurant added to your favorite list</string>
     <string name="your_favorite">Your Favorite</string>
-    <string name="choosen_restaurant">You have Choosen this restaurant</string>
+    <string name="chosen_restaurant">You have chosen this restaurant</string>
+    <string name="no_telephone_number_for_this_restaurant">No telephone number for this restaurant</string>
+    <string name="no_website_for_restaurant">No website for this restaurant</string>
+
+    <!-- restaurant favorite activity -->
     <string name="favorites_restaurant">My Favorites Restaurants</string>
-    <string name="no_choice_restaurant_workers">You don\'t have choosen a restaurant</string>
+
+    <!-- workers -->
+    <string name="no_choice_restaurant_workers">You don\'t have chosen a restaurant</string>
+
+    <!-- restaurant list -->
+    <string name="restaurant_image">restaurant Image</string>
+    <string name="restaurant_open">Restaurant open</string>
+    <string name="not_open_yet">Not open yet</string>
+
+    <!-- Firebase query -->
+    <string name="error_query">Error getting documents : %s</string>
+
+    <!-- Stream -->
+    <string name="error_stream">error : %s</string>
+    <string name="on_Complete_message">On complete</string>
+
+    <!-- Toolbar text -->
+    <string name="I_m_hungry">I\'m hungry</string>
+    <string name="workers_toolbar">Workers</string>
+
+    <!-- map fragment -->
+    <string name="permission_denied">Permission denied</string>
+    <string name="my_position">My position</string>
+
+
 </resources>

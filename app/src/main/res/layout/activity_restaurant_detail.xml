@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.RestaurantDetail"
-    android:id="@+id/coordinator_detail">
+    tools:context=".ui.activity.RestaurantDetail">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -29,6 +28,7 @@
                     android:id="@+id/imageRestaurant"
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
+                    android:contentDescription="@string/restaurant_image"
                     android:scaleType="centerCrop"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -88,21 +88,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        app:srcCompat="@drawable/ic_yellow_star_32dp" />
+                        app:srcCompat="@drawable/ic_yellow_star_32dp"
+                        tools:ignore="ContentDescription" />
 
                     <ImageView
                         android:id="@+id/restaurant_detail_star2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
-                        app:srcCompat="@drawable/ic_yellow_star_32dp" />
+                        app:srcCompat="@drawable/ic_yellow_star_32dp"
+                        tools:ignore="ContentDescription" />
 
                     <ImageView
                         android:id="@+id/restaurant_detail_star3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
-                        app:srcCompat="@drawable/ic_yellow_star_32dp" />
+                        app:srcCompat="@drawable/ic_yellow_star_32dp"
+                        tools:ignore="ContentDescription" />
 
                 </LinearLayout>
 
@@ -148,10 +151,11 @@
                     android:id="@+id/call_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:background="@color/fui_transparent"
                     android:clickable="true"
                     android:focusable="true"
-                    android:background="@color/fui_transparent"
-                    app:srcCompat="@drawable/ic_call" />
+                    app:srcCompat="@drawable/ic_call"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/text_call"
@@ -179,10 +183,11 @@
                     android:id="@+id/like"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:background="@color/fui_transparent"
                     android:clickable="true"
                     android:focusable="true"
-                    android:background="@color/fui_transparent"
-                    app:srcCompat="@drawable/ic_star_detail"/>
+                    app:srcCompat="@drawable/ic_star_detail"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/text_Like"
@@ -197,11 +202,12 @@
                     android:id="@+id/favorite_restaurant"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:background="@color/fui_transparent"
                     android:clickable="true"
                     android:focusable="true"
                     android:visibility="gone"
-                    android:background="@color/fui_transparent"
-                    app:srcCompat="@drawable/ic_list_color"/>
+                    app:srcCompat="@drawable/ic_star_choice"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/text_favorite"
@@ -209,9 +215,9 @@
                     android:layout_height="wrap_content"
                     android:text="@string/your_favorite"
                     android:textColor="@color/colorPrimary"
-                    android:visibility="gone"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -230,10 +236,11 @@
                     android:id="@+id/website"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:background="@color/fui_transparent"
                     android:clickable="true"
                     android:focusable="true"
-                    android:background="@color/fui_transparent"
-                    app:srcCompat="@drawable/ic_earth"/>
+                    app:srcCompat="@drawable/ic_earth"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:layout_width="wrap_content"

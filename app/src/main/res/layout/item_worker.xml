@@ -21,7 +21,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_supervisor_account_black_24dp" />
+            app:srcCompat="@drawable/ic_supervisor_account_black_24dp"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/worker_name"

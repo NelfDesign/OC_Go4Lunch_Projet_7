@@ -24,16 +24,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -52,14 +47,11 @@ import fr.nelfdesign.go4lunch.ui.viewModels.MapViewModel;
 import fr.nelfdesign.go4lunch.utils.Utils;
 import timber.log.Timber;
 
-import static androidx.core.view.GravityCompat.START;
-
 public class RestaurantDetail extends BaseActivity {
 
     private static final int PERMISSION_CALL = 100;
     private String phonenumber;
     private String websiteUrl;
-    private DetailWorkerAdapter adapter;
     private ArrayList<Workers> mWorkers;
     private ArrayList<RestaurantFavoris> mRestaurantFavorises;
     String nameResto;
@@ -174,7 +166,7 @@ public class RestaurantDetail extends BaseActivity {
         // Call restaurant if possible
         callPhone.setOnClickListener(v -> {
             if (detailRestaurant.getFormatted_phone_number() == null){
-                Toast.makeText(this, "No telephone number for this restaurant", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.no_telephone_number_for_this_restaurant, Toast.LENGTH_SHORT).show();
             }else {
                 phonenumber = detailRestaurant.getFormatted_phone_number();
             }
@@ -193,7 +185,7 @@ public class RestaurantDetail extends BaseActivity {
         // go to website if there is one
         websiteButton.setOnClickListener(view ->{
            if (detailRestaurant.getWebsite() == null){
-               Toast.makeText(this, "No website for this restaurant", Toast.LENGTH_SHORT).show();
+               Toast.makeText(this, R.string.no_website_for_restaurant, Toast.LENGTH_SHORT).show();
            }else {
                websiteUrl = detailRestaurant.getWebsite();
                callWebsiteUrl();
@@ -239,7 +231,6 @@ public class RestaurantDetail extends BaseActivity {
         });
 
         //configure click on FAB Button
-
         Query query = WorkersHelper.getAllWorkers().whereEqualTo("name",
                 Objects.requireNonNull(getCurrentUser()).getDisplayName());
 
@@ -258,7 +249,7 @@ public class RestaurantDetail extends BaseActivity {
                 }
         });
 
-        mFloatingActionButton.setOnClickListener(v ->{
+        mFloatingActionButton.setOnClickListener(v -> {
             query.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
@@ -267,7 +258,7 @@ public class RestaurantDetail extends BaseActivity {
                                 detailRestaurant.getName(),
                                 placeId);
                     }
-                    Utils.showSnackBar(this.mCoordinatorLayout, getString(R.string.choosen_restaurant));
+                    Utils.showSnackBar(this.mCoordinatorLayout, getString(R.string.chosen_restaurant));
                     mFloatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_checked));
                     mFloatingActionButton.setClickable(false);
                 }
@@ -276,7 +267,8 @@ public class RestaurantDetail extends BaseActivity {
     }
 
     private void saveRestaurantToFavorite(RestaurantFavoris resto) {
-        RestaurantsFavorisHelper.createFavoriteRestaurant(getCurrentUser().getDisplayName(),resto.getName(),
+        RestaurantsFavorisHelper.createFavoriteRestaurant(Objects.requireNonNull(getCurrentUser()).getDisplayName(),
+                        resto.getName(),
                         resto.getPlaceId(),
                         resto.getAddress(),
                         resto.getPhotoReference(),
@@ -301,7 +293,7 @@ public class RestaurantDetail extends BaseActivity {
     }
 
     private void initAdapter(ArrayList<Workers> workers){
-        adapter = new DetailWorkerAdapter(workers);
+        DetailWorkerAdapter adapter = new DetailWorkerAdapter(workers);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         mRecyclerView.setAdapter(adapter);
     }

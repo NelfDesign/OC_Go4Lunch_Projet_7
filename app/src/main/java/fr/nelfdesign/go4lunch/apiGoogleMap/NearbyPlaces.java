@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 import fr.nelfdesign.go4lunch.models.DetailRestaurant;
 import fr.nelfdesign.go4lunch.models.Restaurant;
-import fr.nelfdesign.go4lunch.pojos.Location;
 
 /**
  * Created by Nelfdesign at 10/12/2019

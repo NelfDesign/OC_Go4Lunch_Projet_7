@@ -1,20 +1,17 @@
 package fr.nelfdesign.go4lunch.ui.activity;
 
+import android.content.Intent;
+import android.view.View;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
-import android.content.Intent;
-import android.view.View;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -23,7 +20,6 @@ import butterknife.OnClick;
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
-import fr.nelfdesign.go4lunch.models.Workers;
 import fr.nelfdesign.go4lunch.utils.Utils;
 import timber.log.Timber;
 
@@ -33,8 +29,6 @@ public class ConnexionActivity extends BaseActivity {
 
     //FOR DATA
     private static final int RC_SIGN_IN = 123;
-    // Creating identifier to identify REST REQUEST (Update username)
-    private ArrayList<Workers> mWorkersArrayList;
 
     // base activity method
     @Override
@@ -54,7 +48,7 @@ public class ConnexionActivity extends BaseActivity {
         // Checks if user is signed in (non-null)
         if (FirebaseAuth.getInstance().getCurrentUser() != null){
            this.startMainActivity();
-            Timber.i(Objects.requireNonNull(this.getCurrentUser().getDisplayName()));
+            Timber.i(Objects.requireNonNull(Objects.requireNonNull(this.getCurrentUser()).getDisplayName()));
         }
     }
 
@@ -147,8 +141,11 @@ public class ConnexionActivity extends BaseActivity {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) { // SUCCESS
                 Utils.showSnackBar(this.mConstraintLayout, getString(R.string.connection_succeed));
-                this.createUserInFirestore();
-                this.startMainActivity();
+                if (this.getCurrentUser() != null){
+                    this.startMainActivity();
+                }else{
+                    this.createUserInFirestore();
+                }
             } else { // ERRORS
                 if (response == null) {
                     Utils.showSnackBar(this.mConstraintLayout, getString(R.string.error_authentication_canceled));
@@ -164,18 +161,6 @@ public class ConnexionActivity extends BaseActivity {
     // Http request that create user in firestore
     private void createUserInFirestore(){
 
-        final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
-        workersRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
-            mWorkersArrayList = new ArrayList<>();
-            for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
-                if(data.get("name") != null){
-                    Workers workers = data.toObject(Workers.class);
-                    mWorkersArrayList.add(workers);
-                    Timber.i("connection workers : %s", mWorkersArrayList.size());
-                }
-            }
-        });
-
         if (this.getCurrentUser() != null){
                 String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
                 String username = this.getCurrentUser().getDisplayName();
@@ -183,8 +168,6 @@ public class ConnexionActivity extends BaseActivity {
                 String placeId = "";
                 WorkersHelper.createWorker(username, urlPicture, resto, placeId).addOnFailureListener(this.onFailureListener());
             }
-
     }
-
 
 }

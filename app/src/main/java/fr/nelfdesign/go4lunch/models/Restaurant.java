@@ -45,10 +45,6 @@ public class Restaurant {
         return mLocation;
     }
 
-    public void setLocation(Location location) {
-        mLocation = location;
-    }
-
     public String getName() {
         return name;
     }

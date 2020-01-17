@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
+import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.apiGoogleMap.RepositoryRestaurantList;
 import fr.nelfdesign.go4lunch.models.DetailRestaurant;
 import fr.nelfdesign.go4lunch.models.Poi;
@@ -22,7 +23,7 @@ public class MapViewModel extends ViewModel {
 
     public Poi generateUserPoi(double lat, double lng){
         return new Poi(
-                "My position",
+                String.valueOf(R.string.my_position),
                 "",
                 lat,
                 lng

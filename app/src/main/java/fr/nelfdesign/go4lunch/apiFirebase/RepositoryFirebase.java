@@ -1,14 +1,12 @@
 package fr.nelfdesign.go4lunch.apiFirebase;
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.models.RestaurantFavoris;
 import fr.nelfdesign.go4lunch.models.Workers;
 import timber.log.Timber;
@@ -31,7 +29,7 @@ public abstract class RepositoryFirebase {
                             Timber.d(document.getId() + " => " + document.getData());
                         }
                     } else {
-                        Timber.w("Error getting documents : %s", Objects.requireNonNull(task.getException()).getMessage());
+                        Timber.w(String.valueOf(R.string.error_query), Objects.requireNonNull(task.getException()).getMessage());
                     }
                 });
         return query;
@@ -48,7 +46,7 @@ public abstract class RepositoryFirebase {
                             favorises.add(restaurantFavoris);
                         }
                     } else {
-                        Timber.w("Error getting documents : %s", Objects.requireNonNull(task.getException()).getMessage());
+                        Timber.w(String.valueOf(R.string.error_query), Objects.requireNonNull(task.getException()).getMessage());
                     }
                 });
         return query;

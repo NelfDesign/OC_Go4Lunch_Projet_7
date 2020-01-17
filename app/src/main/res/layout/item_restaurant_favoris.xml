@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_margin="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,53 +14,56 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_margin="5dp"
             android:layout_weight="60"
-            android:layout_margin="5dp">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/restaurant_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="le zinc"
-                android:textStyle="bold"
+                android:maxLength="30"
                 android:textSize="16sp"
-                android:maxLength="30"/>
+                android:textStyle="bold"
+                tools:text="le zinc" />
 
             <TextView
                 android:id="@+id/restaurant_category_and_adress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="french - 21 rue du bordage lucas"
+                android:maxLines="1"
                 android:textSize="14sp"
-                android:maxLines="1"/>
+                tools:text="french - 21 rue du bordage lucas" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
             android:layout_weight="20"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/star_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_yellow_star_32dp" />
+            <ImageView
+                android:id="@+id/star_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_yellow_star_32dp"
+                tools:ignore="ContentDescription"/>
 
-                <ImageView
-                    android:id="@+id/star_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_yellow_star_32dp" />
+            <ImageView
+                android:id="@+id/star_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_yellow_star_32dp"
+                tools:ignore="ContentDescription"/>
 
-                <ImageView
-                    android:id="@+id/star_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_yellow_star_32dp" />
+            <ImageView
+                android:id="@+id/star_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_yellow_star_32dp"
+                tools:ignore="ContentDescription" />
 
         </LinearLayout>
 
@@ -69,9 +71,10 @@
             android:id="@+id/restaurant_image"
             android:layout_width="0dp"
             android:layout_height="70dp"
+            android:layout_margin="5dp"
             android:layout_weight="20"
-            android:src="@drawable/pic_logo_restaurant_400x400"
-            android:layout_margin="5dp" />
+            android:contentDescription="@string/restaurant_image"
+            android:src="@drawable/pic_logo_restaurant_400x400" />
 
     </LinearLayout>
 

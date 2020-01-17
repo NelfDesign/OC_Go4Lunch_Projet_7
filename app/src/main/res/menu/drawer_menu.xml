@@ -7,20 +7,20 @@
         <item
             android:id="@+id/nav_lunch"
             android:icon="@drawable/pic_logo_restaurant_400x400"
-            android:title="Your Lunch"/>
+            android:title="@string/your_lunch"/>
 
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_white_24dp"
-            android:title="Settings" />
+            android:title="@string/settings" />
     </group>
 
-    <item android:title="Logout">
+    <item android:title="@string/logout">
         <menu>
             <item
                 android:id="@+id/logout"
                 android:icon="@drawable/ic_power_off_24dp"
-                android:title="LogOut" />
+                android:title="@string/logout" />
         </menu>
     </item>
 

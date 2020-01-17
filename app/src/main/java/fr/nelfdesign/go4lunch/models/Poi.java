@@ -40,24 +40,12 @@ public class Poi {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public double getLat() {
         return lat;
     }
 
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
     public double getLong() {
         return mLong;
-    }
-
-    public void setLong(double aLong) {
-        mLong = aLong;
     }
 
 }

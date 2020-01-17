@@ -78,6 +78,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
+
         // Location Services
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getContext()));
         //init map
@@ -92,7 +93,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mGoogleMap = googleMap;
-        mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this.getContext(), R.raw.maps_style));
+        mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(Objects.requireNonNull(this.getContext()), R.raw.maps_style));
         Timber.i("Map ready");
 
         Dexter.withActivity(getActivity())
@@ -106,7 +107,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {
-                        Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

@@ -28,7 +28,8 @@ import static fr.nelfdesign.go4lunch.utils.Utils.starsAccordingToRating;
  * Created by Nelfdesign at 12/01/2020
  * fr.nelfdesign.go4lunch.ui.adapter
  */
-public class RestaurantFavoritesAdapter extends FirestoreRecyclerAdapter<RestaurantFavoris, RestaurantFavoritesAdapter.FavorisItemViewholder> {
+public class RestaurantFavoritesAdapter extends FirestoreRecyclerAdapter<RestaurantFavoris,
+                                                RestaurantFavoritesAdapter.FavorisItemViewholder> {
 
     public interface favoritesClickListener{
         void onClickItemResto(int position);

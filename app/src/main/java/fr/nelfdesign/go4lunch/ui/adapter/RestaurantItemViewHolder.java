@@ -51,15 +51,11 @@ public class RestaurantItemViewHolder extends RecyclerView.ViewHolder implements
         this.mRestaurantName.setText(restaurantDetail.getName());
         this.mCategory.setText(restaurantDetail.getAddress());
 
-        String open;
-
-        if (restaurantDetail.getHour()){
-            open = "Restaurant open";
-        }else{
-            open = "Not open yet";
+        if ((restaurantDetail.getHour())) {
+            this.mHourRestaurant.setText(R.string.restaurant_open);
+        } else {
+            this.mHourRestaurant.setText(R.string.not_open_yet);
         }
-
-        this.mHourRestaurant.setText(open);
 
         // Restaurants images
         if (restaurantDetail.getPhotoReference().isEmpty()){

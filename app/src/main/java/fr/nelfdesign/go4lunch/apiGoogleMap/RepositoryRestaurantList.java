@@ -9,10 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.nelfdesign.go4lunch.BuildConfig;
-import fr.nelfdesign.go4lunch.apiFirebase.RepositoryFirebase;
+import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.models.DetailRestaurant;
 import fr.nelfdesign.go4lunch.models.Restaurant;
-import fr.nelfdesign.go4lunch.models.Workers;
 import fr.nelfdesign.go4lunch.pojos.Detail;
 import fr.nelfdesign.go4lunch.pojos.DetailsResult;
 import fr.nelfdesign.go4lunch.pojos.RestaurantsResult;
@@ -52,12 +51,12 @@ public class RepositoryRestaurantList implements NearbyPlaces {
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.e("error : %s", e.getMessage());
+                        Timber.e(String.valueOf(R.string.error_stream), e.getMessage());
                     }
 
                     @Override
                     public void onComplete() {
-                        Timber.i("on Complete");
+                        Timber.i(String.valueOf(R.string.on_Complete_message));
                     }
                 });
 
@@ -71,7 +70,7 @@ public class RepositoryRestaurantList implements NearbyPlaces {
 
         Map<String, String> parameters = new HashMap<>();
 
-        parameters.put("place_id", placeId);
+        parameters.put("placeid", placeId);
         parameters.put("key", BuildConfig.google_maps_key);
 
         disposable = PlaceStream.streamGetDetailRestaurant(parameters)
@@ -103,12 +102,12 @@ public class RepositoryRestaurantList implements NearbyPlaces {
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.e("error : %s", e.getMessage());
+                        Timber.e(String.valueOf(R.string.error_stream), e.getMessage());
                     }
 
                     @Override
                     public void onComplete() {
-                        Timber.i("on Complete");
+                        Timber.i(String.valueOf(R.string.on_Complete_message));
                     }
                 });
 

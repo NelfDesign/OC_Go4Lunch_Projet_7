@@ -8,6 +8,7 @@ import com.google.firebase.firestore.Query;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.models.Workers;
 
 /**

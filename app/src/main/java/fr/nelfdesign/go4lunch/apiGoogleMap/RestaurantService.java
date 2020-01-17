@@ -2,6 +2,7 @@ package fr.nelfdesign.go4lunch.apiGoogleMap;
 
 import java.util.Map;
 
+import fr.nelfdesign.go4lunch.models.AutocompleteResponse;
 import fr.nelfdesign.go4lunch.pojos.Detail;
 import fr.nelfdesign.go4lunch.pojos.RestaurantsResult;
 import io.reactivex.Observable;
@@ -30,4 +31,7 @@ public interface RestaurantService {
      */
     @GET("details/json?fields=name,rating,formatted_address,formatted_phone_number,photos,website")
     Observable<Detail> getDetailRestaurant(@QueryMap Map<String, String> parameters);
+
+    @GET("autocomplete/json?types=establishment")
+    Observable<AutocompleteResponse> getAutcompleteresponse(@QueryMap Map<String, String> parameters);
 }

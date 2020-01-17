@@ -1,15 +1,14 @@
 package fr.nelfdesign.go4lunch.ui.activity;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,6 +17,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,9 +33,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
+import fr.nelfdesign.go4lunch.BuildConfig;
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
@@ -35,7 +46,6 @@ import fr.nelfdesign.go4lunch.ui.fragments.MapFragment;
 import fr.nelfdesign.go4lunch.ui.fragments.RestaurantListFragment;
 import fr.nelfdesign.go4lunch.ui.fragments.WorkersFragment;
 import fr.nelfdesign.go4lunch.utils.Utils;
-import timber.log.Timber;
 
 import static androidx.core.view.GravityCompat.START;
 
@@ -43,16 +53,14 @@ public class MainActivity extends BaseActivity {
 
     //FIELDS
     private Fragment mFragment;
-    private ImageView mImageViewNav;
-    private TextView mTextViewNavName;
-    private TextView mTextViewNavMail;
     private FirebaseUser user;
+    private PlacesClient placesClient;
+    private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
 
     @BindView(R.id.nav_view) BottomNavigationView navView;
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.drawer_navigation) NavigationView mNavigationView;
-    @BindView(R.id.search_view) SearchView mSearchView;
 
     // base activity method
     @Override
@@ -76,12 +84,18 @@ public class MainActivity extends BaseActivity {
 
         user = this.getCurrentUser();
         configureFragment(mFragment);
-        this.configureToolBar("I'm hungry");
+        this.configureToolBar(getString(R.string.I_m_hungry));
 
         navView.setOnNavigationItemSelectedListener(this::updateMainFragment);
 
         drawerLayoutConfiguration();
         configureNavigationHeader();
+
+        // Initialize the SDK for autocomplete
+        Places.initialize(getApplicationContext(), BuildConfig.google_maps_key);
+
+        // Create a new Places client instance for autocomplete
+        placesClient = Places.createClient(this);
 
     }
 
@@ -95,6 +109,19 @@ public class MainActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.map_Fragment);
         Objects.requireNonNull(fragment).onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == AUTOCOMPLETE_REQUEST_CODE){
+            if(resultCode == RESULT_OK){
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                Intent intent = new Intent(this, RestaurantDetail.class);
+                intent.putExtra("placeId", place.getId());
+                startActivity(intent);
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_query), Toast.LENGTH_LONG).show();
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_query), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
@@ -108,14 +135,29 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.toolbar_search:
-                Timber.i( "Search");
-                mSearchView.setVisibility(View.VISIBLE);
-                break;
+                // Set the fields to specify which types of place data to
+                // return after the user has made a selection.
+                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+
+                // Define the region
+                RectangularBounds bounds = RectangularBounds.newInstance(
+                        new LatLng(47.2184, -1.5536),
+                        new LatLng(47.2205, -1.5435));
+
+                // Start the autocomplete intent.
+                Intent intent = new Autocomplete.IntentBuilder(
+                        AutocompleteActivityMode.OVERLAY, fields)
+                        .setLocationBias(bounds)
+                        .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                        .build(this);
+
+                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
-        return true;
     }
 
     private Boolean updateMainFragment(MenuItem menuItem){
@@ -123,17 +165,17 @@ public class MainActivity extends BaseActivity {
             case R.id.navigation_map:
                 this.mFragment = new MapFragment();
                 configureFragment(mFragment);
-                mToolbar.setTitle("I'm hungry");
+                mToolbar.setTitle(getResources().getString(R.string.I_m_hungry));
                 break;
             case R.id.navigation_list:
                 this.mFragment = new RestaurantListFragment();
                 configureFragment(mFragment);
-                mToolbar.setTitle("I'm hungry");
+                mToolbar.setTitle(getResources().getString(R.string.I_m_hungry));
                 break;
             case R.id.navigation_workers:
                 this.mFragment = new WorkersFragment();
                 configureFragment(mFragment);
-                mToolbar.setTitle("Workers");
+                mToolbar.setTitle(getString(R.string.workers_toolbar));
                 break;
             case R.id.logout:
                 this.signOutCurrentUser();
@@ -158,7 +200,7 @@ public class MainActivity extends BaseActivity {
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                     if (document.get("placeId") != null){
                         Intent intent = new Intent(this.getBaseContext(), RestaurantDetail.class);
-                        intent.putExtra("placeId", document.get("placeId").toString());
+                        intent.putExtra("placeId", Objects.requireNonNull(document.get("placeId")).toString());
                         startActivity(intent);
                     }else {
                         Utils.showSnackBar(this.mDrawerLayout, String.valueOf(R.string.no_choice_restaurant_workers));
@@ -198,9 +240,9 @@ public class MainActivity extends BaseActivity {
         final View headerNav = mNavigationView.getHeaderView(0);
 
         //XML id for update data
-        mImageViewNav = headerNav.findViewById(R.id.image_navDrawer);
-        mTextViewNavName = headerNav.findViewById(R.id.name_text);
-        mTextViewNavMail = headerNav.findViewById(R.id.mail_text);
+        ImageView imageViewNav = headerNav.findViewById(R.id.image_navDrawer);
+        TextView textViewNavName = headerNav.findViewById(R.id.name_text);
+        TextView textViewNavMail = headerNav.findViewById(R.id.mail_text);
 
         if (user != null) {
             // ImageView: User image
@@ -208,7 +250,7 @@ public class MainActivity extends BaseActivity {
                 Glide.with(this)
                         .load(user.getPhotoUrl())
                         .circleCrop()
-                        .into(this.mImageViewNav);
+                        .into(imageViewNav);
             }
 
             // TextView: Username and email
@@ -218,8 +260,8 @@ public class MainActivity extends BaseActivity {
             final String email = TextUtils.isEmpty(user.getEmail()) ? getString(R.string.no_mail_found) :
                     user.getEmail();
 
-            this.mTextViewNavName.setText(username);
-            this.mTextViewNavMail.setText(email);
+            textViewNavName.setText(username);
+            textViewNavMail.setText(email);
         }
     }
 

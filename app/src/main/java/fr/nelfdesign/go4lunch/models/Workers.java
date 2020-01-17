@@ -6,13 +6,10 @@ package fr.nelfdesign.go4lunch.models;
  */
 public class Workers {
 
-    private String uid;
     // Fullname
     private String name;
     // Avatar
     private String avatarUrl;
-    // Restaurant chosen
-    private boolean restaurantChoice;
     // Restaurant name
     private String restaurantName;
     //Restaurant placeId
@@ -25,15 +22,6 @@ public class Workers {
         this.avatarUrl = avatarUrl;
         this.restaurantName = resto;
         this.placeId = placeId;
-        restaurantChoice = false;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 
     public String getPlaceId() {
@@ -48,18 +36,6 @@ public class Workers {
         return restaurantName;
     }
 
-    public void setRestaurantName(String restaurantName) {
-        this.restaurantName = restaurantName;
-    }
-
-    public boolean isRestaurantChoice() {
-        return restaurantChoice;
-    }
-
-    public void setRestaurantChoice(boolean restaurantChoice) {
-        this.restaurantChoice = restaurantChoice;
-    }
-
     public String getName() {
         return name;
     }
@@ -72,7 +48,4 @@ public class Workers {
         return avatarUrl;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
 }

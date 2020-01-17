@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Go4Lunch</string>
+    <string name="I_m_hungry">J\'ai faim</string>
+    <string name="call">Téléphone</string>
+    <string name="chosen_restaurant">Vous avez choisi ce restaurant</string>
+    <string name="connection_succeed">Authentification réussie !</string>
+    <string name="email">Email</string>
+    <string name="error_authentication_canceled">Authentification annulée !</string>
+    <string name="error_no_internet">Pas de connection internet !</string>
+    <string name="error_not_connected">Vous devez être connecté !</string>
+    <string name="error_query">Problême d\'acquisition de documents</string>
+    <string name="error_stream">erreur</string>
+    <string name="error_unknown_error">une erreur est apparue</string>
+    <string name="facebook">Facebook</string>
+    <string name="favorite_restaurant_message">Restaurant ajouté à votre liste de restaurant</string>
+    <string name="favorites_restaurant">Mes restaurants favoris</string>
+    <string name="go4lunch">Go4Lunch</string>
+    <string name="google">Google</string>
+    <string name="like">LIKE</string>
+    <string name="logout">Déconnection</string>
+    <string name="my_position">Ma position</string>
+    <string name="navigation_drawer_close">Fermer la fenêtre de navigation</string>
+    <string name="navigation_drawer_open">Ouvrir la fenêtre de navigation</string>
+    <string name="no_choice_restaurant_workers">Vous n\'avez pas choisi de restaurant</string>
+    <string name="no_mail_found">Pas de mail trouvé</string>
+    <string name="no_name_found">Nom incorrect</string>
+    <string name="no_telephone_number_for_this_restaurant">Pas de téléphone renseigné pour ce restaurant.</string>
+    <string name="no_website_for_restaurant">Pas de site internet pour ce restaurant.</string>
+    <string name="not_open_yet">Pas encore ouvert</string>
+    <string name="on_Complete_message">Traitement complet</string>
+    <string name="permission_denied">Permission refusée</string>
+    <string name="restaurant_image">Image du restaurant</string>
+    <string name="restaurant_open">Restaurant ouvert</string>
+    <string name="settings">Paramètres</string>
+    <string name="slogan">Trouvez un restaurant pour déjeuner avec vos collègues !!</string>
+    <string name="title_list">Vue listée</string>
+    <string name="title_map">Carte</string>
+    <string name="title_search">Recherche</string>
+    <string name="title_workers">Collègues</string>
+    <string name="twitter">Twitter</string>
+    <string name="web_site">Site internet</string>
+    <string name="workers_toolbar">Collègues</string>
+    <string name="your_favorite">Vos favoris</string>
+    <string name="your_lunch">Votre choix de restaurant</string>
+</resources>

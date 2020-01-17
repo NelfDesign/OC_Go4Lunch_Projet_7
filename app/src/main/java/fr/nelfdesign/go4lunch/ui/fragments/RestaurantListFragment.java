@@ -48,7 +48,8 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
     private LatLng currentPosition;
     private FusedLocationProviderClient mFusedLocationClient;
     private ArrayList<Workers> mWorkersArrayList;
-    private RestaurantListAdapter adapter;
+
+    final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
 
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
@@ -74,7 +75,7 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
 
         ButterKnife.bind(this, view);
 
-        final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
+
         workersRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
             mWorkersArrayList = new ArrayList<>();
             for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
@@ -92,6 +93,13 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
         return view;
     }
 
+    //TODO voir Virgile
+    @Override
+    public void onResume() {
+        super.onResume();
+        initRestaurantList();
+    }
+
     private void initRestaurantList() {
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(Objects.requireNonNull(getActivity()), location -> {
@@ -100,7 +108,7 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
                         currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
                         //observe restaurants data
                         mMapViewModel.getAllRestaurants(currentPosition)
-                                .observe(Objects.requireNonNull(this), this::initListAdapter);
+                                .observe(Objects.requireNonNull(this.getActivity()), this::initListAdapter);
 
                     }
                 });
@@ -109,7 +117,7 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
     private void initListAdapter(ArrayList<Restaurant> restaurants) {
         mRestaurants = Utils.getChoicedRestaurants(restaurants, mWorkersArrayList);
         getDistanceFromMyPosition(mRestaurants);
-        adapter = new RestaurantListAdapter(mRestaurants, Glide.with(this), this);
+        RestaurantListAdapter adapter = new RestaurantListAdapter(mRestaurants, Glide.with(this), this);
         mRecyclerView.setAdapter(adapter);
     }
 
