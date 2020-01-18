@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -59,6 +60,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private MapViewModel mMapViewModel;
     private LatLng lastPosition;
     private ArrayList<Workers> mWorkersArrayList;
+    private ListenerRegistration mListenerRegistration = null;
 
 
     public MapFragment() { }
@@ -81,9 +83,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         // Location Services
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getContext()));
+
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         //init map
         initMap();
-        return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mListenerRegistration != null){
+            mListenerRegistration.remove();
+        }
     }
 
     /**
@@ -117,14 +133,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }).check();
 
         final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
-        workersRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
+        mListenerRegistration = workersRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
             mWorkersArrayList = new ArrayList<>();
-            for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
+            if (queryDocumentSnapshots != null){
+                for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
 
-                if(data.get("restaurantName") != null){
-                    Workers workers = data.toObject(Workers.class);
-                    mWorkersArrayList.add(workers);
-                    Timber.i("snap workers : %s", mWorkersArrayList.size());
+                    if(data.get("restaurantName") != null){
+                        Workers workers = data.toObject(Workers.class);
+                        mWorkersArrayList.add(workers);
+                        Timber.i("snap workers : %s", mWorkersArrayList.size());
+                    }
                 }
             }
         });

@@ -7,9 +7,10 @@
 
     <color name="colorAccent">#69F0AE</color>
 
-    <color name="background">#E09e9e9e</color>
+    <color name="background">#D3D1D1</color>
+    <color name="color_workers">#BEBDBD</color>
 
-    <!-- Alpha Color -->
+    <!-- Connexion Color -->
 
     <color name="restaurant_card_status_bar">#000000</color>
 

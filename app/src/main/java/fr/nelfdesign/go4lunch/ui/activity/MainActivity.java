@@ -2,6 +2,7 @@ package fr.nelfdesign.go4lunch.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -183,12 +184,19 @@ public class MainActivity extends BaseActivity {
             case R.id.nav_lunch:
                 this.showMyrestaurantChoice();
                 break;
+            case R.id.nav_settings:
+                this.startActivitySettings();
         }
         // Closes the DrawerNavigationView when the user click on an item
         if (this.mDrawerLayout.isDrawerOpen(START)) {
             this.mDrawerLayout.closeDrawer(START);
         }
         return true;
+    }
+
+    private void startActivitySettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     private void showMyrestaurantChoice() {

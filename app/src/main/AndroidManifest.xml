@@ -4,12 +4,11 @@
     package="fr.nelfdesign.go4lunch">
     <!-- permission for internet -->
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- permission for location
-        It's not necessary to ask for COARSE LOCATION because we have the FINE LOCATION PERMISSION -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <!-- permission call -->
+    <!--
+ permission for location
+        It's not necessary to ask for COARSE LOCATION because we have the FINE LOCATION PERMISSION
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- permission call -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
@@ -21,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".ui.activity.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -46,9 +48,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.MainActivity" />
         </activity>
-
         <activity android:name=".ui.activity.FavoritesRestaurant" />
-
     </application>
 
 </manifest>

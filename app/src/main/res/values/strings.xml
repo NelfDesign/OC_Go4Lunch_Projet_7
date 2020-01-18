@@ -75,5 +75,19 @@
     <string name="permission_denied">Permission denied</string>
     <string name="my_position">My position</string>
 
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Notifications</string>
+    <string name="location">Location</string>
+    <string name="choose_options">Choose your options</string>
+
+    <!-- Sync Preferences -->
+    <string name="enable_notification">Enable notifications</string>
+    <string name="enable_location">Enable geolocate</string>
+    <string name="define_map_zoom">Define map zoom</string>
+    <string name="is_eating_at"> is eating at \n</string>
+    <string name="hasn_t_decided"> hasn\'t decided yet</string>
+
 
 </resources>

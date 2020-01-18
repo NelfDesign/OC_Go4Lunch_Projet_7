@@ -1,0 +1,32 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/messages_header">
+
+        <SwitchPreferenceCompat
+            app:key="notification_firebase"
+            app:title="@string/enable_notification"
+            app:icon="@drawable/ic_notifications_black_24dp"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/location">
+
+        <SwitchPreferenceCompat
+            app:key="notification"
+            app:title="@string/enable_location"
+            app:icon="@drawable/ic_location_on_black_24dp"/>
+
+    </PreferenceCategory>
+
+   <PreferenceCategory app:title="@string/choose_options">
+
+        <ListPreference
+            app:key="zoom_key"
+            app:title="@string/define_map_zoom"
+            app:summary="Define your favorite default map zoom"
+            app:entries="@array/zoom_entries"
+            app:entryValues="@array/zoom_values"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

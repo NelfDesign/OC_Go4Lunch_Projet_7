@@ -53,6 +53,7 @@ public class DetailWorkerAdapter extends RecyclerView.Adapter<DetailWorkerAdapte
     public void onBindViewHolder(@NonNull DetailViewHolder holder, int position) {
         Workers workers = mWorkers.get(position);
 
+
         holder.mTextView.setText(workers.getName());
 
         Glide.with(holder.mImageView.getContext())

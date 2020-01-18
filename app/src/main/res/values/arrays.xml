@@ -1,0 +1,17 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="zoom_entries">
+        <item>High</item>
+        <item>Medium</item>
+        <item>Less</item>
+        <item>Default</item>
+    </string-array>
+
+    <string-array name="zoom_values">
+        <item>15f</item>
+        <item>12f</item>
+        <item>9f</item>
+        <item>14f</item>
+    </string-array>
+
+</resources>

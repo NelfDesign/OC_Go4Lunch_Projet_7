@@ -43,4 +43,13 @@
     <string name="workers_toolbar">Collègues</string>
     <string name="your_favorite">Vos favoris</string>
     <string name="your_lunch">Votre choix de restaurant</string>
+    <string name="messages_header">Notifications</string>
+    <string name="title_activity_settings">Paramètres</string>
+    <string name="enable_notification">Autoriser les notifications</string>
+    <string name="location">Géolocalisation</string>
+    <string name="enable_location">Autoriser la géolocalisation.</string>
+    <string name="choose_options">Choisissez vos options :</string>
+    <string name="define_map_zoom">Définir le niveau de zoom de la carte</string>
+    <string name="hasn_t_decided">\n n\'a pas encore décidé.</string>
+    <string name="is_eating_at">" mange à \n"</string>
 </resources>

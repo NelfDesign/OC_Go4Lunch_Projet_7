@@ -31,6 +31,7 @@
             android:layout_marginStart="24dp"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:maxLines="2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/worker_avatar"
             app:layout_constraintTop_toTopOf="parent"

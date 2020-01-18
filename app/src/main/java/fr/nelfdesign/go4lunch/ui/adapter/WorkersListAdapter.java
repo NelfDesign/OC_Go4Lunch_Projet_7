@@ -1,5 +1,8 @@
 package fr.nelfdesign.go4lunch.ui.adapter;
 
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +20,11 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fr.nelfdesign.go4lunch.R;
+import fr.nelfdesign.go4lunch.R.color;
 import fr.nelfdesign.go4lunch.models.Workers;
+import io.opencensus.resource.Resource;
+
+import static fr.nelfdesign.go4lunch.R.color.background;
 
 /**
  * Created by Nelfdesign at 17/12/2019
@@ -66,7 +73,16 @@ public class WorkersListAdapter extends FirestoreRecyclerAdapter<Workers, Worker
 
     @Override
     protected void onBindViewHolder(@NonNull WorkersItemViewholder holder, int i, @NonNull Workers workers) {
-        holder.mTextView.setText(workers.getName());
+        Resources resource = holder.itemView.getContext().getResources();
+        String text;
+        if (!workers.getRestaurantName().equals("")){
+            text = workers.getName() + " " + resource.getString(R.string.is_eating_at) + workers.getRestaurantName();
+        }else{
+            text = workers.getName() + " " + resource.getString(R.string.hasn_t_decided);
+            holder.mTextView.setTextColor(resource.getColor(color.color_workers));
+        }
+        holder.mTextView.setText(text);
+
 
         Glide.with(holder.mImageView.getContext())
                 .load(workers.getAvatarUrl())

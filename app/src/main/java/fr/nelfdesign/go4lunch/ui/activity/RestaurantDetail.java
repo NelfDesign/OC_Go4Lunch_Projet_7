@@ -27,6 +27,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -54,8 +55,9 @@ public class RestaurantDetail extends BaseActivity {
     private String websiteUrl;
     private ArrayList<Workers> mWorkers;
     private ArrayList<RestaurantFavoris> mRestaurantFavorises;
-    String nameResto;
-    String placeId;
+    private ListenerRegistration mListenerRegistration = null;
+    private String nameResto;
+    private String placeId;
 
     @BindView(R.id.coordinator_detail) CoordinatorLayout mCoordinatorLayout;
     @BindView(R.id.toolbarDetails) Toolbar mToolbar;
@@ -118,21 +120,25 @@ public class RestaurantDetail extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        if (mListenerRegistration != null){
+            mListenerRegistration.remove();
+        }
     }
 
     private void updateUi(DetailRestaurant detailRestaurant) {
         //listen change on worker list
         final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
-        workersRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
+       mListenerRegistration = workersRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
             mWorkers = new ArrayList<>();
-            for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
+            if (queryDocumentSnapshots != null){
+                for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
 
-                if (Objects.requireNonNull(data.get("restaurantName")).toString().equals(detailRestaurant.getName())) {
+                    if (Objects.requireNonNull(data.get("restaurantName")).toString().equals(detailRestaurant.getName())) {
 
-                    Workers workers = data.toObject(Workers.class);
-                    mWorkers.add(workers);
-                    Timber.i("snap workers : %s", mWorkers.size());
+                        Workers workers = data.toObject(Workers.class);
+                        mWorkers.add(workers);
+                        Timber.i("snap workers : %s", mWorkers.size());
+                    }
                 }
             }
             initAdapter(mWorkers);

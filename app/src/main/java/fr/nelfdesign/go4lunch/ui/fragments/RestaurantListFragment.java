@@ -20,6 +20,10 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -30,6 +34,7 @@ import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
 import fr.nelfdesign.go4lunch.models.Restaurant;
 import fr.nelfdesign.go4lunch.models.Workers;
+import fr.nelfdesign.go4lunch.ui.activity.MainActivity;
 import fr.nelfdesign.go4lunch.ui.activity.RestaurantDetail;
 import fr.nelfdesign.go4lunch.ui.adapter.RestaurantListAdapter;
 import fr.nelfdesign.go4lunch.ui.viewModels.MapViewModel;
@@ -48,8 +53,10 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
     private LatLng currentPosition;
     private FusedLocationProviderClient mFusedLocationClient;
     private ArrayList<Workers> mWorkersArrayList;
+    private RestaurantListAdapter adapter;
 
     final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
+    private ListenerRegistration mListenerRegistration = null;
 
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
@@ -75,32 +82,39 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
 
         ButterKnife.bind(this, view);
 
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        return view;
+    }
 
+   @Override
+    public void onStart() {
+        super.onStart();
+        initRestaurantList();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (mListenerRegistration != null){
+            mListenerRegistration.remove();
+        }
+    }
+
+    private void initRestaurantList() {
         workersRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
             mWorkersArrayList = new ArrayList<>();
-            for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
+            if(queryDocumentSnapshots != null){
+                for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
 
-                if(data.get("restaurantName") != null){
-                    Workers workers = data.toObject(Workers.class);
-                    mWorkersArrayList.add(workers);
-                    Timber.i("snap workers List Restaurant : %s", mWorkersArrayList.size());
+                    if (data.get("restaurantName") != null) {
+                        Workers workers = data.toObject(Workers.class);
+                        mWorkersArrayList.add(workers);
+                        Timber.i("snap workers List Restaurant : %s", mWorkersArrayList.size());
+                    }
                 }
             }
         });
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        initRestaurantList();
-        return view;
-    }
-
-    //TODO voir Virgile
-    @Override
-    public void onResume() {
-        super.onResume();
-        initRestaurantList();
-    }
-
-    private void initRestaurantList() {
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(Objects.requireNonNull(getActivity()), location -> {
                     if (location != null) {
@@ -117,7 +131,7 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
     private void initListAdapter(ArrayList<Restaurant> restaurants) {
         mRestaurants = Utils.getChoicedRestaurants(restaurants, mWorkersArrayList);
         getDistanceFromMyPosition(mRestaurants);
-        RestaurantListAdapter adapter = new RestaurantListAdapter(mRestaurants, Glide.with(this), this);
+        adapter = new RestaurantListAdapter(mRestaurants, Glide.with(this), this);
         mRecyclerView.setAdapter(adapter);
     }
 
