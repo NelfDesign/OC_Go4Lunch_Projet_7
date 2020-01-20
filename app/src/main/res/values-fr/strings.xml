@@ -52,4 +52,16 @@
     <string name="define_map_zoom">Définir le niveau de zoom de la carte</string>
     <string name="hasn_t_decided">\n n\'a pas encore décidé.</string>
     <string name="is_eating_at">" mange à \n"</string>
+    <string name="is_joining">se joint à vous!</string>
+    <string name="zoom_level">"  niveau de zoom"</string>
+    <string name="define_your_radius_search">Définir votre rayon de recherche de restaurant</string>
+    <string name="meters_radius">" mètres de zone de recherche"</string>
+    <string name="define_establishment">Définissez votre type d\'établissements recherchés</string>
+    <string name="define_favorite_map_radius">Définissez votre périmètre de recherche</string>
+    <string name="define_favorite_type">Définissez votre type d\'établissements recherchés</string>
+    <string name="define_map_settings">Définissez les paramètres de la carte</string>
+    <string name="map_settings">Paramètres de la carte</string>
+    <string name="notification_header">Notifications</string>
+    <string name="set_notification_rules">Définissez vos paramètres de notifications</string>
+    <string name="type_establishment_search">Recherche par </string>
 </resources>

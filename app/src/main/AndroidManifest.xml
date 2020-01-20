@@ -20,9 +20,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity
-            android:name=".ui.activity.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -49,6 +46,9 @@
                 android:value=".ui.activity.MainActivity" />
         </activity>
         <activity android:name=".ui.activity.FavoritesRestaurant" />
+        <activity
+            android:name=".settings.activity.SettingsActivity"
+            android:label="@string/title_activity_settings" />
     </application>
 
 </manifest>

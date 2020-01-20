@@ -31,8 +31,8 @@ public class MapViewModel extends ViewModel {
     }
 
 
-    public MutableLiveData<ArrayList<Restaurant>> getAllRestaurants(LatLng latLng){
-        return this.mRepositoryRestaurantList.configureRetrofitCall(latLng);
+    public MutableLiveData<ArrayList<Restaurant>> getAllRestaurants(LatLng latLng, String radius, String type){
+        return this.mRepositoryRestaurantList.configureRetrofitCall(latLng, radius, type);
     }
 
     public MutableLiveData<DetailRestaurant> getDetailRestaurant(String placeId){

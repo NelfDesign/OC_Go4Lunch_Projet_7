@@ -1,5 +1,6 @@
 package fr.nelfdesign.go4lunch.ui.adapter;
 
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,9 +53,10 @@ public class DetailWorkerAdapter extends RecyclerView.Adapter<DetailWorkerAdapte
     @Override
     public void onBindViewHolder(@NonNull DetailViewHolder holder, int position) {
         Workers workers = mWorkers.get(position);
+        Resources resources = holder.itemView.getResources();
 
-
-        holder.mTextView.setText(workers.getName());
+        String text = workers.getName() + resources.getString(R.string.is_joining);
+        holder.mTextView.setText(text);
 
         Glide.with(holder.mImageView.getContext())
                 .load(workers.getAvatarUrl())

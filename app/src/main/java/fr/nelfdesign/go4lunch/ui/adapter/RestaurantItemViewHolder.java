@@ -48,7 +48,14 @@ public class RestaurantItemViewHolder extends RecyclerView.ViewHolder implements
 
     void updateWithDetailRestaurant(Restaurant restaurantDetail, RequestManager glide){
 
-        this.mRestaurantName.setText(restaurantDetail.getName());
+        String name;
+        if (restaurantDetail.getName().length() > 20){
+            name = restaurantDetail.getName().substring(0, 23) + " ...";
+        } else {
+            name = restaurantDetail.getName();
+        }
+
+        this.mRestaurantName.setText(name);
         this.mCategory.setText(restaurantDetail.getAddress());
 
         if ((restaurantDetail.getHour())) {

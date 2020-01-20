@@ -17,7 +17,7 @@ import fr.nelfdesign.go4lunch.models.Restaurant;
  */
 public interface NearbyPlaces {
 
-    MutableLiveData<ArrayList<Restaurant>> configureRetrofitCall(LatLng latLng);
+    MutableLiveData<ArrayList<Restaurant>> configureRetrofitCall(LatLng latLng, String radius, String type);
 
     LiveData<DetailRestaurant> configureDetailRestaurant(String placeId);
 

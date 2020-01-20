@@ -1,0 +1,28 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/choose_options">
+
+        <ListPreference
+            app:key="zoom_key"
+            app:title="@string/define_map_zoom"
+            app:summary="Define your favorite default map zoom"
+            app:entries="@array/zoom_entries"
+            app:entryValues="@array/zoom_values"/>
+
+       <ListPreference
+           app:key="radius_key"
+           app:title="@string/define_your_radius_search"
+           app:summary="@string/define_favorite_map_radius"
+           app:entries="@array/radius_entries"
+           app:entryValues="@array/radius_values"/>
+
+        <ListPreference
+            app:key="type_key"
+            app:title="@string/define_establishment"
+            app:summary="@string/define_favorite_type"
+            app:entries="@array/type_entries"
+            app:entryValues="@array/type_values"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

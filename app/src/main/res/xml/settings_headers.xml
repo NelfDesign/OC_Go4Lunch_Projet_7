@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:fragment="fr.nelfdesign.go4lunch.settings.activity.fragments.NotificationsFragment"
+        android:title="@string/notification_header"
+        android:summary="@string/set_notification_rules"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        />
+
+    <Preference
+        android:fragment="fr.nelfdesign.go4lunch.settings.activity.fragments.MapsSettingsFragment"
+        android:title="@string/map_settings"
+        android:summary="@string/define_map_settings"
+        android:icon="@drawable/ic_location_on_black_24dp"
+        />
+
+</PreferenceScreen>

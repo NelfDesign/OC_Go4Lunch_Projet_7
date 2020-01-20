@@ -1,6 +1,9 @@
 package fr.nelfdesign.go4lunch.apiGoogleMap;
 
+import android.content.SharedPreferences;
+
 import androidx.lifecycle.MutableLiveData;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -31,12 +34,14 @@ public class RepositoryRestaurantList implements NearbyPlaces {
     private Disposable disposable;
 
     @Override
-    public MutableLiveData<ArrayList<Restaurant>> configureRetrofitCall(LatLng latLng) {
+    public MutableLiveData<ArrayList<Restaurant>> configureRetrofitCall(LatLng latLng, String radius, String type) {
 
         mRestaurantList = new MutableLiveData<>();
 
         Map<String, String> parameters = new HashMap<>();
         parameters.put("location", latLng.latitude + ","+ latLng.longitude );
+        parameters.put("radius", radius );
+        parameters.put("type", type);
         parameters.put("key", BuildConfig.google_maps_key);
 
         disposable = PlaceStream.streamGetNearByRestaurant(parameters)

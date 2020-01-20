@@ -8,10 +8,42 @@
     </string-array>
 
     <string-array name="zoom_values">
-        <item>15f</item>
-        <item>12f</item>
-        <item>9f</item>
-        <item>14f</item>
+        <item>High</item>
+        <item>Medium</item>
+        <item>Less</item>
+        <item>Default</item>
+    </string-array>
+
+    <string-array name="radius_entries">
+        <item>Radius 5000 m</item>
+        <item>Radius 3000 m</item>
+        <item>Radius 2000 m</item>
+        <item>Radius 1000 m</item>
+        <item>Radius 500 m</item>
+    </string-array>
+
+    <string-array name="radius_values">
+        <item>5000</item>
+        <item>3000</item>
+        <item>2000</item>
+        <item>1000</item>
+        <item>500</item>
+    </string-array>
+
+    <string-array name="type_entries">
+        <item>restaurant</item>
+        <item>bar</item>
+        <item>hotel</item>
+        <item>food</item>
+        <item>cafe</item>
+    </string-array>
+
+    <string-array name="type_values">
+        <item>restaurant</item>
+        <item>bar</item>
+        <item>hotel</item>
+        <item>food</item>
+        <item>cafe</item>
     </string-array>
 
 </resources>

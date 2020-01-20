@@ -21,7 +21,8 @@ public interface RestaurantService {
      * @param parameters map of parameters
      * @return Observable Restaurant result
      */
-    @GET("nearbysearch/json?radius=2500&type=restaurant")
+    //radius=2500&
+    @GET("nearbysearch/json?")
     Observable<RestaurantsResult> getNearByRestaurant(@QueryMap Map<String, String> parameters);
 
     /**
@@ -31,7 +32,4 @@ public interface RestaurantService {
      */
     @GET("details/json?fields=name,rating,formatted_address,formatted_phone_number,photos,website")
     Observable<Detail> getDetailRestaurant(@QueryMap Map<String, String> parameters);
-
-    @GET("autocomplete/json?types=establishment")
-    Observable<AutocompleteResponse> getAutcompleteresponse(@QueryMap Map<String, String> parameters);
 }

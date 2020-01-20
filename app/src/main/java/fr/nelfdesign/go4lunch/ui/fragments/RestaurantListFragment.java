@@ -2,6 +2,7 @@ package fr.nelfdesign.go4lunch.ui.fragments;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,10 +12,12 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.share.Share;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
@@ -55,6 +58,8 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
     private ArrayList<Workers> mWorkersArrayList;
     private RestaurantListAdapter adapter;
 
+    private static final String PREF_RADIUS = "radius_key";
+    private static final String PREF_TYPE = "type_key";
     final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
     private ListenerRegistration mListenerRegistration = null;
 
@@ -93,8 +98,8 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroy() {
+        super.onDestroy();
         if (mListenerRegistration != null){
             mListenerRegistration.remove();
         }
@@ -115,13 +120,16 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
             }
         });
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(this.getContext()));
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(Objects.requireNonNull(getActivity()), location -> {
                     if (location != null) {
                         // get the location phone
                         currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
                         //observe restaurants data
-                        mMapViewModel.getAllRestaurants(currentPosition)
+                        mMapViewModel.getAllRestaurants(currentPosition,
+                                                        sharedPreferences.getString(PREF_RADIUS, ""),
+                                                        sharedPreferences.getString(PREF_TYPE, "restaurant"))
                                 .observe(Objects.requireNonNull(this.getActivity()), this::initListAdapter);
 
                     }

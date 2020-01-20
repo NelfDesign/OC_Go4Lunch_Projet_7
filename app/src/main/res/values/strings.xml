@@ -88,6 +88,16 @@
     <string name="define_map_zoom">Define map zoom</string>
     <string name="is_eating_at"> is eating at \n</string>
     <string name="hasn_t_decided"> hasn\'t decided yet</string>
-
+    <string name="is_joining"> is joining!</string>
+    <string name="zoom_level"> zoom level</string>
+    <string name="define_your_radius_search">Define your radius restaurant search</string>
+    <string name="meters_radius"> meters radius search restaurant</string>
+    <string name="notification_header">Notification</string>
+    <string name="set_notification_rules">Set notifications configuration</string>
+    <string name="map_settings">Map settings</string>
+    <string name="define_map_settings">Define your own map settings</string>
+    <string name="define_establishment">Define your establishment type search</string>
+    <string name="define_favorite_map_radius">Define your favorite default map radius search</string>
+    <string name="define_favorite_type">Define your favorite establishment type search</string>
 
 </resources>

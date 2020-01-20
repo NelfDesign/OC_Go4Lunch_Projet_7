@@ -2,6 +2,7 @@ package fr.nelfdesign.go4lunch.ui.fragments;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -62,6 +64,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private ArrayList<Workers> mWorkersArrayList;
     private ListenerRegistration mListenerRegistration = null;
 
+    private static final String PREF_ZOOM = "zoom_key";
+    private static final String PREF_RADIUS = "radius_key";
+    private static final String PREF_TYPE = "type_key";
 
     public MapFragment() { }
 
@@ -73,6 +78,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 .mapType(GoogleMap.MAP_TYPE_NORMAL)
                 .zoomControlsEnabled(true)
                 .zoomGesturesEnabled(true);
+
     }
 
     @Override
@@ -112,6 +118,41 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(Objects.requireNonNull(this.getContext()), R.raw.maps_style));
         Timber.i("Map ready");
 
+        final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
+        mListenerRegistration = workersRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
+            mWorkersArrayList = new ArrayList<>();
+            if (queryDocumentSnapshots != null){
+                for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
+
+                    if(data.get("restaurantName") != null){
+                        Workers workers = data.toObject(Workers.class);
+                        mWorkersArrayList.add(workers);
+                        Timber.i("snap workers : %s", mWorkersArrayList.size());
+                    }
+                }
+            }
+        });
+
+        getLocationPermission();
+
+        mMapViewModel = ViewModelProviders.of(Objects.requireNonNull(this.getActivity())).get(MapViewModel.class);
+
+    }
+
+    private void getUserLocation() {
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(Objects.requireNonNull(getActivity()), location -> {
+                    if (location != null) {
+                        // get the location phone
+                        lastPosition = new LatLng(location.getLatitude(), location.getLongitude());
+                        Timber.i("LastLocation : %s", lastPosition.latitude);
+                        //Update UI with information
+                        updateUiMap(lastPosition);
+                    }
+                });
+    }
+
+    private void getLocationPermission(){
         Dexter.withActivity(getActivity())
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(new PermissionListener() {
@@ -131,37 +172,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     }
                 }).check();
-
-        final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
-        mListenerRegistration = workersRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
-            mWorkersArrayList = new ArrayList<>();
-            if (queryDocumentSnapshots != null){
-                for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
-
-                    if(data.get("restaurantName") != null){
-                        Workers workers = data.toObject(Workers.class);
-                        mWorkersArrayList.add(workers);
-                        Timber.i("snap workers : %s", mWorkersArrayList.size());
-                    }
-                }
-            }
-        });
-
-        mMapViewModel = ViewModelProviders.of(Objects.requireNonNull(this.getActivity())).get(MapViewModel.class);
-
-    }
-
-    private void getUserLocation() {
-        mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(Objects.requireNonNull(getActivity()), location -> {
-                    if (location != null) {
-                        // get the location phone
-                        lastPosition = new LatLng(location.getLatitude(), location.getLongitude());
-                        Timber.i("LastLocation : %s", lastPosition.latitude);
-                        //Update UI with information
-                        updateUiMap(lastPosition);
-                    }
-                });
     }
 
     //initialisation de la carte
@@ -242,12 +252,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         createUserMarker(mMapViewModel.generateUserPoi(latLng.latitude, latLng.longitude),
                 mGoogleMap);
         //move camera to user position
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(this.getContext()));
+        float zoom;
+        switch (sharedPreferences.getString(PREF_ZOOM, "")){
+            case "High":
+                zoom = 15f;
+                break;
+            case "Medium":
+                zoom = 13f;
+                break;
+            case "Less" :
+                zoom = 9f;
+                break;
+                default:
+                    zoom = 10f;
+        }
+
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
         //set my position and enable position button
         mGoogleMap.setMyLocationEnabled(true);
         //observe ViewModel restaurants data
-        mMapViewModel.getAllRestaurants(latLng).observe(Objects.requireNonNull(this.getActivity()),
-                this::generatePoisRestaurant);
+        mMapViewModel.getAllRestaurants(latLng,
+                                        sharedPreferences.getString(PREF_RADIUS,""),
+                                        sharedPreferences.getString(PREF_TYPE, ""))
+                .observe(Objects.requireNonNull(this.getActivity()), this::generatePoisRestaurant);
     }
 
     /**

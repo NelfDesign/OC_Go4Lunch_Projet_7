@@ -2,7 +2,6 @@ package fr.nelfdesign.go4lunch.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,6 +42,7 @@ import fr.nelfdesign.go4lunch.BuildConfig;
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
+import fr.nelfdesign.go4lunch.settings.activity.SettingsActivity;
 import fr.nelfdesign.go4lunch.ui.fragments.MapFragment;
 import fr.nelfdesign.go4lunch.ui.fragments.RestaurantListFragment;
 import fr.nelfdesign.go4lunch.ui.fragments.WorkersFragment;
