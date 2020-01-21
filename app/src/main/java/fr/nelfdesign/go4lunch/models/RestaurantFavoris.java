@@ -6,13 +6,15 @@ package fr.nelfdesign.go4lunch.models;
  */
 public class RestaurantFavoris {
 
+    private String uid;
     private String name;
     private String placeId;
     private String address;
     private String photoReference;
     private double rating;
 
-    public RestaurantFavoris(String name, String placeId, String address, String photoReference, double rating) {
+    public RestaurantFavoris(String uid, String name, String placeId, String address, String photoReference, double rating) {
+        this.uid = uid;
         this.name = name;
         this.placeId = placeId;
         this.address = address;
@@ -23,6 +25,14 @@ public class RestaurantFavoris {
     // constructor needed to firebase
     public RestaurantFavoris(){
 
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getName() {

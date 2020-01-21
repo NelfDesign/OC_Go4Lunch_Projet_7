@@ -17,7 +17,7 @@
     <string name="favorites_restaurant">Mes restaurants favoris</string>
     <string name="go4lunch">Go4Lunch</string>
     <string name="google">Google</string>
-    <string name="like">LIKE</string>
+    <string name="like">Ajouter aux favoris</string>
     <string name="logout">Déconnection</string>
     <string name="my_position">Ma position</string>
     <string name="navigation_drawer_close">Fermer la fenêtre de navigation</string>
@@ -41,7 +41,6 @@
     <string name="twitter">Twitter</string>
     <string name="web_site">Site internet</string>
     <string name="workers_toolbar">Collègues</string>
-    <string name="your_favorite">Vos favoris</string>
     <string name="your_lunch">Votre choix de restaurant</string>
     <string name="messages_header">Notifications</string>
     <string name="title_activity_settings">Paramètres</string>
@@ -52,7 +51,7 @@
     <string name="define_map_zoom">Définir le niveau de zoom de la carte</string>
     <string name="hasn_t_decided">\n n\'a pas encore décidé.</string>
     <string name="is_eating_at">" mange à \n"</string>
-    <string name="is_joining">se joint à vous!</string>
+    <string name="is_joining"> se joint à vous!</string>
     <string name="zoom_level">"  niveau de zoom"</string>
     <string name="define_your_radius_search">Définir votre rayon de recherche de restaurant</string>
     <string name="meters_radius">" mètres de zone de recherche"</string>
@@ -63,5 +62,10 @@
     <string name="map_settings">Paramètres de la carte</string>
     <string name="notification_header">Notifications</string>
     <string name="set_notification_rules">Définissez vos paramètres de notifications</string>
-    <string name="type_establishment_search">Recherche par </string>
+    <string name="your_favorite_restaurants">Vos restaurants favoris</string>
+    <string name="dislike">Retirer des favoris</string>
+    <string name="restaurant_delete">Restaurant supprimé de votre liste de favoris</string>
+    <string name="notification_title">Vous avez reçu une notification</string>
+    <string name="you_haven_t_choice_restaurant">Vous n\'avez pas choisis de restaurant</string>
+    <string name="message_from_go4lunch">Message de Go4lunch</string>
 </resources>

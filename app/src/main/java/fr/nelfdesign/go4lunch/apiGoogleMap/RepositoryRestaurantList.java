@@ -84,24 +84,25 @@ public class RepositoryRestaurantList implements NearbyPlaces {
                     public void onNext(Detail detail) {
                         if (detail != null) {
                             DetailsResult detailsResult = detail.getResult();
+                            if (detailsResult != null){
+                                String photo;
+                                if (detailsResult.getPhotos() == null){
+                                    photo = "";
+                                }else {
+                                    photo = detailsResult.getPhotos().get(0).getPhotoReference();
+                                }
 
-                            String photo;
-                            if (detailsResult.getPhotos() == null){
-                                photo = "";
-                            }else {
-                                photo = detailsResult.getPhotos().get(0).getPhotoReference();
+                                DetailRestaurant restaurant = new DetailRestaurant(
+                                        detailsResult.getFormattedAddress(),
+                                        detailsResult.getFormattedPhoneNumber(),
+                                        detailsResult.getName(),
+                                        detailsResult.getPlaceId(),
+                                        photo,
+                                        (detailsResult.getRating() != null)? detailsResult.getRating() : 0,
+                                        detailsResult.getWebsite()
+                                );
+                                mDetailRestaurantLiveData.setValue(restaurant);
                             }
-
-                            DetailRestaurant restaurant = new DetailRestaurant(
-                                    detailsResult.getFormattedAddress(),
-                                    detailsResult.getFormattedPhoneNumber(),
-                                    detailsResult.getName(),
-                                    detailsResult.getPlaceId(),
-                                    photo,
-                                    (detailsResult.getRating() != null)? detailsResult.getRating() : 0,
-                                    detailsResult.getWebsite()
-                            );
-                            mDetailRestaurantLiveData.setValue(restaurant);
                         }
                     }
 

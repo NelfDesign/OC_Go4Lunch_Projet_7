@@ -201,29 +201,36 @@ public class RestaurantDetail extends BaseActivity {
         //configure click on like star
         final Query refResto = RestaurantsFavorisHelper.
                 getAllRestaurantsFromWorkers(Objects.requireNonNull(getCurrentUser()).getDisplayName());
-
+        final String[] uid = {""};
         refResto.get()
                 .addOnCompleteListener(task -> {
                     mRestaurantFavorises = new ArrayList<>();
                     for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         RestaurantFavoris resto = document.toObject(RestaurantFavoris.class);
+                        resto.setUid(document.getId());
+                        Timber.d("resto uid = %s", resto.getUid());
                         mRestaurantFavorises.add(resto);
 
                         Timber.d("restofav list : %s", mRestaurantFavorises.size());
                         for (RestaurantFavoris restoFav : mRestaurantFavorises ){
-                            Timber.i("placeId : %s", restoFav.getName());
-                            Timber.i("detailresto : %s", detailRestaurant.getName());
+                            Timber.i("placeId : %s", restoFav.getUid());
                             if (restoFav.getName().equals(detailRestaurant.getName())){
+                                uid[0] = restoFav.getUid();
+                                Timber.d("uid[0] = %s", uid[0]);
                                 favoriteButton.setVisibility(View.VISIBLE);
                                 mTextFavorite.setVisibility(View.VISIBLE);
                                 likeButton.setVisibility(View.GONE);
                                 mTextLike.setVisibility(View.GONE);
+                                favoriteButton.setOnClickListener(v ->{
+                                    deleteRestaurantToFavorite(uid[0]);
+                                });
                             }
                         }
                     }
                 });
 
         likeButton.setOnClickListener(v -> saveRestaurantToFavorite( new RestaurantFavoris(
+                "",
                 detailRestaurant.getName(),
                 placeId,
                 detailRestaurant.getFormatted_address(),
@@ -231,49 +238,58 @@ public class RestaurantDetail extends BaseActivity {
                 detailRestaurant.getRating()
         )));
 
-        favoriteButton.setOnClickListener(v ->{
-            Intent intent = new Intent(this, FavoritesRestaurant.class);
-            startActivity(intent);
-        });
-
         //configure click on FAB Button
         Query query = WorkersHelper.getAllWorkers().whereEqualTo("name",
                 Objects.requireNonNull(getCurrentUser()).getDisplayName());
 
         query.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        if (detailRestaurant.getName()
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                    String id = document.getId();
+                    if (detailRestaurant.getName()
                                 .equalsIgnoreCase(Objects.requireNonNull(document.get("restaurantName")).toString())){
-
-                            mFloatingActionButton.setClickable(false);
+                        mFloatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_checked));
+                        mFloatingActionButton.setOnClickListener(v -> {
+                            updateRestaurantChoice(id,
+                                    "",
+                                    "",
+                                    getString(R.string.you_haven_t_choice_restaurant));
+                            mFloatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_circle_black_24dp));
+                        });
+                    }else{
+                        mFloatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_circle_black_24dp));
+                        mFloatingActionButton.setOnClickListener(v ->{
+                            updateRestaurantChoice(id,
+                                    detailRestaurant.getName(),
+                                    placeId,
+                                    getString(R.string.chosen_restaurant));
                             mFloatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_checked));
-                        }else{
-                            mFloatingActionButton.setClickable(true);
-                        }
+                        });
                     }
                 }
+            }
         });
+    }
 
-        mFloatingActionButton.setOnClickListener(v -> {
-            query.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        String id = document.getId();
-                        WorkersHelper.updateRestaurantChoice(id,
-                                detailRestaurant.getName(),
-                                placeId);
-                    }
-                    Utils.showSnackBar(this.mCoordinatorLayout, getString(R.string.chosen_restaurant));
-                    mFloatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_checked));
-                    mFloatingActionButton.setClickable(false);
-                }
-            });
-        });
+    private void updateRestaurantChoice(String id, String restoName, String placeId, String message) {
+        WorkersHelper.updateRestaurantChoice(id,
+                restoName,
+                placeId);
+        Utils.showSnackBar(this.mCoordinatorLayout, message);
+    }
+
+    private void deleteRestaurantToFavorite(String uid) {
+        RestaurantsFavorisHelper.deleteRestaurant(Objects.requireNonNull(getCurrentUser()).getDisplayName(),uid);
+        Utils.showSnackBar(this.mCoordinatorLayout, getResources().getString(R.string.restaurant_delete));
+        favoriteButton.setVisibility(View.GONE);
+        mTextFavorite.setVisibility(View.GONE);
+        likeButton.setVisibility(View.VISIBLE);
+        mTextLike.setVisibility(View.VISIBLE);
     }
 
     private void saveRestaurantToFavorite(RestaurantFavoris resto) {
         RestaurantsFavorisHelper.createFavoriteRestaurant(Objects.requireNonNull(getCurrentUser()).getDisplayName(),
+                        resto.getUid(),
                         resto.getName(),
                         resto.getPlaceId(),
                         resto.getAddress(),

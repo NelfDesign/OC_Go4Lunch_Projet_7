@@ -1,6 +1,7 @@
 package fr.nelfdesign.go4lunch.ui.activity;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -42,6 +43,7 @@ import fr.nelfdesign.go4lunch.BuildConfig;
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
+import fr.nelfdesign.go4lunch.models.RestaurantFavoris;
 import fr.nelfdesign.go4lunch.settings.activity.SettingsActivity;
 import fr.nelfdesign.go4lunch.ui.fragments.MapFragment;
 import fr.nelfdesign.go4lunch.ui.fragments.RestaurantListFragment;
@@ -184,6 +186,9 @@ public class MainActivity extends BaseActivity {
             case R.id.nav_lunch:
                 this.showMyrestaurantChoice();
                 break;
+            case R.id.nav_favorite:
+                this.showMyFavoriteRestaurant();
+                break;
             case R.id.nav_settings:
                 this.startActivitySettings();
         }
@@ -192,6 +197,11 @@ public class MainActivity extends BaseActivity {
             this.mDrawerLayout.closeDrawer(START);
         }
         return true;
+    }
+
+    private void showMyFavoriteRestaurant() {
+        Intent intent = new Intent(this, FavoritesRestaurant.class);
+        startActivity(intent);
     }
 
     private void startActivitySettings() {
@@ -206,12 +216,12 @@ public class MainActivity extends BaseActivity {
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                    if (document.get("placeId") != null){
+                    if (!Objects.equals(document.get("placeId"), "")){
                         Intent intent = new Intent(this.getBaseContext(), RestaurantDetail.class);
                         intent.putExtra("placeId", Objects.requireNonNull(document.get("placeId")).toString());
                         startActivity(intent);
                     }else {
-                        Utils.showSnackBar(this.mDrawerLayout, String.valueOf(R.string.no_choice_restaurant_workers));
+                        Utils.showSnackBar(this.mDrawerLayout, getResources().getString(R.string.no_choice_restaurant_workers));
                     }
                 }
             }

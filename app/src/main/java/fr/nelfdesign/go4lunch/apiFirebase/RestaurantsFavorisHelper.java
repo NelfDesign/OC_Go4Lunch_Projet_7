@@ -24,9 +24,9 @@ public class RestaurantsFavorisHelper {
 
     // --- CREATE ---
 
-    public static Task<DocumentReference> createFavoriteRestaurant(String user,String name, String placeId,
+    public static Task<DocumentReference> createFavoriteRestaurant(String user,String uid, String name, String placeId,
                                                                    String address, String photoReference, double rating) {
-        RestaurantFavoris restoToCreate = new RestaurantFavoris(name, placeId, address, photoReference, rating);
+        RestaurantFavoris restoToCreate = new RestaurantFavoris(uid,name, placeId, address, photoReference, rating);
 
         //Store Message to Firestore
         return WorkersHelper.getWorkersCollection()
@@ -45,7 +45,11 @@ public class RestaurantsFavorisHelper {
 
     // --- DELETE ---
 
-    public static Task<Void> deleteRestaurant(String uid) {
-        return RestaurantsFavorisHelper.getRestaurantsCollection().document(uid).delete();
+    public static Task<Void> deleteRestaurant(String user, String uid) {
+        return WorkersHelper.getWorkersCollection()
+                .document(user)
+                .collection(COLLECTION_NAME)
+                .document(uid)
+                .delete();
     }
 }

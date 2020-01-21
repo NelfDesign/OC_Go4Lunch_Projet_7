@@ -51,19 +51,22 @@ dependencies {
     implementation "androidx.legacy:legacy-support-v4:$legacy_version"
     implementation "com.google.android.material:material:$material_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    implementation 'androidx.preference:preference:1.1.0'
+    implementation "androidx.preference:preference:$appcompat_version"
 
     //Timber use for log easally
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     //Firebase
-    implementation 'com.google.firebase:firebase-core:17.2.1'
+    implementation 'com.google.firebase:firebase-core:17.2.2'
     // FirebaseUI
     implementation 'com.firebaseui:firebase-ui-auth:6.1.0'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     //Firebase store
     implementation 'com.google.firebase:firebase-firestore:21.3.1'
     implementation 'com.firebaseui:firebase-ui-firestore:4.1.0'
+    //Firebase Notification
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+
     // FACEBOOK and Twitter LOGIN SUPPORT
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     implementation 'com.twitter.sdk.android:twitter-core:3.3.0'

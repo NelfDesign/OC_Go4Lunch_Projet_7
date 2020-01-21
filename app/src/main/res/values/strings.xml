@@ -20,10 +20,10 @@
 
     <!-- Connection ACTIVITY -->
     <string name="error_not_connected">You must been connected !</string>
-    <string name="error_authentication_canceled">Authentification canceled !</string>
+    <string name="error_authentication_canceled">Authentication canceled !</string>
     <string name="error_no_internet">No internet connexion!</string>
-    <string name="error_unknown_error">An erreur occurred</string>
-    <string name="connection_succeed">Authentification granted !</string>
+    <string name="error_unknown_error">An error occurred</string>
+    <string name="connection_succeed">Authentication granted !</string>
     <string name="no_name_found">No name found</string>
     <string name="no_mail_found">No mail found</string>
     <string name="email">Email</string>
@@ -44,7 +44,7 @@
     <string name="like">LIKE</string>
     <string name="web_site">WEB SITE</string>
     <string name="favorite_restaurant_message">Restaurant added to your favorite list</string>
-    <string name="your_favorite">Your Favorite</string>
+    <string name="dislike">Dislike</string>
     <string name="chosen_restaurant">You have chosen this restaurant</string>
     <string name="no_telephone_number_for_this_restaurant">No telephone number for this restaurant</string>
     <string name="no_website_for_restaurant">No website for this restaurant</string>
@@ -84,7 +84,7 @@
 
     <!-- Sync Preferences -->
     <string name="enable_notification">Enable notifications</string>
-    <string name="enable_location">Enable geolocate</string>
+    <string name="enable_location">Enable geolocation</string>
     <string name="define_map_zoom">Define map zoom</string>
     <string name="is_eating_at"> is eating at \n</string>
     <string name="hasn_t_decided"> hasn\'t decided yet</string>
@@ -99,5 +99,13 @@
     <string name="define_establishment">Define your establishment type search</string>
     <string name="define_favorite_map_radius">Define your favorite default map radius search</string>
     <string name="define_favorite_type">Define your favorite establishment type search</string>
+    <string name="your_favorite_restaurants">Your favorite restaurants</string>
+    <string name="restaurant_delete">Restaurant delete to your favorite list</string>
+    <string name="you_haven_t_choice_restaurant">You haven\'t choice restaurant</string>
+
+    <!-- NOTIFICATION SERVICE -->
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="notification_title">You have received a message</string>
+    <string name="message_from_go4lunch">Message from Go4Lunch</string>
 
 </resources>
