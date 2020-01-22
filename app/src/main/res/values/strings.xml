@@ -86,12 +86,12 @@
     <string name="enable_notification">Enable notifications</string>
     <string name="enable_location">Enable geolocation</string>
     <string name="define_map_zoom">Define map zoom</string>
-    <string name="is_eating_at"> is eating at \n</string>
-    <string name="hasn_t_decided"> hasn\'t decided yet</string>
-    <string name="is_joining"> is joining!</string>
-    <string name="zoom_level"> zoom level</string>
+    <string name="is_eating_at">" is eating at \n"</string>
+    <string name="hasn_t_decided">" hasn\'t decided yet"</string>
+    <string name="is_joining">" is joining!"</string>
+    <string name="zoom_level">" zoom level"</string>
     <string name="define_your_radius_search">Define your radius restaurant search</string>
-    <string name="meters_radius"> meters radius search restaurant</string>
+    <string name="meters_radius">" meters radius search restaurant"</string>
     <string name="notification_header">Notification</string>
     <string name="set_notification_rules">Set notifications configuration</string>
     <string name="map_settings">Map settings</string>
@@ -101,11 +101,12 @@
     <string name="define_favorite_type">Define your favorite establishment type search</string>
     <string name="your_favorite_restaurants">Your favorite restaurants</string>
     <string name="restaurant_delete">Restaurant delete to your favorite list</string>
-    <string name="you_haven_t_choice_restaurant">You haven\'t choice restaurant</string>
+    <string name="you_haven_t_choice_restaurant">You haven\'t choose restaurant</string>
 
     <!-- NOTIFICATION SERVICE -->
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="notification_title">You have received a message</string>
     <string name="message_from_go4lunch">Message from Go4Lunch</string>
+    <string name="app_logo" translatable="false">app logo</string>
 
 </resources>

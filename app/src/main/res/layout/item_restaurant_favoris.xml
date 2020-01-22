@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp">
+    android:layout_margin="@dimen/margin_2">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,17 +13,14 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/margin_5"
             android:layout_weight="60"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/restaurant_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/item_text_style"
                 android:maxLength="30"
-                android:textSize="16sp"
-                android:textStyle="bold"
                 tools:text="le zinc" />
 
             <TextView
@@ -32,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_14"
                 tools:text="french - 21 rue du bordage lucas" />
 
         </LinearLayout>
@@ -46,23 +42,17 @@
 
             <ImageView
                 android:id="@+id/star_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_yellow_star_32dp"
-                tools:ignore="ContentDescription"/>
+                style="@style/stars"
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/star_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_yellow_star_32dp"
-                tools:ignore="ContentDescription"/>
+                style="@style/stars"
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/star_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_yellow_star_32dp"
+                style="@style/stars"
                 tools:ignore="ContentDescription" />
 
         </LinearLayout>
@@ -70,8 +60,8 @@
         <ImageView
             android:id="@+id/restaurant_image"
             android:layout_width="0dp"
-            android:layout_height="70dp"
-            android:layout_margin="5dp"
+            android:layout_height="@dimen/image_restaurant"
+            android:layout_margin="@dimen/margin_5"
             android:layout_weight="20"
             android:contentDescription="@string/restaurant_image"
             android:src="@drawable/pic_logo_restaurant_400x400" />

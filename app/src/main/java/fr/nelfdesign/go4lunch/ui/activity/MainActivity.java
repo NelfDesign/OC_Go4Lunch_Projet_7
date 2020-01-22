@@ -1,7 +1,6 @@
 package fr.nelfdesign.go4lunch.ui.activity;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -43,7 +42,6 @@ import fr.nelfdesign.go4lunch.BuildConfig;
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
-import fr.nelfdesign.go4lunch.models.RestaurantFavoris;
 import fr.nelfdesign.go4lunch.settings.activity.SettingsActivity;
 import fr.nelfdesign.go4lunch.ui.fragments.MapFragment;
 import fr.nelfdesign.go4lunch.ui.fragments.RestaurantListFragment;
@@ -57,7 +55,6 @@ public class MainActivity extends BaseActivity {
     //FIELDS
     private Fragment mFragment;
     private FirebaseUser user;
-    private PlacesClient placesClient;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
 
     @BindView(R.id.nav_view) BottomNavigationView navView;
@@ -98,7 +95,7 @@ public class MainActivity extends BaseActivity {
         Places.initialize(getApplicationContext(), BuildConfig.google_maps_key);
 
         // Create a new Places client instance for autocomplete
-        placesClient = Places.createClient(this);
+        PlacesClient placesClient = Places.createClient(this);
 
     }
 
@@ -184,13 +181,14 @@ public class MainActivity extends BaseActivity {
                 this.signOutCurrentUser();
                 break;
             case R.id.nav_lunch:
-                this.showMyrestaurantChoice();
+                this.showMyRestaurantChoice();
                 break;
             case R.id.nav_favorite:
                 this.showMyFavoriteRestaurant();
                 break;
             case R.id.nav_settings:
                 this.startActivitySettings();
+                mToolbar.setTitle(getResources().getString(R.string.settings));
         }
         // Closes the DrawerNavigationView when the user click on an item
         if (this.mDrawerLayout.isDrawerOpen(START)) {
@@ -209,7 +207,7 @@ public class MainActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    private void showMyrestaurantChoice() {
+    private void showMyRestaurantChoice() {
         Query query = WorkersHelper.getAllWorkers().whereEqualTo("name",
                 Objects.requireNonNull(getCurrentUser()).getDisplayName());
 

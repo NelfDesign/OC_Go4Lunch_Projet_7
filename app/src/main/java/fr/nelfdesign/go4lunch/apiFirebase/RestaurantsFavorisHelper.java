@@ -6,6 +6,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import fr.nelfdesign.go4lunch.models.RestaurantFavoris;
 
 /**
@@ -18,7 +21,7 @@ public class RestaurantsFavorisHelper {
 
     // --- COLLECTION REFERENCE ---
 
-    private static CollectionReference getRestaurantsCollection(){
+    public static CollectionReference getRestaurantFavoritesCollection(){
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 
@@ -41,6 +44,18 @@ public class RestaurantsFavorisHelper {
         return WorkersHelper.getWorkersCollection()
                 .document(name)
                 .collection(COLLECTION_NAME);
+    }
+
+    // --- UPDATE ---
+    public static Task<Void> updateRestaurantFavorite(String id, String user) {
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("uid", id);
+        return WorkersHelper.getWorkersCollection()
+                .document(user)
+                .collection(COLLECTION_NAME)
+                .document()
+                .update(data);
     }
 
     // --- DELETE ---

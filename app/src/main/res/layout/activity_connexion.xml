@@ -35,27 +35,23 @@
             <!-- LOGO GO4LUNCH and slogan -->
 
             <ImageView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_marginTop="50dp"
+                android:layout_width="@dimen/logo_width"
+                android:layout_height="@dimen/logo_width"
+                android:layout_marginTop="@dimen/margin_50"
                 app:srcCompat="@drawable/ic_bol"
                 tools:ignore="ContentDescription" />
 
             <TextView
+                style="@style/text_style_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/go4lunch"
-                android:textColor="@android:color/white"
-                android:textSize="63sp"
-                android:textStyle="bold" />
+                android:text="@string/go4lunch" />
 
             <TextView
+                style="@style/text_style_slogan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/slogan"
-                android:textColor="@android:color/white"
-                android:textSize="15sp"
-                android:textStyle="italic" />
+                android:text="@string/slogan" />
 
             <LinearLayout
                 android:id="@+id/layout_button"
@@ -66,66 +62,39 @@
 
                 <Button
                     android:id="@+id/main_activity_email_login_button"
-                    android:layout_width="200dp"
-                    android:layout_height="45dp"
-                    android:layout_marginStart="@dimen/start_margin"
-                    android:layout_marginTop="@dimen/top_margin"
-                    android:layout_marginEnd="@dimen/end_margin"
+                    style="@style/button_style_connexion"
+                    android:layout_width="@dimen/logo_width"
+                    android:layout_height="@dimen/button_height_45"
                     android:background="@drawable/email_button_radius"
                     android:drawableStart="@drawable/ic_email"
-                    android:padding="10dp"
-                    android:text="@string/email"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/text_size_button"
-                    android:textStyle="normal" />
+                    android:text="@string/email" />
 
                 <Button
                     android:id="@+id/main_activity_google_login_button"
-                    android:layout_width="200dp"
-                    android:layout_height="45dp"
-                    android:layout_marginStart="@dimen/start_margin"
-                    android:layout_marginTop="@dimen/top_margin"
-                    android:layout_marginEnd="@dimen/end_margin"
+                    style="@style/button_style_connexion"
+                    android:layout_width="@dimen/logo_width"
+                    android:layout_height="@dimen/button_height_45"
                     android:background="@drawable/button_google_radius_primary_color"
                     android:drawableStart="@drawable/ic_google_plus"
-                    android:padding="10dp"
-                    android:text="@string/google"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/text_size_button"
-                    android:textStyle="normal" />
+                    android:text="@string/google" />
 
                 <Button
                     android:id="@+id/main_activity_facebook_login_button"
-                    android:layout_width="200dp"
-                    android:layout_height="45dp"
-                    android:layout_marginStart="@dimen/start_margin"
-                    android:layout_marginTop="@dimen/top_margin"
-                    android:layout_marginEnd="@dimen/end_margin"
+                    style="@style/button_style_connexion"
+                    android:layout_width="@dimen/logo_width"
+                    android:layout_height="@dimen/button_height_45"
                     android:background="@drawable/button_facebook_radius_primary_color"
                     android:drawableStart="@drawable/ic_facebook"
-                    android:padding="10dp"
-                    android:text="@string/facebook"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/text_size_button"
-                    android:textStyle="normal" />
+                    android:text="@string/facebook" />
 
                 <Button
                     android:id="@+id/main_activity_twitter_login_button"
-                    android:layout_width="200dp"
-                    android:layout_height="45dp"
-                    android:layout_marginStart="@dimen/start_margin"
-                    android:layout_marginTop="@dimen/top_margin"
-                    android:layout_marginEnd="@dimen/end_margin"
+                    style="@style/button_style_connexion"
+                    android:layout_width="@dimen/logo_width"
+                    android:layout_height="@dimen/button_height_45"
                     android:background="@drawable/button_twitter_radius_primary_color"
                     android:drawableStart="@drawable/ic_twitter"
-                    android:padding="10dp"
-                    android:text="@string/twitter"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/text_size_button"
-                    android:textStyle="normal" />
+                    android:text="@string/twitter" />
 
             </LinearLayout>
 

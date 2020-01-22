@@ -51,7 +51,7 @@
     <string name="define_map_zoom">Définir le niveau de zoom de la carte</string>
     <string name="hasn_t_decided">\n n\'a pas encore décidé.</string>
     <string name="is_eating_at">" mange à \n"</string>
-    <string name="is_joining"> se joint à vous!</string>
+    <string name="is_joining">" se joint à vous!"</string>
     <string name="zoom_level">"  niveau de zoom"</string>
     <string name="define_your_radius_search">Définir votre rayon de recherche de restaurant</string>
     <string name="meters_radius">" mètres de zone de recherche"</string>

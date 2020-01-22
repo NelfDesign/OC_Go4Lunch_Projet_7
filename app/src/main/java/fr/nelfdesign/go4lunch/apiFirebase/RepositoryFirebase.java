@@ -19,7 +19,7 @@ public abstract class RepositoryFirebase {
 
 
     public static Query getQueryWorkers(List<Workers> mWorkers){
-        Query query = WorkersHelper.getWorkersCollection().orderBy("name");
+        Query query = WorkersHelper.getWorkersCollection().orderBy("restaurantName", Query.Direction.DESCENDING);
         query.get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

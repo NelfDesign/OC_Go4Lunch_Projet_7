@@ -2,7 +2,6 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -16,94 +15,104 @@
 
     </style>
 
-    <!-- APPBAR THEME FOR DETAIL PAGE -->
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <!-- Connexion STYLE -->
+    <style name="text_style_logo">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/text_logo_63</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
-    <!-- WELCOME STYLE -->
+    <style name="text_style_slogan">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/text_15</item>
+        <item name="android:textStyle">italic</item>
+    </style>
 
-    <style parent="AppTheme" name="AppTheme.Welcome">
+    <style name="button_style_connexion">
+        <item name="android:layout_marginStart">@dimen/margin_start_40</item>
+        <item name="android:layout_marginTop">@dimen/margin_start_10</item>
+        <item name="android:layout_marginEnd">@dimen/margin_end_40</item>
+        <item name="android:padding">@dimen/padding_10</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/text_15</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 
-    <item name="android:textSize">@dimen/text_size</item>
+    <!-- detail page style -->
+    <style name="detail_text_style">
+        <item name="android:layout_marginStart">@dimen/margin_start_10</item>
+        <item name="android:layout_marginTop">@dimen/margin_top_15</item>
+        <item name="android:textColor">@color/quantum_white_100</item>
+        <item name="android:textSize">@dimen/text_size_20</item>
+    </style>
 
-</style>
+    <style name="text_adress_style">
+        <item name="android:layout_margin">@dimen/margin_start_10</item>
+        <item name="android:layout_marginStart">@dimen/margin_top_20</item>
+        <item name="android:layout_marginTop">@dimen/margin_top_15</item>
+        <item name="android:textColor">@color/white_text</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+    </style>
 
-    <!-- SETTINGS STYLE -->
+    <style name="text_style_button_detail">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
-    <style parent="AppTheme" name="AppTheme.Settings">
+    <!-- item -->
+    <style name="item_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="item_text_open">
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+    <style name="distance_style">
+        <item name="android:textSize">@dimen/text_size_18</item>
+        <item name="android:textColor">@color/background</item>
+        <item name="android:textStyle">italic|bold</item>
+    </style>
+    <style name="item_workers_style">
+        <item name="android:textSize">@dimen/text_size_18</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="stars">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:src">@drawable/ic_yellow_star_32dp</item>
+    </style>
 
-    <item name="android:textSize">@dimen/text_size_button</item>
+    <!-- workers -->
+    <style name="worker_image">
+        <item name="android:layout_width">@dimen/image_button_50</item>
+        <item name="android:layout_height">@dimen/image_button_50</item>
+        <item name="android:layout_marginStart">@dimen/margin_fab_16</item>
+        <item name="android:layout_marginTop">@dimen/margin_start_10</item>
+        <item name="android:layout_marginBottom">@dimen/margin_start_10</item>
+    </style>
+    <style name="worker_name">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/margin_top_20</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
-</style>
+    <!-- drawer style -->
+    <style name="header_nav">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/text_size_40</item>
+        <item name="android:layout_marginBottom">@dimen/margin_25</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
 
-    <!-- RESTAURANT CARD STYLE -->
-
-    <style parent="AppTheme" name="AppTheme.RestaurantCard">
-
-    <item name="colorPrimaryDark">@color/restaurant_card_status_bar</item>
-
-    <item name="android:windowTranslucentStatus">true</item>
-
-</style>
-
-    <!-- TOOLBAR THEME -->
-
-    <style parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar" name="ToolbarTheme">
-
-    <!-- Color of the title text in the Toolbar -->
-
-
-    <item name="android:textColorPrimary">@android:color/white</item>
-
-</style>
-
-    <!-- TOOLBAR TITLE THEME -->
-
-    <style parent="TextAppearance.Widget.AppCompat.Toolbar.Title" name="Toolbar.TitleText">
-
-    <item name="android:textSize">21sp</item>
-
-    <item name="android:textStyle">normal</item>
-
-</style>
-
-    <!-- STYLE SIGN-IN ACTIVITY -->
-
-    <style parent="AppTheme" name="LoginTheme">
-
-    <item name="colorButtonNormal">@color/colorAccent</item>
-
-    <item name="colorControlNormal">@android:color/darker_gray</item>
-
-    <item name="colorControlActivated">@android:color/darker_gray</item>
-
-    <item name="colorControlHighlight">@android:color/darker_gray</item>
-
-    <item name="android:textColor">@android:color/white</item>
-
-    <item name="android:textColorPrimary">@android:color/darker_gray</item>
-
-    <item name="android:textColorSecondary">@android:color/darker_gray</item>
-
-    <item name="android:windowBackground">@android:color/white</item>
-
-    <item name="windowActionBar">false</item>
-
-    <item name="windowNoTitle">true</item>
-
-    <item name="android:textColorHint">@android:color/white</item>
-
-</style>
-
-    <!-- TEXT STYLE -->
-    <style name="NormalItalicText">
-
-    <item name="android:textStyle">italic</item>
-
-</style>
-    <style name="NormalBoldText">
-
-    <item name="android:textStyle">bold</item>
-
-</style>
 
 </resources>
