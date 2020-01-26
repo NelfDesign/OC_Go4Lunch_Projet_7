@@ -124,7 +124,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             if (queryDocumentSnapshots != null){
                 for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
 
-                    if(data.get("restaurantName") != null){
+                    if(data.get("placeId") != null){
                         Workers workers = data.toObject(Workers.class);
                         mWorkersArrayList.add(workers);
                         Timber.i("snap workers : %s", mWorkersArrayList.size());
@@ -210,6 +210,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         //Add tag to save restaurant placeId for earlier
         if ((poi.getPlaceId() != null)) {
             marker.setTag(poi.getPlaceId());
+            marker.setTitle(poi.getTitle());
         }
     }
 
@@ -264,6 +265,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             case "Less" :
                 zoom = 9f;
                 break;
+
                 default:
                     zoom = 10f;
         }
@@ -284,8 +286,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
      */
     private void launchRestaurantDetail(Marker marker) {
         String ref = (String) marker.getTag();
+        String name = marker.getTitle();
         Intent intent = new Intent(getContext(), RestaurantDetail.class);
         intent.putExtra("placeId", ref);
+        intent.putExtra("restaurantName", name);
         startActivity(intent);
     }
 }

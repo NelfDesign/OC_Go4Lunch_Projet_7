@@ -68,4 +68,6 @@
     <string name="notification_title">Vous avez reçu une notification</string>
     <string name="you_haven_t_choice_restaurant">Vous n\'avez pas choisis de restaurant</string>
     <string name="message_from_go4lunch">Message de Go4lunch</string>
+    <string name="filter_restaurant_by">Filtrer les restaurants :</string>
+    <string name="no_star">Pas d\'étoiles</string>
 </resources>

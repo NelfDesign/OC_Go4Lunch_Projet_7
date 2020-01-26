@@ -50,6 +50,10 @@ public class FavoritesRestaurant extends BaseActivity implements RestaurantFavor
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getBaseContext()));
 
         this.configureToolBar(getString(R.string.favorites_restaurant));
+        if (mToolbar != null) {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         initListAdapter();
     }

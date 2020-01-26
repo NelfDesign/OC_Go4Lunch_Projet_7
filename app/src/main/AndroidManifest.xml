@@ -4,11 +4,10 @@
     package="fr.nelfdesign.go4lunch">
     <!-- permission for internet -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--
- permission for location
-        It's not necessary to ask for COARSE LOCATION because we have the FINE LOCATION PERMISSION
-    -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- permission call -->
+    <!-- permission for location
+        It's not necessary to ask for COARSE LOCATION because we have the FINE LOCATION PERMISSION -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- permission call -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
@@ -19,7 +18,8 @@
         android:roundIcon="@mipmap/ic_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        android:fullBackupContent="@xml/backup_descriptor">
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -35,9 +35,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.activity.MainActivity"
             android:label="@string/title_activity_main2" />
+
         <activity
             android:name=".ui.activity.RestaurantDetail"
             android:parentActivityName=".ui.activity.MainActivity">
@@ -45,14 +47,27 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.MainActivity" />
         </activity>
-        <activity android:name=".ui.activity.FavoritesRestaurant" />
+
+        <activity android:name=".ui.activity.FavoritesRestaurant"
+            android:parentActivityName=".ui.activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.MainActivity" />
+        </activity>
+
         <activity
             android:name=".settings.activity.SettingsActivity"
-            android:label="@string/title_activity_settings" />
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ui.activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.MainActivity" />
+        </activity>
 
         <!-- NOTIFICATION SERVICE -->
         <service
-            android:name=".apiFirebase.NotificationsServices">
+            android:name=".apiFirebase.NotificationsServices"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>

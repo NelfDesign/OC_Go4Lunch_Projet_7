@@ -171,6 +171,7 @@ public class MainActivity extends BaseActivity {
                 this.mFragment = new RestaurantListFragment();
                 configureFragment(mFragment);
                 mToolbar.setTitle(getResources().getString(R.string.I_m_hungry));
+
                 break;
             case R.id.navigation_workers:
                 this.mFragment = new WorkersFragment();
@@ -188,7 +189,6 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.nav_settings:
                 this.startActivitySettings();
-                mToolbar.setTitle(getResources().getString(R.string.settings));
         }
         // Closes the DrawerNavigationView when the user click on an item
         if (this.mDrawerLayout.isDrawerOpen(START)) {

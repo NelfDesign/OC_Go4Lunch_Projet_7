@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
@@ -17,7 +19,6 @@ import fr.nelfdesign.go4lunch.settings.activity.fragments.SettingsHeaders;
 public class SettingsActivity extends BaseActivity implements  PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     public static final String PREF_NOTIFICATION_KEY = "notification_firebase";
-    public static final String PREF_GEOLOCATE_KEY = "geolocate";
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
 
@@ -41,10 +42,11 @@ public class SettingsActivity extends BaseActivity implements  PreferenceFragmen
                 .replace(R.id.settings, new SettingsHeaders())
                 .commit();
 
-        ActionBar actionBar = getSupportActionBar();
 
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+        this.configureToolBar(getResources().getString(R.string.settings));
+        if (mToolbar != null) {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
     }

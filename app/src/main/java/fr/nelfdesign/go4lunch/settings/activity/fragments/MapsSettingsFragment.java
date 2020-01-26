@@ -47,7 +47,6 @@ public class MapsSettingsFragment extends PreferenceFragmentCompat{
             }
 
         };
-
     }
 
     @Override

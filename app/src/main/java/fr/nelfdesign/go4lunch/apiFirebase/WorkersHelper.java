@@ -8,7 +8,6 @@ import com.google.firebase.firestore.Query;
 import java.util.HashMap;
 import java.util.Map;
 
-import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.models.Workers;
 
 /**
@@ -37,16 +36,12 @@ public class WorkersHelper {
     }
 
     // --- UPDATE ---
-    public static Task<Void> updateRestaurantChoice(String uid, String restoName, String placeId) {
+    public static void updateRestaurantChoice(String uid, String restoName, String placeId) {
 
         Map<String, Object> data = new HashMap<>();
-        data.put("restaurantName", restoName);
         data.put("placeId", placeId);
-        return WorkersHelper.getWorkersCollection().document(uid).update(data);
+        data.put("restaurantName", restoName);
+        WorkersHelper.getWorkersCollection().document(uid).update(data);
     }
 
-    //DELETE
-    public static Task<Void> deleteWorker(String uid) {
-        return WorkersHelper.getWorkersCollection().document(uid).delete();
-    }
 }

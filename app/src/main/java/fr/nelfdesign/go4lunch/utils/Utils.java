@@ -118,4 +118,15 @@ public abstract class Utils {
         }
         return restaurants;
     }
+
+    public static ArrayList<Restaurant> filterRestaurantList(ArrayList<Restaurant> restaurants, int filter){
+        ArrayList<Restaurant> restaurantArrayList = new ArrayList<>();
+        for (Restaurant restaurant : restaurants){
+            int rating = Utils.starsAccordingToRating(restaurant.getRating());
+            if (rating == filter){
+                restaurantArrayList.add(restaurant);
+            }
+        }
+        return restaurantArrayList;
+    }
 }

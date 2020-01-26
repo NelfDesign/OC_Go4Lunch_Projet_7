@@ -143,12 +143,12 @@ public class RestaurantDetail extends BaseActivity {
                 this.updateLikeButton();
                 break;
             case R.id.favorite_restaurant :
-                this.updateFavoriteRestaurant();
+                this.deleteFavoriteRestaurant();
                 break;
         }
     }
 
-    private void updateFavoriteRestaurant() {
+    private void deleteFavoriteRestaurant() {
         getFavoriteRestaurant();
         for (RestaurantFavoris restaurantFavoris : mRestaurantFavorises){
             if (restaurantFavoris.getPlaceId().equalsIgnoreCase(placeId)){
@@ -170,10 +170,11 @@ public class RestaurantDetail extends BaseActivity {
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                     String id = document.getId();
                     if (placeId.equalsIgnoreCase(Objects.requireNonNull(document.get("placeId")).toString())){
-                        updateRestaurantChoice(id, "", "",
+                        updateRestaurantChoice(id, " ", " ",
                                 getString(R.string.you_haven_t_choice_restaurant), false);
                     }else {
-                        updateRestaurantChoice(id, nameResto, placeId, getString(R.string.chosen_restaurant), true);
+                        updateRestaurantChoice(id, nameResto,
+                                placeId, getString(R.string.chosen_restaurant), true);
                     }
                 }
             }
@@ -188,7 +189,7 @@ public class RestaurantDetail extends BaseActivity {
             if (queryDocumentSnapshots != null){
                 for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
 
-                    if (Objects.requireNonNull(data.get("restaurantName")).toString().equals(detailRestaurant.getName())) {
+                    if (data.get("placeId") != null && data.get("placeId").toString().equals(placeId)) {
 
                         Workers workers = data.toObject(Workers.class);
                         mWorkers.add(workers);
@@ -254,17 +255,38 @@ public class RestaurantDetail extends BaseActivity {
            }
         });
 
-        mRestaurantFavoris = new RestaurantFavoris("", nameResto, placeId, detailRestaurant.getFormatted_address(),
+        mRestaurantFavoris = new RestaurantFavoris("", detailRestaurant.getName(), placeId, detailRestaurant.getFormatted_address(),
                 detailRestaurant.getPhotoReference(), detailRestaurant.getRating());
         //configure click on like star
-        for (RestaurantFavoris restaurantFavoris : mRestaurantFavorises){
-            if (restaurantFavoris.getPlaceId().equalsIgnoreCase(placeId)){
-                favoriteButton.setVisibility(View.VISIBLE);
-                mTextFavorite.setVisibility(View.VISIBLE);
-                likeButton.setVisibility(View.GONE);
-                mTextLike.setVisibility(View.GONE);
+        if (mRestaurantFavorises != null){
+            for (RestaurantFavoris restaurantFavoris : mRestaurantFavorises){
+                if (restaurantFavoris.getPlaceId().equalsIgnoreCase(placeId)){
+                    favoriteButton.setVisibility(View.VISIBLE);
+                    mTextFavorite.setVisibility(View.VISIBLE);
+                    likeButton.setVisibility(View.GONE);
+                    mTextLike.setVisibility(View.GONE);
+                }
             }
         }
+
+       fabButtonColor();
+    }
+
+    private void fabButtonColor(){
+        Query query = WorkersHelper.getAllWorkers().whereEqualTo("name",
+                Objects.requireNonNull(getCurrentUser()).getDisplayName());
+
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                    if (placeId.equalsIgnoreCase(Objects.requireNonNull(document.get("placeId")).toString())){
+                        mFloatingActionButton.setImageResource(R.drawable.ic_check_checked);
+                    }else {
+                        mFloatingActionButton.setImageResource(R.drawable.ic_check_circle_black_24dp);
+                    }
+                }
+            }
+        });
     }
 
     private void getFavoriteRestaurant(){
@@ -312,6 +334,7 @@ public class RestaurantDetail extends BaseActivity {
         mTextFavorite.setVisibility(View.VISIBLE);
         likeButton.setVisibility(View.GONE);
         mTextLike.setVisibility(View.GONE);
+        getFavoriteRestaurant();
     }
 
     private void callWebsiteUrl() {

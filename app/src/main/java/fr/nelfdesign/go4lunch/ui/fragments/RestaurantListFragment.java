@@ -17,27 +17,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.facebook.share.Share;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
 import fr.nelfdesign.go4lunch.models.Restaurant;
 import fr.nelfdesign.go4lunch.models.Workers;
-import fr.nelfdesign.go4lunch.ui.activity.MainActivity;
 import fr.nelfdesign.go4lunch.ui.activity.RestaurantDetail;
 import fr.nelfdesign.go4lunch.ui.adapter.RestaurantListAdapter;
 import fr.nelfdesign.go4lunch.ui.viewModels.MapViewModel;
@@ -52,15 +48,15 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
 
     //FIELD
     private ArrayList<Restaurant> mRestaurants;
+    private ArrayList<Restaurant> mRestaurantsToDisplay = new ArrayList<>();
     private MapViewModel mMapViewModel;
     private LatLng currentPosition;
     private FusedLocationProviderClient mFusedLocationClient;
     private ArrayList<Workers> mWorkersArrayList;
-    private RestaurantListAdapter adapter;
 
     private static final String PREF_RADIUS = "radius_key";
     private static final String PREF_TYPE = "type_key";
-    final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
+    private final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
     private ListenerRegistration mListenerRegistration = null;
 
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
@@ -91,6 +87,33 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
         return view;
     }
 
+    @OnClick({R.id.no_star,
+              R.id.star_1,
+              R.id.star_3,
+              R.id.star_2,
+              R.id.no_filter})
+    void onClickFilter(View view){
+       mRestaurantsToDisplay.clear();
+        switch (view.getId()){
+            case R.id.no_star:
+                mRestaurantsToDisplay.addAll(Utils.filterRestaurantList(mRestaurants, 0));
+                break;
+            case R.id.star_1:
+                mRestaurantsToDisplay.addAll(Utils.filterRestaurantList(mRestaurants, 1));
+                break;
+            case R.id.star_2:
+                mRestaurantsToDisplay.addAll(Utils.filterRestaurantList(mRestaurants, 2));
+                break;
+            case R.id.star_3:
+                mRestaurantsToDisplay.addAll(Utils.filterRestaurantList(mRestaurants, 3));
+                break;
+            case R.id.no_filter:
+                mRestaurantsToDisplay.addAll(mRestaurants);
+                break;
+        }
+        mRecyclerView.getAdapter().notifyDataSetChanged();
+    }
+
    @Override
     public void onStart() {
         super.onStart();
@@ -111,7 +134,7 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
             if(queryDocumentSnapshots != null){
                 for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
 
-                    if (data.get("restaurantName") != null) {
+                    if (data.get("placeId") != null) {
                         Workers workers = data.toObject(Workers.class);
                         mWorkersArrayList.add(workers);
                         Timber.i("snap workers List Restaurant : %s", mWorkersArrayList.size());
@@ -137,10 +160,15 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
     }
 
     private void initListAdapter(ArrayList<Restaurant> restaurants) {
+        mRestaurantsToDisplay.addAll(getRestaurantFromJson(restaurants));
+        RestaurantListAdapter adapter = new RestaurantListAdapter(mRestaurantsToDisplay, Glide.with(this), this);
+        mRecyclerView.setAdapter(adapter);
+    }
+
+    private ArrayList<Restaurant> getRestaurantFromJson(ArrayList<Restaurant> restaurants){
         mRestaurants = Utils.getChoicedRestaurants(restaurants, mWorkersArrayList);
         getDistanceFromMyPosition(mRestaurants);
-        adapter = new RestaurantListAdapter(mRestaurants, Glide.with(this), this);
-        mRecyclerView.setAdapter(adapter);
+        return mRestaurants;
     }
 
     @Override

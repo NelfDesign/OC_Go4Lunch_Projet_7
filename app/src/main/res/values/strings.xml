@@ -108,5 +108,10 @@
     <string name="notification_title">You have received a message</string>
     <string name="message_from_go4lunch">Message from Go4Lunch</string>
     <string name="app_logo" translatable="false">app logo</string>
+    <string name="filter_restaurant_by">Filter restaurant by :</string>
+    <string name="no_star">No star</string>
+    <string name="_2" translatable="false">2</string>
+    <string name="_3" translatable="false">3</string>
+    <string name="no_filter">No filter</string>
 
 </resources>
