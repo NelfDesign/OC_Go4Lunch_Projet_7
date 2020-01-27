@@ -3,7 +3,6 @@ package fr.nelfdesign.go4lunch.settings.activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
@@ -17,8 +16,6 @@ import fr.nelfdesign.go4lunch.base.BaseActivity;
 import fr.nelfdesign.go4lunch.settings.activity.fragments.SettingsHeaders;
 
 public class SettingsActivity extends BaseActivity implements  PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
-
-    public static final String PREF_NOTIFICATION_KEY = "notification_firebase";
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
 

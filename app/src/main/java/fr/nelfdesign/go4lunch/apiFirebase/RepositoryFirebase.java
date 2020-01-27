@@ -17,7 +17,11 @@ import timber.log.Timber;
  */
 public abstract class RepositoryFirebase {
 
-
+    /**
+     * create a query for workers BDD
+     * @param mWorkers list of workers
+     * @return query for Firebase recyclerView options
+     */
     public static Query getQueryWorkers(List<Workers> mWorkers){
         Query query = WorkersHelper.getWorkersCollection().orderBy("restaurantName", Query.Direction.DESCENDING);
         query.get()
@@ -35,6 +39,12 @@ public abstract class RepositoryFirebase {
         return query;
     }
 
+    /**
+     * create a query for favorite restaurant BDD
+     * @param favorises list of restaurant
+     * @param user user logged
+     * @return query for firebase RV
+     */
     public static Query getQueryFavoritesRestaurant(List<RestaurantFavoris> favorises, String user){
         Query query = RestaurantsFavorisHelper.getAllRestaurantsFromWorkers(user);
         query.get()

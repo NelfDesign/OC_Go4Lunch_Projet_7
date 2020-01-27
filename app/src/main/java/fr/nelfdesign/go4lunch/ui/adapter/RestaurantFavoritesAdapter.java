@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -65,7 +64,7 @@ public class RestaurantFavoritesAdapter extends FirestoreRecyclerAdapter<Restaur
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
      * FirestoreRecyclerOptions} for configuration options.
      *
-     * @param options
+     * @param options configuration
      */
     public RestaurantFavoritesAdapter(@NonNull FirestoreRecyclerOptions<RestaurantFavoris> options, favoritesClickListener listener) {
         super(options);

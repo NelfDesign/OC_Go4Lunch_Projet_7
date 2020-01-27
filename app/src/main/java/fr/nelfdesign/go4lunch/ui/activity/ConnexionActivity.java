@@ -21,7 +21,6 @@ import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.apiFirebase.WorkersHelper;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
 import fr.nelfdesign.go4lunch.utils.Utils;
-import timber.log.Timber;
 
 public class ConnexionActivity extends BaseActivity {
 
@@ -48,7 +47,6 @@ public class ConnexionActivity extends BaseActivity {
         // Checks if user is signed in (non-null)
         if (FirebaseAuth.getInstance().getCurrentUser() != null){
            this.startMainActivity();
-            Timber.i(Objects.requireNonNull(Objects.requireNonNull(this.getCurrentUser()).getDisplayName()));
         }
     }
 
@@ -74,7 +72,7 @@ public class ConnexionActivity extends BaseActivity {
     }
 
     // --------------------
-    // Authentification
+    // Authentications
     // --------------------
 
     private void startSignInActivityGoogle(){
@@ -121,11 +119,6 @@ public class ConnexionActivity extends BaseActivity {
                 RC_SIGN_IN);
     }
 
-    private void startMainActivity(){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode,@Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -157,8 +150,9 @@ public class ConnexionActivity extends BaseActivity {
             }
         }
     }
-
-    // Http request that create user in firestore
+    /**
+     *  Http request that create user in firestore
+     */
     private void createUserInFirestore(){
 
         if (this.getCurrentUser() != null){
@@ -168,6 +162,14 @@ public class ConnexionActivity extends BaseActivity {
                 String placeId = "";
                 WorkersHelper.createWorker(username, urlPicture, resto, placeId).addOnFailureListener(this.onFailureListener());
             }
+    }
+
+    /**
+     * Start MainActivity after login
+     */
+    private void startMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 }

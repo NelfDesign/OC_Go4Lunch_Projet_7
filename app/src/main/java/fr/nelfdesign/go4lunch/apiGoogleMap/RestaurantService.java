@@ -2,7 +2,6 @@ package fr.nelfdesign.go4lunch.apiGoogleMap;
 
 import java.util.Map;
 
-import fr.nelfdesign.go4lunch.models.AutocompleteResponse;
 import fr.nelfdesign.go4lunch.pojos.Detail;
 import fr.nelfdesign.go4lunch.pojos.RestaurantsResult;
 import io.reactivex.Observable;

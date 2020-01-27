@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.models.Restaurant;
-import fr.nelfdesign.go4lunch.models.Workers;
 
 /**
  * Created by Nelfdesign at 28/11/2019

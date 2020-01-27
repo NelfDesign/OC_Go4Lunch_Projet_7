@@ -22,7 +22,9 @@ public class RestaurantFavoris {
         this.rating = rating;
     }
 
-    // constructor needed to firebase
+    /**
+     * constructor needed to firebase
+     */
     public RestaurantFavoris(){
 
     }

@@ -21,14 +21,6 @@ public class Detail {
     @Expose
     private String status;
 
-    public List<Object> getHtmlAttributions() {
-        return htmlAttributions;
-    }
-
-    public void setHtmlAttributions(List<Object> htmlAttributions) {
-        this.htmlAttributions = htmlAttributions;
-    }
-
     public DetailsResult getResult() {
         return result;
     }

@@ -1,9 +1,6 @@
 package fr.nelfdesign.go4lunch.apiGoogleMap;
 
-import android.content.SharedPreferences;
-
 import androidx.lifecycle.MutableLiveData;
-import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -44,11 +41,10 @@ public class RepositoryRestaurantList implements NearbyPlaces {
         parameters.put("type", type);
         parameters.put("key", BuildConfig.google_maps_key);
 
-        disposable = PlaceStream.streamGetNearByRestaurant(parameters)
+       this.disposable = PlaceStream.streamGetNearByRestaurant(parameters)
                 .subscribeWith(new DisposableObserver<RestaurantsResult>() {
                     @Override
                     public void onNext(RestaurantsResult restaurantsResult) {
-
                         if (restaurantsResult != null) {
                             mRestaurantList.setValue(Utils.mapRestaurantResultToRestaurant(restaurantsResult));
                         }
@@ -78,7 +74,7 @@ public class RepositoryRestaurantList implements NearbyPlaces {
         parameters.put("placeid", placeId);
         parameters.put("key", BuildConfig.google_maps_key);
 
-        disposable = PlaceStream.streamGetDetailRestaurant(parameters)
+        this.disposable = PlaceStream.streamGetDetailRestaurant(parameters)
                 .subscribeWith(new DisposableObserver<Detail>() {
                     @Override
                     public void onNext(Detail detail) {
@@ -96,7 +92,6 @@ public class RepositoryRestaurantList implements NearbyPlaces {
                                         detailsResult.getFormattedAddress(),
                                         detailsResult.getFormattedPhoneNumber(),
                                         detailsResult.getName(),
-                                        detailsResult.getPlaceId(),
                                         photo,
                                         (detailsResult.getRating() != null)? detailsResult.getRating() : 0,
                                         detailsResult.getWebsite()

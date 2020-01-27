@@ -111,7 +111,7 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
                 mRestaurantsToDisplay.addAll(mRestaurants);
                 break;
         }
-        mRecyclerView.getAdapter().notifyDataSetChanged();
+        Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
     }
 
    @Override

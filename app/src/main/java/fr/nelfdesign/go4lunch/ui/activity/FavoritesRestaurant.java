@@ -26,6 +26,7 @@ import timber.log.Timber;
 
 public class FavoritesRestaurant extends BaseActivity implements RestaurantFavoritesAdapter.favoritesClickListener{
 
+    //FIELDS
     private RecyclerView mRecyclerView;
     private RestaurantFavoritesAdapter adapter;
     private ArrayList<RestaurantFavoris> mRestaurantFavorisList = new ArrayList<>();
@@ -79,14 +80,10 @@ public class FavoritesRestaurant extends BaseActivity implements RestaurantFavor
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.toolbar_search:
-                Timber.i( "Search");
-                //mSearchView.setVisibility(View.VISIBLE);
-                break;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.toolbar_search) {
+            Timber.i("Search");
+        } else {
+            return super.onOptionsItemSelected(item);
         }
         return true;
     }

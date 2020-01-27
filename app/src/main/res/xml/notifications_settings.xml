@@ -7,6 +7,8 @@
         <SwitchPreferenceCompat
             app:key="notification_firebase"
             app:title="@string/enable_notification"
+            app:summaryOff="Notifications disable"
+            app:summaryOn="Notifications enable"
             app:icon="@drawable/ic_notifications_black_24dp"/>
 
 

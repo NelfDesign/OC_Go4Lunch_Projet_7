@@ -5,11 +5,13 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.preference.PreferenceManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -25,10 +27,12 @@ import fr.nelfdesign.go4lunch.ui.activity.MainActivity;
  */
 public class NotificationsServices extends FirebaseMessagingService {
 
+    private static final String PREF_NOTIFICATION = "notification_firebase";
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
-        if (remoteMessage.getNotification() != null) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (remoteMessage.getNotification() != null && sharedPreferences.getBoolean(PREF_NOTIFICATION, false)) {
             // 1 - Get message sent by Firebase
             String message = remoteMessage.getNotification().getBody();
             //2 - Show message in console

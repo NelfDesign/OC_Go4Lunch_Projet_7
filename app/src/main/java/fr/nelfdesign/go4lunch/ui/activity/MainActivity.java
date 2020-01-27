@@ -22,7 +22,6 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
@@ -57,10 +56,14 @@ public class MainActivity extends BaseActivity {
     private FirebaseUser user;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
 
-    @BindView(R.id.nav_view) BottomNavigationView navView;
-    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.drawer_navigation) NavigationView mNavigationView;
+    @BindView(R.id.nav_view)
+    BottomNavigationView navView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.drawer_navigation)
+    NavigationView mNavigationView;
 
     // base activity method
     @Override
@@ -78,7 +81,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (mFragment == null){
+        if (mFragment == null) {
             mFragment = new MapFragment();
         }
 
@@ -93,10 +96,6 @@ public class MainActivity extends BaseActivity {
 
         // Initialize the SDK for autocomplete
         Places.initialize(getApplicationContext(), BuildConfig.google_maps_key);
-
-        // Create a new Places client instance for autocomplete
-        PlacesClient placesClient = Places.createClient(this);
-
     }
 
     private void configureNavigationHeader() {
@@ -110,8 +109,8 @@ public class MainActivity extends BaseActivity {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.map_Fragment);
         Objects.requireNonNull(fragment).onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == AUTOCOMPLETE_REQUEST_CODE){
-            if(resultCode == RESULT_OK){
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 Intent intent = new Intent(this, RestaurantDetail.class);
                 intent.putExtra("placeId", place.getId());
@@ -133,34 +132,31 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.toolbar_search:
-                // Set the fields to specify which types of place data to
-                // return after the user has made a selection.
-                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+        if (item.getItemId() == R.id.toolbar_search) {
+            // Set the fields to specify which types of place data to
+            // return after the user has made a selection.
+            List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
 
-                // Define the region
-                RectangularBounds bounds = RectangularBounds.newInstance(
-                        new LatLng(47.2184, -1.5536),
-                        new LatLng(47.2205, -1.5435));
+            // Define the region
+            RectangularBounds bounds = RectangularBounds.newInstance(
+                    new LatLng(47.2184, -1.5536),
+                    new LatLng(47.2205, -1.5435));
 
-                // Start the autocomplete intent.
-                Intent intent = new Autocomplete.IntentBuilder(
-                        AutocompleteActivityMode.OVERLAY, fields)
-                        .setLocationBias(bounds)
-                        .setTypeFilter(TypeFilter.ESTABLISHMENT)
-                        .build(this);
+            // Start the autocomplete intent.
+            Intent intent = new Autocomplete.IntentBuilder(
+                    AutocompleteActivityMode.OVERLAY, fields)
+                    .setLocationBias(bounds)
+                    .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                    .build(this);
 
-                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
 
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
-    private Boolean updateMainFragment(MenuItem menuItem){
+    private Boolean updateMainFragment(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.navigation_map:
                 this.mFragment = new MapFragment();
@@ -171,7 +167,6 @@ public class MainActivity extends BaseActivity {
                 this.mFragment = new RestaurantListFragment();
                 configureFragment(mFragment);
                 mToolbar.setTitle(getResources().getString(R.string.I_m_hungry));
-
                 break;
             case R.id.navigation_workers:
                 this.mFragment = new WorkersFragment();
@@ -197,36 +192,7 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
-    private void showMyFavoriteRestaurant() {
-        Intent intent = new Intent(this, FavoritesRestaurant.class);
-        startActivity(intent);
-    }
-
-    private void startActivitySettings() {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
-    }
-
-    private void showMyRestaurantChoice() {
-        Query query = WorkersHelper.getAllWorkers().whereEqualTo("name",
-                Objects.requireNonNull(getCurrentUser()).getDisplayName());
-
-        query.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                    if (!Objects.equals(document.get("placeId"), "")){
-                        Intent intent = new Intent(this.getBaseContext(), RestaurantDetail.class);
-                        intent.putExtra("placeId", Objects.requireNonNull(document.get("placeId")).toString());
-                        startActivity(intent);
-                    }else {
-                        Utils.showSnackBar(this.mDrawerLayout, getResources().getString(R.string.no_choice_restaurant_workers));
-                    }
-                }
-            }
-        });
-    }
-
-    private void configureFragment(Fragment fragment){
+    private void configureFragment(Fragment fragment) {
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_main, fragment)
@@ -235,9 +201,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(START)){
+        if (mDrawerLayout.isDrawerOpen(START)) {
             mDrawerLayout.closeDrawer(START);
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -252,6 +218,9 @@ public class MainActivity extends BaseActivity {
         toggle.syncState();
     }
 
+    /**
+     * Update header with user infos
+     */
     private void updateNavigationHeader() {
         final View headerNav = mNavigationView.getHeaderView(0);
 
@@ -286,30 +255,45 @@ public class MainActivity extends BaseActivity {
      */
     private void signOutCurrentUser() {
         Utils.showSnackBar(this.mDrawerLayout, "sign out");
-        if (user != null){
+        if (user != null) {
             FirebaseAuth.getInstance().signOut();
             startAuthActivity();
             finishAffinity();
         }
     }
 
-    /**
-     * Deletes the current user account
-     */
-    private void deleteCurrentUserAccount() {
-        if (user != null){
-            user.delete()
-                    .addOnCompleteListener((task) -> {
-                        if (task.isSuccessful()) {
-                            Utils.showSnackBar(this.mDrawerLayout,"Deleted account");
-                            startAuthActivity();
-                        }
-                    });
-        }
-    }
-
-    private void startAuthActivity(){
+    // Intent used for navigation item
+    private void startAuthActivity() {
         Intent intent = new Intent(this, ConnexionActivity.class);
         startActivity(intent);
+    }
+
+    private void showMyFavoriteRestaurant() {
+        Intent intent = new Intent(this, FavoritesRestaurant.class);
+        startActivity(intent);
+    }
+
+    private void startActivitySettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void showMyRestaurantChoice() {
+        Query query = WorkersHelper.getAllWorkers().whereEqualTo("name",
+                Objects.requireNonNull(getCurrentUser()).getDisplayName());
+
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                    if (!Objects.equals(document.get("placeId"), "")) {
+                        Intent intent = new Intent(this.getBaseContext(), RestaurantDetail.class);
+                        intent.putExtra("placeId", Objects.requireNonNull(document.get("placeId")).toString());
+                        startActivity(intent);
+                    } else {
+                        Utils.showSnackBar(this.mDrawerLayout, getResources().getString(R.string.no_choice_restaurant_workers));
+                    }
+                }
+            }
+        });
     }
 }
