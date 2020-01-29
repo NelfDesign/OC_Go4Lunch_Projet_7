@@ -21,7 +21,7 @@
                 android:id="@+id/restaurant_name"
                 style="@style/item_text_style"
                 android:maxLength="30"
-                tools:text="le zinc" />
+                tools:text="le zinc"/>
 
             <TextView
                 android:id="@+id/restaurant_category_and_adress"

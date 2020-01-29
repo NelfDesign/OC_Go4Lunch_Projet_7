@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- connexion dimens -->
+    <dimen name="logo_width">200dp</dimen>
+    <dimen name="margin_50">50dp</dimen>
+    <dimen name="text_logo_63">63sp</dimen>
+    <dimen name="text_15">15sp</dimen>
+    <dimen name="button_height_45">45dp</dimen>
+    <dimen name="margin_start_10">10dp</dimen>
+    <dimen name="margin_start_40">40dp</dimen>
+    <dimen name="margin_end_40">40dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+
+    <!-- dimens -->
+    <dimen name="image_detail_220">220dp</dimen>
+    <dimen name="margin_top_15">15dp</dimen>
+    <dimen name="margin_top_20">20dp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="margin_2">2dp</dimen>
+    <dimen name="margin_5">5dp</dimen>
+    <dimen name="margin_25">25dp</dimen>
+    <dimen name="image_button_50">50dp</dimen>
+    <dimen name="image_fab_30">30dp</dimen>
+    <dimen name="margin_fab_16">16dp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_40">40sp</dimen>
+
+    <dimen name="image_restaurant">70dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
+    <dimen name="image_100">100dp</dimen>
+
+</resources>

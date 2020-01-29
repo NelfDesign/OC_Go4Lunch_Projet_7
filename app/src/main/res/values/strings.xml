@@ -27,9 +27,9 @@
     <string name="no_name_found">No name found</string>
     <string name="no_mail_found">No mail found</string>
     <string name="email">Email</string>
-    <string name="google">Google</string>
-    <string name="facebook">Facebook</string>
-    <string name="twitter">Twitter</string>
+    <string name="google" translatable="false">Google</string>
+    <string name="facebook" translatable="false">Facebook</string>
+    <string name="twitter" translatable="false">Twitter</string>
 
 
     <!-- navigation drawer -->

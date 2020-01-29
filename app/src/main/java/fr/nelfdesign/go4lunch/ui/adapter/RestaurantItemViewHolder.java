@@ -50,7 +50,7 @@ public class RestaurantItemViewHolder extends RecyclerView.ViewHolder implements
 
         String name;
         if (restaurantDetail.getName().length() > 20){
-            name = restaurantDetail.getName().substring(0, 23) + " ...";
+            name = restaurantDetail.getName().substring(0, 20) + " ...";
         } else {
             name = restaurantDetail.getName();
         }

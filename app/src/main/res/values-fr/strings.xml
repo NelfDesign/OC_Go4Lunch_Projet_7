@@ -12,11 +12,9 @@
     <string name="error_query">Problême d\'acquisition de documents</string>
     <string name="error_stream">erreur</string>
     <string name="error_unknown_error">une erreur est apparue</string>
-    <string name="facebook">Facebook</string>
     <string name="favorite_restaurant_message">Restaurant ajouté à votre liste de restaurant</string>
     <string name="favorites_restaurant">Mes restaurants favoris</string>
     <string name="go4lunch">Go4Lunch</string>
-    <string name="google">Google</string>
     <string name="like">Ajouter aux favoris</string>
     <string name="logout">Déconnection</string>
     <string name="my_position">Ma position</string>
@@ -38,7 +36,6 @@
     <string name="title_map">Carte</string>
     <string name="title_search">Recherche</string>
     <string name="title_workers">Collègues</string>
-    <string name="twitter">Twitter</string>
     <string name="web_site">Site internet</string>
     <string name="workers_toolbar">Collègues</string>
     <string name="your_lunch">Votre choix de restaurant</string>
@@ -70,4 +67,5 @@
     <string name="message_from_go4lunch">Message de Go4lunch</string>
     <string name="filter_restaurant_by">Filtrer les restaurants :</string>
     <string name="no_star">Pas d\'étoiles</string>
+    <string name="no_filter">Pas de filtre</string>
 </resources>
