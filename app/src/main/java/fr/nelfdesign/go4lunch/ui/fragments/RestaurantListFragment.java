@@ -44,7 +44,7 @@ import timber.log.Timber;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RestaurantListFragment extends Fragment implements RestaurantListAdapter.onClickRestaurantItemListener{
+public class RestaurantListFragment extends Fragment implements RestaurantListAdapter.onClickRestaurantItemListener {
 
     //FIELD
     private ArrayList<Restaurant> mRestaurants;
@@ -53,14 +53,16 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
     private LatLng currentPosition;
     private FusedLocationProviderClient mFusedLocationClient;
     private ArrayList<Workers> mWorkersArrayList;
-
+    //constant
     private static final String PREF_RADIUS = "radius_key";
     private static final String PREF_TYPE = "type_key";
     private final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
     private ListenerRegistration mListenerRegistration = null;
 
-    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
 
+    //constructor
     public RestaurantListFragment() {
     }
 
@@ -88,13 +90,13 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
     }
 
     @OnClick({R.id.no_star,
-              R.id.star_1,
-              R.id.star_3,
-              R.id.star_2,
-              R.id.no_filter})
-    void onClickFilter(View view){
-       mRestaurantsToDisplay.clear();
-        switch (view.getId()){
+            R.id.star_1,
+            R.id.star_3,
+            R.id.star_2,
+            R.id.no_filter})
+    void onClickFilter(View view) {
+        mRestaurantsToDisplay.clear();
+        switch (view.getId()) {
             case R.id.no_star:
                 mRestaurantsToDisplay.addAll(Utils.filterRestaurantList(mRestaurants, 0));
                 break;
@@ -114,7 +116,7 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
         Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
     }
 
-   @Override
+    @Override
     public void onStart() {
         super.onStart();
         initRestaurantList();
@@ -123,17 +125,19 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mListenerRegistration != null){
+        if (mListenerRegistration != null) {
             mListenerRegistration.remove();
         }
     }
 
+    /**
+     * create a list of restaurant with settings and current position
+     */
     private void initRestaurantList() {
         workersRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
             mWorkersArrayList = new ArrayList<>();
-            if(queryDocumentSnapshots != null){
+            if (queryDocumentSnapshots != null) {
                 for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
-
                     if (data.get("placeId") != null) {
                         Workers workers = data.toObject(Workers.class);
                         mWorkersArrayList.add(workers);
@@ -151,21 +155,32 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
                         currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
                         //observe restaurants data
                         mMapViewModel.getAllRestaurants(currentPosition,
-                                                        sharedPreferences.getString(PREF_RADIUS, ""),
-                                                        sharedPreferences.getString(PREF_TYPE, "restaurant"))
+                                sharedPreferences.getString(PREF_RADIUS, ""),
+                                sharedPreferences.getString(PREF_TYPE, "restaurant"))
                                 .observe(Objects.requireNonNull(this.getActivity()), this::initListAdapter);
 
                     }
                 });
     }
 
+    /**
+     * init adapter for RV
+     *
+     * @param restaurants list
+     */
     private void initListAdapter(ArrayList<Restaurant> restaurants) {
         mRestaurantsToDisplay.addAll(getRestaurantFromJson(restaurants));
         RestaurantListAdapter adapter = new RestaurantListAdapter(mRestaurantsToDisplay, Glide.with(this), this);
         mRecyclerView.setAdapter(adapter);
     }
 
-    private ArrayList<Restaurant> getRestaurantFromJson(ArrayList<Restaurant> restaurants){
+    /**
+     * format restaurant list with distance and workers information choice
+     *
+     * @param restaurants list
+     * @return restaurant list
+     */
+    private ArrayList<Restaurant> getRestaurantFromJson(ArrayList<Restaurant> restaurants) {
         mRestaurants = Utils.getChoicedRestaurants(restaurants, mWorkersArrayList);
         getDistanceFromMyPosition(mRestaurants);
         return mRestaurants;
@@ -179,8 +194,13 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
         startActivity(intent);
     }
 
-    private void getDistanceFromMyPosition(ArrayList<Restaurant> restaurants){
-        for (Restaurant restaurant : restaurants){
+    /**
+     * calculate distance between restaurant and current position
+     *
+     * @param restaurants list
+     */
+    private void getDistanceFromMyPosition(ArrayList<Restaurant> restaurants) {
+        for (Restaurant restaurant : restaurants) {
             float[] results = new float[1];
             Location.distanceBetween(currentPosition.latitude, currentPosition.longitude,
                     restaurant.getLocation().getLat(), restaurant.getLocation().getLng(), results);

@@ -15,9 +15,10 @@ import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.base.BaseActivity;
 import fr.nelfdesign.go4lunch.settings.activity.fragments.SettingsHeaders;
 
-public class SettingsActivity extends BaseActivity implements  PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+public class SettingsActivity extends BaseActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
-    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @Override
     public int getActivityLayout() {

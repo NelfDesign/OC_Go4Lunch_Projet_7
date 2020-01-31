@@ -25,6 +25,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     // Methods
     public abstract int getActivityLayout();
+
     @Nullable
     protected abstract Toolbar getToolbar();
 
@@ -39,7 +40,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this); //Configure Butterknife
         this.configureFirebaseAuth(); // configure firebase
     }
-
 
     // --------------------
     // UI
@@ -64,14 +64,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     // UTILS
     // --------------------
 
-   @Nullable
-    protected FirebaseUser getCurrentUser(){ return mFirebaseAuth.getCurrentUser(); }
+    @Nullable
+    protected FirebaseUser getCurrentUser() {
+        return mFirebaseAuth.getCurrentUser();
+    }
 
     // --------------------
     // ERROR HANDLER
     // --------------------
 
-    protected OnFailureListener onFailureListener(){
+    protected OnFailureListener onFailureListener() {
         return e -> Toast.makeText(getApplicationContext(), getString(R.string.error_unknown_error), Toast.LENGTH_LONG).show();
     }
 }

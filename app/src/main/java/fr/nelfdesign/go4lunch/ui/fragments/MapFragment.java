@@ -47,7 +47,6 @@ import fr.nelfdesign.go4lunch.models.Restaurant;
 import fr.nelfdesign.go4lunch.models.Workers;
 import fr.nelfdesign.go4lunch.ui.activity.RestaurantDetail;
 import fr.nelfdesign.go4lunch.ui.viewModels.MapViewModel;
-import fr.nelfdesign.go4lunch.utils.Utils;
 import timber.log.Timber;
 
 /**
@@ -55,7 +54,7 @@ import timber.log.Timber;
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
-    //Fields Google map
+    //Fields
     private GoogleMap mGoogleMap;
     private GoogleMapOptions mapOptions;
     private FusedLocationProviderClient mFusedLocationClient;
@@ -63,12 +62,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private LatLng lastPosition;
     private ArrayList<Workers> mWorkersArrayList;
     private ListenerRegistration mListenerRegistration = null;
-
+    //Constant
     private static final String PREF_ZOOM = "zoom_key";
     private static final String PREF_RADIUS = "radius_key";
     private static final String PREF_TYPE = "type_key";
 
-    public MapFragment() { }
+    //constructor
+    public MapFragment() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,7 +79,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 .mapType(GoogleMap.MAP_TYPE_NORMAL)
                 .zoomControlsEnabled(true)
                 .zoomGesturesEnabled(true);
-
     }
 
     @Override
@@ -103,13 +103,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mListenerRegistration != null){
+        if (mListenerRegistration != null) {
             mListenerRegistration.remove();
         }
     }
 
     /**
      * Initialize liveData and viewModel after map is ready
+     *
      * @param googleMap for map
      */
     @Override
@@ -121,10 +122,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
         mListenerRegistration = workersRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
             mWorkersArrayList = new ArrayList<>();
-            if (queryDocumentSnapshots != null){
+            if (queryDocumentSnapshots != null) {
                 for (DocumentSnapshot data : Objects.requireNonNull(queryDocumentSnapshots).getDocuments()) {
 
-                    if(data.get("placeId") != null){
+                    if (data.get("placeId") != null) {
                         Workers workers = data.toObject(Workers.class);
                         mWorkersArrayList.add(workers);
                         Timber.i("snap workers : %s", mWorkersArrayList.size());
@@ -139,6 +140,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    /**
+     * get user location
+     */
     private void getUserLocation() {
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(Objects.requireNonNull(getActivity()), location -> {
@@ -152,7 +156,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 });
     }
 
-    private void getLocationPermission(){
+    /**
+     * check permission with dexter library
+     */
+    private void getLocationPermission() {
         Dexter.withActivity(getActivity())
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(new PermissionListener() {
@@ -174,34 +181,69 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }).check();
     }
 
-    //initialisation de la carte
+    //init map
     private void initMap() {
-        Timber.d( "initMap: initializing map");
-            SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_Fragment);
+        Timber.d("initMap: initializing map");
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_Fragment);
 
-                if(mapFragment == null){
-                    //add option to the map
-                    mapFragment = SupportMapFragment.newInstance(mapOptions);
-                    if (getFragmentManager() != null) {
-                        getFragmentManager().beginTransaction().replace(R.id.map_Fragment, mapFragment).commit();
-                    }
-                }
-                mapFragment.getMapAsync(this);
+        if (mapFragment == null) {
+            //add option to the map
+            mapFragment = SupportMapFragment.newInstance(mapOptions);
+            if (getFragmentManager() != null) {
+                getFragmentManager().beginTransaction().replace(R.id.map_Fragment, mapFragment).commit();
+            }
+        }
+        mapFragment.getMapAsync(this);
     }
 
-    private void createUserMarker(Poi poi, GoogleMap map){
+    /**
+     * generate marker with restaurant list
+     *
+     * @param restaurants list
+     */
+    private void generatePoisRestaurant(ArrayList<Restaurant> restaurants) {
+        List<Poi> listPoi = mMapViewModel.generatePois(restaurants, mWorkersArrayList);
+        for (Poi p : listPoi) {
+            createRestaurantsMarker(p, mGoogleMap);
+            mGoogleMap.setOnMarkerClickListener(marker -> {
+                launchRestaurantDetail(marker);
+                return true;
+            });
+        }
+    }
+
+    /**
+     * create user marker
+     *
+     * @param poi poi
+     * @param map map
+     */
+    private void createUserMarker(Poi poi, GoogleMap map) {
         setMarkerPoi(poi, map, R.drawable.ic_marquer);
     }
 
-    private void createRestaurantsMarker(Poi poi, GoogleMap map){
-        if (poi.isChoosen()){
+    /**
+     * create marker for all restaurant
+     *
+     * @param poi poi
+     * @param map map
+     */
+    private void createRestaurantsMarker(Poi poi, GoogleMap map) {
+        if (poi.isChoosen()) {
             setMarkerPoi(poi, map, R.drawable.ic_resto_green2);
-        }else{
+        } else {
             setMarkerPoi(poi, map, R.drawable.ic_resto_red2);
         }
     }
 
-    private void setMarkerPoi(Poi poi, GoogleMap map, int icon){
+    /**
+     * create custom marker
+     *
+     * @param poi  poi
+     * @param map  map
+     * @param icon icon
+     */
+    private void setMarkerPoi(Poi poi, GoogleMap map, int icon) {
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(new LatLng(poi.getLat(), poi.getLong()))
                 .title(poi.getTitle())
@@ -214,60 +256,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-
-    private void generatePoisRestaurant(ArrayList<Restaurant> restaurants) {
-        List<Poi> listPoi = generatePois(restaurants);
-
-        for (Poi p : listPoi){
-            createRestaurantsMarker(p, mGoogleMap);
-            mGoogleMap.setOnMarkerClickListener(marker -> {
-                launchRestaurantDetail(marker);
-                return true;
-            });
-        }
-    }
-
-    private List<Poi> generatePois(ArrayList<Restaurant> restaurants){
-        List<Poi> pois = new ArrayList<>();
-       List<Restaurant> restaurants1 = Utils.getChoicedRestaurants(restaurants, mWorkersArrayList);
-
-        for (Restaurant resto : restaurants1){
-            Poi p = new Poi(
-                    resto.getName(),
-                    resto.getPlaceId(),
-                    resto.getLocation().getLat(),
-                    resto.getLocation().getLng()
-            );
-
-            if (resto.isChoice()){
-                p.setChoosen(true);
-            }
-
-            pois.add(p);
-        }
-        return pois;
-    }
-
-    private void updateUiMap(LatLng latLng){
+    /**
+     * update UI with settings
+     *
+     * @param latLng user LatLng
+     */
+    private void updateUiMap(LatLng latLng) {
         //create user marker
         createUserMarker(mMapViewModel.generateUserPoi(latLng.latitude, latLng.longitude),
                 mGoogleMap);
         //move camera to user position
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(this.getContext()));
         float zoom;
-        switch (sharedPreferences.getString(PREF_ZOOM, "")){
+        switch (sharedPreferences.getString(PREF_ZOOM, "")) {
             case "High":
                 zoom = 15f;
                 break;
             case "Medium":
                 zoom = 13f;
                 break;
-            case "Less" :
+            case "Less":
                 zoom = 9f;
                 break;
 
-                default:
-                    zoom = 10f;
+            default:
+                zoom = 10f;
         }
 
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
@@ -275,13 +288,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mGoogleMap.setMyLocationEnabled(true);
         //observe ViewModel restaurants data
         mMapViewModel.getAllRestaurants(latLng,
-                                        sharedPreferences.getString(PREF_RADIUS,""),
-                                        sharedPreferences.getString(PREF_TYPE, ""))
+                sharedPreferences.getString(PREF_RADIUS, ""),
+                sharedPreferences.getString(PREF_TYPE, ""))
                 .observe(Objects.requireNonNull(this.getActivity()), this::generatePoisRestaurant);
     }
 
     /**
      * launch detail restaurant page on marker click
+     *
      * @param marker position of a restaurant
      */
     private void launchRestaurantDetail(Marker marker) {

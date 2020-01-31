@@ -6,24 +6,24 @@ package fr.nelfdesign.go4lunch.models;
  */
 public class Workers {
 
-    // Fullname
+    // FIELDS
     private String name;
-    // Avatar
     private String avatarUrl;
-    // Restaurant name
     private String restaurantName;
-    //Restaurant placeId
     private String placeId;
 
-    public Workers(){}
+    //constructors
+    public Workers() {
+    }
 
-    public Workers (String name, String avatarUrl, String resto, String placeId) {
+    public Workers(String name, String avatarUrl, String resto, String placeId) {
         this.name = name;
         this.avatarUrl = avatarUrl;
         this.restaurantName = resto;
         this.placeId = placeId;
     }
 
+    //GETTER AND SETTER
     public String getPlaceId() {
         return placeId;
     }

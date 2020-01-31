@@ -20,14 +20,17 @@ import fr.nelfdesign.go4lunch.models.Restaurant;
  */
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantItemViewHolder> {
 
-    public interface onClickRestaurantItemListener{
+    //interface to listen the click
+    public interface onClickRestaurantItemListener {
         void onClickRestaurantItem(int position);
     }
 
+    //FILEDS
     private ArrayList<Restaurant> mRestaurantList;
     private RequestManager glide;
     private onClickRestaurantItemListener mOnClickRestaurantitemListener;
 
+    //constructor
     public RestaurantListAdapter(ArrayList<Restaurant> restaurantList,
                                  RequestManager glide,
                                  onClickRestaurantItemListener onClickRestaurantitemListener) {
@@ -47,9 +50,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantItemVi
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantItemViewHolder holder, int position) {
-
-            holder.updateWithDetailRestaurant(this.mRestaurantList.get(position),this.glide);
-
+        holder.updateWithDetailRestaurant(this.mRestaurantList.get(position), this.glide);
     }
 
     @Override

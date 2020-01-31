@@ -12,13 +12,14 @@ import fr.nelfdesign.go4lunch.models.RestaurantFavoris;
  */
 public class RestaurantsFavorisHelper {
 
+    ///FIELD
     private static final String COLLECTION_NAME = "restaurants_favoris";
 
     // --- CREATE ---
 
-    public static Task<DocumentReference> createFavoriteRestaurant(String user,String uid, String name, String placeId,
+    public static Task<DocumentReference> createFavoriteRestaurant(String user, String uid, String name, String placeId,
                                                                    String address, String photoReference, double rating) {
-        RestaurantFavoris restoToCreate = new RestaurantFavoris(uid,name, placeId, address, photoReference, rating);
+        RestaurantFavoris restoToCreate = new RestaurantFavoris(uid, name, placeId, address, photoReference, rating);
 
         //Store RestaurantFavoris to Firestore
         return WorkersHelper.getWorkersCollection()
@@ -29,7 +30,7 @@ public class RestaurantsFavorisHelper {
 
     // --- GET ---
 
-    public static Query getAllRestaurantsFromWorkers(String name){
+    public static Query getAllRestaurantsFromWorkers(String name) {
         return WorkersHelper.getWorkersCollection()
                 .document(name)
                 .collection(COLLECTION_NAME);

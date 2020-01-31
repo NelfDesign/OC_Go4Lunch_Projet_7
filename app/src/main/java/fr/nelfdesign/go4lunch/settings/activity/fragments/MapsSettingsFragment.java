@@ -14,8 +14,9 @@ import fr.nelfdesign.go4lunch.R;
  * Created by Nelfdesign at 20/01/2020
  * fr.nelfdesign.go4lunch.settings.activity.fragments
  */
-public class MapsSettingsFragment extends PreferenceFragmentCompat{
+public class MapsSettingsFragment extends PreferenceFragmentCompat {
 
+    //FIELDS
     private static final String PREF_ZOOM_KEY = "zoom_key";
     private static final String PREF_RADIUS_KEY = "radius_key";
     private static final String PREF_TYPE_KEY = "type_key";
@@ -28,22 +29,22 @@ public class MapsSettingsFragment extends PreferenceFragmentCompat{
 
         mOnSharedPreferenceChangeListener = (sharedPreferences, key) -> {
 
-            if (key.equals(PREF_ZOOM_KEY)){
+            if (key.equals(PREF_ZOOM_KEY)) {
                 Preference preference = findPreference(key);
                 Objects.requireNonNull(preference)
-                        .setSummary(sharedPreferences.getString(key, "") + getResources().getString(R.string.zoom_level));
+                        .setSummary(sharedPreferences.getString(key, "High") + getResources().getString(R.string.zoom_level));
             }
 
-            if (key.equals(PREF_RADIUS_KEY)){
+            if (key.equals(PREF_RADIUS_KEY)) {
                 Preference preference = findPreference(key);
                 Objects.requireNonNull(preference)
-                        .setSummary(sharedPreferences.getString(key, "") + getResources().getString(R.string.meters_radius));
+                        .setSummary(sharedPreferences.getString(key, "500") + getResources().getString(R.string.meters_radius));
             }
 
-            if (key.equals(PREF_TYPE_KEY)){
+            if (key.equals(PREF_TYPE_KEY)) {
                 Preference preference = findPreference(key);
                 Objects.requireNonNull(preference)
-                        .setSummary(sharedPreferences.getString(key, ""));
+                        .setSummary(sharedPreferences.getString(key, "restaurant"));
             }
 
         };

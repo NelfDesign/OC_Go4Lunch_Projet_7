@@ -4,8 +4,10 @@ package fr.nelfdesign.go4lunch.models;
  * Created by Nelfdesign at 08/01/2020
  * fr.nelfdesign.go4lunch.models
  */
+
 public class RestaurantFavoris {
 
+    //FIELDS
     private String uid;
     private String name;
     private String placeId;
@@ -13,6 +15,7 @@ public class RestaurantFavoris {
     private String photoReference;
     private double rating;
 
+    //constructor
     public RestaurantFavoris(String uid, String name, String placeId, String address, String photoReference, double rating) {
         this.uid = uid;
         this.name = name;
@@ -25,10 +28,10 @@ public class RestaurantFavoris {
     /**
      * constructor needed to firebase
      */
-    public RestaurantFavoris(){
+    @SuppressWarnings("constructor needed to firebase")
+    public RestaurantFavoris(){}
 
-    }
-
+    //GETTER AND SETTER
     public String getUid() {
         return uid;
     }

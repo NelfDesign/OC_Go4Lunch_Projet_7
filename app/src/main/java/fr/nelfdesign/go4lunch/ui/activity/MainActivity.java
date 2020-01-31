@@ -98,6 +98,9 @@ public class MainActivity extends BaseActivity {
         Places.initialize(getApplicationContext(), BuildConfig.google_maps_key);
     }
 
+    /**
+     * configure navigation drawer header
+     */
     private void configureNavigationHeader() {
         mNavigationView.setNavigationItemSelectedListener(this::updateMainFragment);
         this.updateNavigationHeader();
@@ -156,6 +159,12 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * update main fragment when item is clicked
+     *
+     * @param menuItem item to click on
+     * @return new fragment
+     */
     private Boolean updateMainFragment(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.navigation_map:
@@ -192,8 +201,12 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
+    /**
+     * create new fragment
+     *
+     * @param fragment to configure
+     */
     private void configureFragment(Fragment fragment) {
-
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_main, fragment)
                 .commit();
@@ -208,6 +221,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    /**
+     * configuration of the drawer layout
+     */
     private void drawerLayoutConfiguration() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
                 mDrawerLayout,
@@ -219,7 +235,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * Update header with user infos
+     * Update header with user information
      */
     private void updateNavigationHeader() {
         final View headerNav = mNavigationView.getHeaderView(0);
@@ -278,6 +294,9 @@ public class MainActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    /**
+     * get a user query to show if the user has chosen a restaurant and redirect if able
+     */
     private void showMyRestaurantChoice() {
         Query query = WorkersHelper.getAllWorkers().whereEqualTo("name",
                 Objects.requireNonNull(getCurrentUser()).getDisplayName());

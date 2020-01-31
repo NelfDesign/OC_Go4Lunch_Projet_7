@@ -20,10 +20,14 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         Timber.plant(new Timber.DebugTree());
-
     }
 
-    public static RestaurantService retrofitCall(){
+    /**
+     * create the retrofit configuration
+     *
+     * @return RestaurantService interface
+     */
+    public static RestaurantService retrofitCall() {
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))

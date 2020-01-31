@@ -53,7 +53,7 @@ public class RestaurantDetail extends BaseActivity {
 
     //FIELDS
     private static final int PERMISSION_CALL = 100;
-    private String phonenumber;
+    private String phoneNumber;
     private String websiteUrl;
     private ArrayList<Workers> mWorkers;
     private ArrayList<RestaurantFavoris> mRestaurantFavorises;
@@ -64,22 +64,38 @@ public class RestaurantDetail extends BaseActivity {
     private Query query;
     private boolean isLiked = false;
 
-    @BindView(R.id.coordinator_detail) CoordinatorLayout mCoordinatorLayout;
-    @BindView(R.id.toolbarDetails) Toolbar mToolbar;
-    @BindView(R.id.imageRestaurant) ImageView mImageView;
-    @BindView(R.id.restaurant_text_name) TextView mRestaurantTextname;
-    @BindView(R.id.restaurant_text_adress) TextView mRestaurantTextadress;
-    @BindView(R.id.text_Like) TextView mTextLike;
-    @BindView(R.id.text_favorite) TextView mTextFavorite;
-    @BindView(R.id.restaurant_detail_star1) ImageView mRestaurantStar1;
-    @BindView(R.id.restaurant_detail_star2) ImageView mRestaurantStar2;
-    @BindView(R.id.restaurant_detail_star3) ImageView mRestaurantStar3;
-    @BindView(R.id.call_image) ImageButton callPhone;
-    @BindView(R.id.website) ImageButton websiteButton;
-    @BindView(R.id.like) ImageButton likeButton;
-    @BindView(R.id.fab_restaurant_detail) FloatingActionButton mFloatingActionButton;
-    @BindView(R.id.favorite_restaurant) ImageButton favoriteButton;
-    @BindView(R.id.recyclerView_workers_restaurant_detail) RecyclerView mRecyclerView;
+    @BindView(R.id.coordinator_detail)
+    CoordinatorLayout mCoordinatorLayout;
+    @BindView(R.id.toolbarDetails)
+    Toolbar mToolbar;
+    @BindView(R.id.imageRestaurant)
+    ImageView mImageView;
+    @BindView(R.id.restaurant_text_name)
+    TextView mRestaurantTextname;
+    @BindView(R.id.restaurant_text_adress)
+    TextView mRestaurantTextadress;
+    @BindView(R.id.text_Like)
+    TextView mTextLike;
+    @BindView(R.id.text_favorite)
+    TextView mTextFavorite;
+    @BindView(R.id.restaurant_detail_star1)
+    ImageView mRestaurantStar1;
+    @BindView(R.id.restaurant_detail_star2)
+    ImageView mRestaurantStar2;
+    @BindView(R.id.restaurant_detail_star3)
+    ImageView mRestaurantStar3;
+    @BindView(R.id.call_image)
+    ImageButton callPhone;
+    @BindView(R.id.website)
+    ImageButton websiteButton;
+    @BindView(R.id.like)
+    ImageButton likeButton;
+    @BindView(R.id.fab_restaurant_detail)
+    FloatingActionButton mFloatingActionButton;
+    @BindView(R.id.favorite_restaurant)
+    ImageButton favoriteButton;
+    @BindView(R.id.recyclerView_workers_restaurant_detail)
+    RecyclerView mRecyclerView;
 
     @Override
     public int getActivityLayout() {
@@ -152,36 +168,11 @@ public class RestaurantDetail extends BaseActivity {
         }
     }
 
-    private void deleteFavoriteRestaurant() {
-        getFavoriteRestaurant();
-        for (RestaurantFavoris restaurantFavoris : mRestaurantFavorises) {
-            if (restaurantFavoris.getPlaceId().equalsIgnoreCase(placeId)) {
-                deleteRestaurantToFavorite(restaurantFavoris.getUid());
-            }
-        }
-    }
-
-    private void likeRestaurant() {
-        saveRestaurantToFavorite(mRestaurantFavoris);
-    }
-
-    private void updateFab() {
-        this.query.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                    String id = document.getId();
-                    if (placeId.equalsIgnoreCase(Objects.requireNonNull(document.get("placeId")).toString())) {
-                        updateRestaurantChoice(id, " ", " ",
-                                getString(R.string.you_haven_t_choice_restaurant), false);
-                    } else {
-                        updateRestaurantChoice(id, nameResto,
-                                placeId, getString(R.string.chosen_restaurant), true);
-                    }
-                }
-            }
-        });
-    }
-
+    /**
+     * update UI with restaurant detail information
+     *
+     * @param detailRestaurant restaurant detail information
+     */
     private void updateUi(DetailRestaurant detailRestaurant) {
         //listen change on worker list
         listenChangeWorkersList();
@@ -211,7 +202,7 @@ public class RestaurantDetail extends BaseActivity {
         if (mRestaurantFavorises != null) {
             for (RestaurantFavoris restaurantFavoris : mRestaurantFavorises) {
                 if (restaurantFavoris.getPlaceId().equalsIgnoreCase(placeId)) {
-                    isLiked=true;
+                    isLiked = true;
                     updateButtonLike();
                 }
             }
@@ -219,11 +210,36 @@ public class RestaurantDetail extends BaseActivity {
         fabButtonColor();
     }
 
+    /**
+     * update the FAB button when you click on
+     */
+    private void updateFab() {
+        this.query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                    String id = document.getId();
+                    if (placeId.equalsIgnoreCase(Objects.requireNonNull(document.get("placeId")).toString())) {
+                        updateRestaurantChoice(id, "", "",
+                                getString(R.string.you_haven_t_choice_restaurant), false);
+                    } else {
+                        updateRestaurantChoice(id, nameResto,
+                                placeId, getString(R.string.chosen_restaurant), true);
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * check if phone permission is able
+     *
+     * @param callPhoneNumber call number
+     */
     private void setCallPhoneIfPossible(String callPhoneNumber) {
         if (callPhoneNumber == null) {
             Toast.makeText(this, R.string.no_telephone_number_for_this_restaurant, Toast.LENGTH_SHORT).show();
         } else {
-            phonenumber = callPhoneNumber;
+            phoneNumber = callPhoneNumber;
         }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
@@ -237,6 +253,11 @@ public class RestaurantDetail extends BaseActivity {
         }
     }
 
+    /**
+     * Format text restaurant name if it's too long
+     *
+     * @param restoText text of restaurant name
+     */
     private void setNameRestaurant(String restoText) {
         String name;
         if (restoText.length() > 23) {
@@ -247,6 +268,11 @@ public class RestaurantDetail extends BaseActivity {
         mRestaurantTextname.setText(name);
     }
 
+    /**
+     * get photo path if able and show it in glide
+     *
+     * @param photoText photo path
+     */
     private void photoReferencePath(String photoText) {
         String path;
         if (photoText == null) {
@@ -263,6 +289,9 @@ public class RestaurantDetail extends BaseActivity {
                 .into(mImageView);
     }
 
+    /**
+     * Listen the modification on workers list
+     */
     private void listenChangeWorkersList() {
         final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
         mListenerRegistration = workersRef.addSnapshotListener((queryDocumentSnapshots, e) -> {
@@ -282,6 +311,9 @@ public class RestaurantDetail extends BaseActivity {
         });
     }
 
+    /**
+     * set the color of FAB button
+     */
     private void fabButtonColor() {
         this.query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -296,6 +328,9 @@ public class RestaurantDetail extends BaseActivity {
         });
     }
 
+    /**
+     * create query to have restaurant favorite list
+     */
     private void getFavoriteRestaurant() {
         final Query refResto = RestaurantsFavorisHelper.
                 getAllRestaurantsFromWorkers(Objects.requireNonNull(getCurrentUser()).getDisplayName());
@@ -313,6 +348,15 @@ public class RestaurantDetail extends BaseActivity {
                 });
     }
 
+    /**
+     * update restaurant choice when star button is clicked
+     *
+     * @param id        id of the restaurant
+     * @param restoName restaurant name
+     * @param placeId   placeID
+     * @param message   message to show in SnackBar
+     * @param isChosen  boolean to configure FAB
+     */
     private void updateRestaurantChoice(String id, String restoName, String placeId, String message, boolean isChosen) {
         WorkersHelper.updateRestaurantChoice(id, restoName, placeId);
         Utils.showSnackBar(this.mCoordinatorLayout, message);
@@ -321,13 +365,42 @@ public class RestaurantDetail extends BaseActivity {
                 : R.drawable.ic_check_circle_black_24dp);
     }
 
+    /**
+     * delete restaurant to favorite list
+     *
+     * @param uid restaurant id
+     */
     private void deleteRestaurantToFavorite(String uid) {
         RestaurantsFavorisHelper.deleteRestaurant(Objects.requireNonNull(getCurrentUser()).getDisplayName(), uid);
         Utils.showSnackBar(this.mCoordinatorLayout, getResources().getString(R.string.restaurant_delete));
-        isLiked =false;
+        isLiked = false;
         updateButtonLike();
     }
 
+    /**
+     * method to delete restaurant if it's in favorite list
+     */
+    private void deleteFavoriteRestaurant() {
+        getFavoriteRestaurant();
+        for (RestaurantFavoris restaurantFavoris : mRestaurantFavorises) {
+            if (restaurantFavoris.getPlaceId().equalsIgnoreCase(placeId)) {
+                deleteRestaurantToFavorite(restaurantFavoris.getUid());
+            }
+        }
+    }
+
+    /**
+     * method called if you click on like star
+     */
+    private void likeRestaurant() {
+        saveRestaurantToFavorite(mRestaurantFavoris);
+    }
+
+    /**
+     * save restaurant to favorite list
+     *
+     * @param resto Restaurant
+     */
     private void saveRestaurantToFavorite(RestaurantFavoris resto) {
         RestaurantsFavorisHelper.createFavoriteRestaurant(Objects.requireNonNull(getCurrentUser()).getDisplayName(),
                 resto.getUid(), resto.getName(), resto.getPlaceId(),
@@ -340,13 +413,16 @@ public class RestaurantDetail extends BaseActivity {
         getFavoriteRestaurant();
     }
 
-    private void updateButtonLike(){
-        if (isLiked){
+    /**
+     * set the button like appearance
+     */
+    private void updateButtonLike() {
+        if (isLiked) {
             favoriteButton.setVisibility(View.VISIBLE);
             mTextFavorite.setVisibility(View.VISIBLE);
             likeButton.setVisibility(View.GONE);
             mTextLike.setVisibility(View.GONE);
-        }else {
+        } else {
             favoriteButton.setVisibility(View.GONE);
             mTextFavorite.setVisibility(View.GONE);
             likeButton.setVisibility(View.VISIBLE);
@@ -354,17 +430,28 @@ public class RestaurantDetail extends BaseActivity {
         }
     }
 
+    /**
+     * intent to go to website
+     */
     private void callWebsiteUrl() {
         Intent intentWebsite = new Intent(Intent.ACTION_VIEW, Uri.parse(websiteUrl));
         startActivity(intentWebsite);
     }
 
+    /**
+     * intent to call
+     */
     @SuppressLint("MissingPermission")
     private void callPhone() {
-        Intent intentCall = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phonenumber));
+        Intent intentCall = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
         startActivity(intentCall);
     }
 
+    /**
+     * init adapter with list of workers
+     *
+     * @param workers list
+     */
     private void initAdapter(ArrayList<Workers> workers) {
         DetailWorkerAdapter adapter = new DetailWorkerAdapter(workers);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));

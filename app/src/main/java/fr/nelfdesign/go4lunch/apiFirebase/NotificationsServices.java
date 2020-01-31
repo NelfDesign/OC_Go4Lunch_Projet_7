@@ -27,6 +27,7 @@ import fr.nelfdesign.go4lunch.ui.activity.MainActivity;
  */
 public class NotificationsServices extends FirebaseMessagingService {
 
+    //FIELDS
     private static final String PREF_NOTIFICATION = "notification_firebase";
 
     @Override
@@ -40,21 +41,26 @@ public class NotificationsServices extends FirebaseMessagingService {
         }
     }
 
+    /**
+     * Create Notification
+     *
+     * @param messageBody message receive by firebase
+     */
     private void sendVisualNotification(String messageBody) {
 
-        // 1 - Create an Intent that will be shown when user will click on the Notification
+        //Create an Intent that will be shown when user will click on the Notification
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
-        // 2 - Create a Style for the Notification
+        //Create a Style for the Notification
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
         inboxStyle.setBigContentTitle(getString(R.string.app_name));
         inboxStyle.addLine(messageBody);
 
-        // 3 - Create a Channel (Android 8)
+        // Create a Channel (Android 8)
         String channelId = getString(R.string.default_notification_channel_id);
 
-        // 4 - Build a Notification object
+        //Build a Notification object
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_bol)
@@ -65,10 +71,10 @@ public class NotificationsServices extends FirebaseMessagingService {
                         .setContentIntent(pendingIntent)
                         .setStyle(inboxStyle);
 
-        // 5 - Add the Notification to the Notification Manager and show it.
+        //Add the Notification to the Notification Manager and show it.
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // 6 - Support Version >= Android 8
+        // Support Version >= Android 8
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence channelName = getResources().getString(R.string.message_from_go4lunch);
             int importance = NotificationManager.IMPORTANCE_HIGH;
@@ -76,7 +82,7 @@ public class NotificationsServices extends FirebaseMessagingService {
             Objects.requireNonNull(notificationManager).createNotificationChannel(mChannel);
         }
 
-        // 7 - Show notification
+        //Show notification
         int NOTIFICATION_ID = 7;
         String NOTIFICATION_TAG = "Go4lunch";
         Objects.requireNonNull(notificationManager).notify(NOTIFICATION_TAG, NOTIFICATION_ID, notificationBuilder.build());

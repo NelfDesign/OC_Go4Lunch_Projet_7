@@ -1,25 +1,26 @@
 <resources>
     <!-- Reply Preference -->
     <string-array name="zoom_entries">
-        <item>High</item>
-        <item>Medium</item>
-        <item>Less</item>
-        <item>Default</item>
+        <item>@string/array_high</item>
+        <item>@string/array_medium</item>
+        <item>@string/array_less</item>
+        <item>@string/array_default</item>
     </string-array>
 
     <string-array name="zoom_values">
-        <item>High</item>
-        <item>Medium</item>
-        <item>Less</item>
-        <item>Default</item>
+        <item>@string/array_high</item>
+        <item>@string/array_medium</item>
+        <item>@string/array_less</item>
+        <item>@string/array_default</item>
     </string-array>
 
     <string-array name="radius_entries">
-        <item>Radius 5000 m</item>
-        <item>Radius 3000 m</item>
-        <item>Radius 2000 m</item>
-        <item>Radius 1000 m</item>
-        <item>Radius 500 m</item>
+        <item>@string/array_radius_5000</item>
+        <item>@string/array_radius_3000</item>
+        <item>@string/array_radius_2000</item>
+        <item>@string/array_radius_1000</item>
+        <item>@string/array_radius_500</item>
+
     </string-array>
 
     <string-array name="radius_values">
@@ -31,19 +32,19 @@
     </string-array>
 
     <string-array name="type_entries">
-        <item>restaurant</item>
-        <item>bar</item>
-        <item>hotel</item>
-        <item>food</item>
-        <item>cafe</item>
+        <item>@string/array_type_resto</item>
+        <item>@string/array_type_bar</item>
+        <item>@string/array_type_cafe</item>
+        <item>@string/array_type_food</item>
+        <item>@string/array_type_hotel</item>
     </string-array>
 
     <string-array name="type_values">
-        <item>restaurant</item>
-        <item>bar</item>
-        <item>hotel</item>
-        <item>food</item>
-        <item>cafe</item>
+        <item>@string/array_type_resto</item>
+        <item>@string/array_type_bar</item>
+        <item>@string/array_type_cafe</item>
+        <item>@string/array_type_food</item>
+        <item>@string/array_type_hotel</item>
     </string-array>
 
 </resources>

@@ -16,11 +16,12 @@ import fr.nelfdesign.go4lunch.models.Workers;
  */
 public class WorkersHelper {
 
+    //FIELD
     private static final String COLLECTION_NAME = "workers";
 
     // --- COLLECTION REFERENCE ---
 
-    public static CollectionReference getWorkersCollection(){
+    public static CollectionReference getWorkersCollection() {
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 
@@ -31,7 +32,7 @@ public class WorkersHelper {
     }
 
     // -- GET ALL Workers --
-    public static Query getAllWorkers(){
+    public static Query getAllWorkers() {
         return WorkersHelper.getWorkersCollection();
     }
 

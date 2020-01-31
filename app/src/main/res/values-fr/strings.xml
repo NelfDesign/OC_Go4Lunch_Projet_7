@@ -68,4 +68,18 @@
     <string name="filter_restaurant_by">Filtrer les restaurants :</string>
     <string name="no_star">Pas d\'étoiles</string>
     <string name="no_filter">Pas de filtre</string>
+    <string name="array_default">par défaut</string>
+    <string name="array_high">Haut</string>
+    <string name="array_less">Bas</string>
+    <string name="array_medium">Moyen</string>
+    <string name="array_radius_1000">Rayon de 1000 m</string>
+    <string name="array_radius_2000">Rayon de 2000 m</string>
+    <string name="array_radius_3000">Rayon de 3000 m</string>
+    <string name="array_radius_500">Rayon de 500 m</string>
+    <string name="array_radius_5000">Rayon de 5000 m</string>
+    <string name="array_type_bar">bar</string>
+    <string name="array_type_cafe">café</string>
+    <string name="array_type_food">nouriture</string>
+    <string name="array_type_hotel">hotel</string>
+    <string name="array_type_resto">restaurant</string>
 </resources>

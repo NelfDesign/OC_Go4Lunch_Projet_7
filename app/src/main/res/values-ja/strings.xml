@@ -68,4 +68,18 @@
     <string name="your_favorite_restaurants">" お気に入りのレストラン"</string>
     <string name="your_lunch">" あなたの昼食"</string>
     <string name="zoom_level">" ズームレベル"</string>
+    <string name="array_default">" デフォルト"</string>
+    <string name="array_high">" 高い"</string>
+    <string name="array_less">もっと少なく</string>
+    <string name="array_medium">" 中"</string>
+    <string name="array_radius_1000">" 半径 1000 m"</string>
+    <string name="array_radius_2000">" 半径 2000 m"</string>
+    <string name="array_radius_3000">" 半径 3000 m"</string>
+    <string name="array_radius_500">" 半径 500 m"</string>
+    <string name="array_radius_5000">" 半径 5000 m"</string>
+    <string name="array_type_bar">" バー"</string>
+    <string name="array_type_cafe">" カフェ"</string>
+    <string name="array_type_food">" 食物"</string>
+    <string name="array_type_hotel">" ホテル"</string>
+    <string name="array_type_resto">レストラン</string>
 </resources>

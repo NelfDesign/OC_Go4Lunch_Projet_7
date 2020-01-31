@@ -27,16 +27,21 @@ import fr.nelfdesign.go4lunch.models.Workers;
  */
 public class WorkersListAdapter extends FirestoreRecyclerAdapter<Workers, WorkersListAdapter.WorkersItemViewholder> {
 
-    public interface workerClickListener{
+    //interface to listen the click
+    public interface workerClickListener {
         void onClickItemWorker(int position);
     }
 
+    //FIELD
     private workerClickListener mWorkerClickListener;
 
+    //ViewHolder
     public class WorkersItemViewholder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.worker_avatar) ImageView mImageView;
-        @BindView(R.id.worker_name) TextView mTextView;
+        @BindView(R.id.worker_avatar)
+        ImageView mImageView;
+        @BindView(R.id.worker_name)
+        TextView mTextView;
 
         workerClickListener mWorkerClickListener;
 
@@ -53,6 +58,7 @@ public class WorkersListAdapter extends FirestoreRecyclerAdapter<Workers, Worker
         }
     }
 
+    //constructor
     public WorkersListAdapter(@NonNull FirestoreRecyclerOptions<Workers> options, workerClickListener mWorkerListener) {
         super(options);
         this.mWorkerClickListener = mWorkerListener;
@@ -62,7 +68,7 @@ public class WorkersListAdapter extends FirestoreRecyclerAdapter<Workers, Worker
     @Override
     public WorkersItemViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_worker,parent, false);
+                .inflate(R.layout.item_worker, parent, false);
         return new WorkersItemViewholder(view, mWorkerClickListener);
     }
 
@@ -70,14 +76,13 @@ public class WorkersListAdapter extends FirestoreRecyclerAdapter<Workers, Worker
     protected void onBindViewHolder(@NonNull WorkersItemViewholder holder, int i, @NonNull Workers workers) {
         Resources resource = holder.itemView.getContext().getResources();
         String text;
-        if (!workers.getRestaurantName().equals("")){
+        if (!workers.getRestaurantName().trim().equals("")) {
             text = workers.getName() + " " + resource.getString(R.string.is_eating_at) + workers.getRestaurantName();
-        }else{
+        } else {
             text = workers.getName() + " " + resource.getString(R.string.hasn_t_decided);
             holder.mTextView.setTextColor(resource.getColor(color.color_workers));
         }
         holder.mTextView.setText(text);
-
 
         Glide.with(holder.mImageView.getContext())
                 .load(workers.getAvatarUrl())
@@ -85,5 +90,4 @@ public class WorkersListAdapter extends FirestoreRecyclerAdapter<Workers, Worker
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.mImageView);
     }
-
 }

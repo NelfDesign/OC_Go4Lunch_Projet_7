@@ -16,6 +16,7 @@ import fr.nelfdesign.go4lunch.R;
  */
 public class NotificationsFragment extends PreferenceFragmentCompat {
 
+    //FIELDS
     private static final String PREF_NOTIFICATION_KEY = "notification_firebase";
 
     private SharedPreferences.OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener;

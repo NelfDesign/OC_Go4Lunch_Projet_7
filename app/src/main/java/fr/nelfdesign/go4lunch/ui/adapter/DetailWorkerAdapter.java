@@ -26,15 +26,20 @@ import fr.nelfdesign.go4lunch.models.Workers;
  */
 public class DetailWorkerAdapter extends RecyclerView.Adapter<DetailWorkerAdapter.DetailViewHolder> {
 
+    //FIELD
     private List<Workers> mWorkers;
 
+    //construtor
     public DetailWorkerAdapter(List<Workers> workers) {
         mWorkers = workers;
     }
 
-    class DetailViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.worker_avatar) ImageView mImageView;
-        @BindView(R.id.worker_name) TextView mTextView;
+    //ViewHolder
+    class DetailViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.worker_avatar)
+        ImageView mImageView;
+        @BindView(R.id.worker_name)
+        TextView mTextView;
 
         DetailViewHolder(@NonNull View itemView) {
             super(itemView);

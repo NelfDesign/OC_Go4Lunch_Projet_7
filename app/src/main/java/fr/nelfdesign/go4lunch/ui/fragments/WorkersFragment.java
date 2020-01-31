@@ -31,11 +31,14 @@ import fr.nelfdesign.go4lunch.utils.Utils;
  */
 public class WorkersFragment extends Fragment implements WorkersListAdapter.workerClickListener {
 
+    //FIELDS
     private RecyclerView mRecyclerView;
     private WorkersListAdapter adapter;
     private List<Workers> mWorkers = new ArrayList<>();
 
-    public WorkersFragment() { }
+    //constructor
+    public WorkersFragment() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,9 +59,12 @@ public class WorkersFragment extends Fragment implements WorkersListAdapter.work
         mRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         initListAdapter();
-        return  view;
+        return view;
     }
 
+    /**
+     * init adapter
+     */
     private void initListAdapter() {
         Query query = RepositoryFirebase.getQueryWorkers(mWorkers);
         FirestoreRecyclerOptions<Workers> options = new FirestoreRecyclerOptions.Builder<Workers>()
@@ -83,9 +89,9 @@ public class WorkersFragment extends Fragment implements WorkersListAdapter.work
 
     @Override
     public void onClickItemWorker(int position) {
-        if (mWorkers.get(position).getPlaceId().equals("")){
+        if (mWorkers.get(position).getPlaceId().trim().equals("")) {
             Utils.showSnackBar(this.mRecyclerView, getString(R.string.no_choice_restaurant_workers));
-        }else {
+        } else {
             Intent intent = new Intent(getContext(), RestaurantDetail.class);
             intent.putExtra("placeId", mWorkers.get(position).getPlaceId());
             intent.putExtra("restaurantName", mWorkers.get(position).getRestaurantName());

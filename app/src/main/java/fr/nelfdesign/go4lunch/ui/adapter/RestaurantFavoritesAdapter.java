@@ -28,22 +28,31 @@ import static fr.nelfdesign.go4lunch.utils.Utils.starsAccordingToRating;
  * fr.nelfdesign.go4lunch.ui.adapter
  */
 public class RestaurantFavoritesAdapter extends FirestoreRecyclerAdapter<RestaurantFavoris,
-                                                RestaurantFavoritesAdapter.FavorisItemViewholder> {
+        RestaurantFavoritesAdapter.FavorisItemViewholder> {
 
-    public interface favoritesClickListener{
+    //interface to set the click
+    public interface favoritesClickListener {
         void onClickItemResto(int position);
     }
 
+    //FIELD
     private favoritesClickListener mFavoritesClickListener;
 
-    public class FavorisItemViewholder extends RecyclerView.ViewHolder  implements View.OnClickListener  {
+    //ViewHolder
+    public class FavorisItemViewholder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.restaurant_name) TextView mRestaurantName;
-        @BindView(R.id.restaurant_category_and_adress) TextView mAddress;
-        @BindView(R.id.restaurant_image) ImageView mRestaurantImage;
-        @BindView(R.id.star_1) ImageView mStars1;
-        @BindView(R.id.star_2) ImageView mStars2;
-        @BindView(R.id.star_3) ImageView mStars3;
+        @BindView(R.id.restaurant_name)
+        TextView mRestaurantName;
+        @BindView(R.id.restaurant_category_and_adress)
+        TextView mAddress;
+        @BindView(R.id.restaurant_image)
+        ImageView mRestaurantImage;
+        @BindView(R.id.star_1)
+        ImageView mStars1;
+        @BindView(R.id.star_2)
+        ImageView mStars2;
+        @BindView(R.id.star_3)
+        ImageView mStars3;
 
         favoritesClickListener mFavoritesClickListener;
 
@@ -75,7 +84,7 @@ public class RestaurantFavoritesAdapter extends FirestoreRecyclerAdapter<Restaur
     @Override
     public FavorisItemViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_restaurant_favoris,parent, false);
+                .inflate(R.layout.item_restaurant_favoris, parent, false);
         return new FavorisItemViewholder(view, mFavoritesClickListener);
     }
 
@@ -87,9 +96,9 @@ public class RestaurantFavoritesAdapter extends FirestoreRecyclerAdapter<Restaur
         holder.mAddress.setText(restaurantFavoris.getAddress());
 
         // Restaurants images
-        if (restaurantFavoris.getPhotoReference().isEmpty()){
+        if (restaurantFavoris.getPhotoReference().isEmpty()) {
             holder.mRestaurantImage.setImageResource(R.drawable.ic_bol);
-        }else {
+        } else {
             String path = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
                     + restaurantFavoris.getPhotoReference() +
                     "&key=" + BuildConfig.google_maps_key;
@@ -103,16 +112,13 @@ public class RestaurantFavoritesAdapter extends FirestoreRecyclerAdapter<Restaur
 
         //Stars according to rating level
         int rating;
-        if (restaurantFavoris.getRating() > 0){
+        if (restaurantFavoris.getRating() > 0) {
             rating = starsAccordingToRating(restaurantFavoris.getRating());
-        }else{
+        } else {
             rating = 0;
         }
 
         Utils.starsView(rating, holder.mStars1, holder.mStars2, holder.mStars3);
-
     }
-
-
 
 }

@@ -31,7 +31,6 @@
     <string name="facebook" translatable="false">Facebook</string>
     <string name="twitter" translatable="false">Twitter</string>
 
-
     <!-- navigation drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -51,9 +50,15 @@
 
     <!-- restaurant favorite activity -->
     <string name="favorites_restaurant">My Favorites Restaurants</string>
+    <string name="your_favorite_restaurants">Your favorite restaurants</string>
+    <string name="restaurant_delete">Restaurant delete to your favorite list</string>
+    <string name="you_haven_t_choice_restaurant">You haven\'t choose restaurant</string>
 
     <!-- workers -->
     <string name="no_choice_restaurant_workers">You don\'t have chosen a restaurant</string>
+    <string name="is_eating_at">" is eating at \n"</string>
+    <string name="hasn_t_decided">" hasn\'t decided yet"</string>
+    <string name="is_joining">" is joining!"</string>
 
     <!-- restaurant list -->
     <string name="restaurant_image">restaurant Image</string>
@@ -74,7 +79,6 @@
     <!-- map fragment -->
     <string name="permission_denied">Permission denied</string>
     <string name="my_position">My position</string>
-
     <string name="title_activity_settings">Settings</string>
 
     <!-- Preference Titles -->
@@ -86,9 +90,6 @@
     <string name="enable_notification">Enable notifications</string>
     <string name="enable_location">Enable geolocation</string>
     <string name="define_map_zoom">Define map zoom</string>
-    <string name="is_eating_at">" is eating at \n"</string>
-    <string name="hasn_t_decided">" hasn\'t decided yet"</string>
-    <string name="is_joining">" is joining!"</string>
     <string name="zoom_level">" zoom level"</string>
     <string name="define_your_radius_search">Define your radius restaurant search</string>
     <string name="meters_radius">" meters radius search restaurant"</string>
@@ -99,9 +100,20 @@
     <string name="define_establishment">Define your establishment type search</string>
     <string name="define_favorite_map_radius">Define your favorite default map radius search</string>
     <string name="define_favorite_type">Define your favorite establishment type search</string>
-    <string name="your_favorite_restaurants">Your favorite restaurants</string>
-    <string name="restaurant_delete">Restaurant delete to your favorite list</string>
-    <string name="you_haven_t_choice_restaurant">You haven\'t choose restaurant</string>
+    <string name="array_high">High</string>
+    <string name="array_medium">Medium</string>
+    <string name="array_less">Less</string>
+    <string name="array_default">Default</string>
+    <string name="array_radius_5000">Radius 5000 m</string>
+    <string name="array_radius_3000">Radius 3000 m</string>
+    <string name="array_radius_2000">Radius 2000 m</string>
+    <string name="array_radius_1000">Radius 1000 m</string>
+    <string name="array_radius_500">Radius 500 m</string>
+    <string name="array_type_resto">restaurant</string>
+    <string name="array_type_bar">bar</string>
+    <string name="array_type_hotel">hotel</string>
+    <string name="array_type_cafe">cafe</string>
+    <string name="array_type_food">food</string>
 
     <!-- NOTIFICATION SERVICE -->
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>

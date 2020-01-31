@@ -19,10 +19,11 @@ class PlaceStream {
 
     /**
      * create observable data for nearby restaurant
+     *
      * @param parameters for search restaurants
      * @return Restaurant Result of the request
      */
-    static Observable<RestaurantsResult> streamGetNearByRestaurant(@QueryMap Map<String, String> parameters){
+    static Observable<RestaurantsResult> streamGetNearByRestaurant(@QueryMap Map<String, String> parameters) {
         RestaurantService restaurantService = App.retrofitCall();
         return restaurantService.getNearByRestaurant(parameters)
                 .subscribeOn(Schedulers.io())
@@ -32,10 +33,11 @@ class PlaceStream {
 
     /**
      * create observable data for restaurant detail
+     *
      * @param parameters for restaurant search
      * @return Detail of the restaurant chosen
      */
-    static Observable<Detail> streamGetDetailRestaurant(@QueryMap Map<String, String> parameters){
+    static Observable<Detail> streamGetDetailRestaurant(@QueryMap Map<String, String> parameters) {
         RestaurantService restaurantService = App.retrofitCall();
         return restaurantService.getDetailRestaurant(parameters)
                 .subscribeOn(Schedulers.io())

@@ -6,6 +6,7 @@ package fr.nelfdesign.go4lunch.models;
  */
 public class DetailRestaurant {
 
+    //FIELDS
     private String formatted_address;
     private String formatted_phone_number;
     private String name;
@@ -13,6 +14,7 @@ public class DetailRestaurant {
     private double rating;
     private String website;
 
+    //Constructor
     public DetailRestaurant(String formatted_address, String formatted_phone_number, String name,
                             String photoReference, double rating, String website) {
         this.formatted_address = formatted_address;
@@ -22,6 +24,8 @@ public class DetailRestaurant {
         this.rating = rating;
         this.website = website;
     }
+
+    //GETTERS
 
     public String getFormatted_address() {
         return formatted_address;

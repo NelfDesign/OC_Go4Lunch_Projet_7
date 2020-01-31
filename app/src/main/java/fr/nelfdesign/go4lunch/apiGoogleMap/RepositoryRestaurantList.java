@@ -26,22 +26,24 @@ import timber.log.Timber;
  */
 public class RepositoryRestaurantList implements NearbyPlaces {
 
+    //FIELDS
     private MutableLiveData<ArrayList<Restaurant>> mRestaurantList;
     private MutableLiveData<DetailRestaurant> mDetailRestaurantLiveData;
     private Disposable disposable;
 
+    //Implementation interface method
     @Override
     public MutableLiveData<ArrayList<Restaurant>> configureRetrofitCall(LatLng latLng, String radius, String type) {
 
         mRestaurantList = new MutableLiveData<>();
 
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("location", latLng.latitude + ","+ latLng.longitude );
-        parameters.put("radius", radius );
+        parameters.put("location", latLng.latitude + "," + latLng.longitude);
+        parameters.put("radius", radius);
         parameters.put("type", type);
         parameters.put("key", BuildConfig.google_maps_key);
 
-       this.disposable = PlaceStream.streamGetNearByRestaurant(parameters)
+        this.disposable = PlaceStream.streamGetNearByRestaurant(parameters)
                 .subscribeWith(new DisposableObserver<RestaurantsResult>() {
                     @Override
                     public void onNext(RestaurantsResult restaurantsResult) {
@@ -80,11 +82,11 @@ public class RepositoryRestaurantList implements NearbyPlaces {
                     public void onNext(Detail detail) {
                         if (detail != null) {
                             DetailsResult detailsResult = detail.getResult();
-                            if (detailsResult != null){
+                            if (detailsResult != null) {
                                 String photo;
-                                if (detailsResult.getPhotos() == null){
+                                if (detailsResult.getPhotos() == null) {
                                     photo = "";
-                                }else {
+                                } else {
                                     photo = detailsResult.getPhotos().get(0).getPhotoReference();
                                 }
 
@@ -93,7 +95,7 @@ public class RepositoryRestaurantList implements NearbyPlaces {
                                         detailsResult.getFormattedPhoneNumber(),
                                         detailsResult.getName(),
                                         photo,
-                                        (detailsResult.getRating() != null)? detailsResult.getRating() : 0,
+                                        (detailsResult.getRating() != null) ? detailsResult.getRating() : 0,
                                         detailsResult.getWebsite()
                                 );
                                 mDetailRestaurantLiveData.setValue(restaurant);

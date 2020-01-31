@@ -6,12 +6,14 @@ package fr.nelfdesign.go4lunch.models;
  */
 public class Poi {
 
+    //FILEDS
     private String title;
     private String placeId;
     private double lat;
     private double mLong;
     private boolean isChoosen;
 
+    //Constructor
     public Poi(String title, String placeId, double lat, double aLong) {
         this.title = title;
         this.placeId = placeId;
@@ -19,6 +21,8 @@ public class Poi {
         mLong = aLong;
         this.isChoosen = false;
     }
+
+    //GETTERS AND SETTER
 
     public boolean isChoosen() {
         return isChoosen;

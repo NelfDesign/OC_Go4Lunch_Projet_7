@@ -8,6 +8,7 @@ import fr.nelfdesign.go4lunch.pojos.Location;
  */
 public class Restaurant {
 
+    //FIELDS
     private Location mLocation;
     private String name;
     private String placeId;
@@ -19,6 +20,7 @@ public class Restaurant {
     private double rating;
     private boolean choice;
 
+    //constructor
     public Restaurant(Location location, String name, String address, String placeId, boolean hour, String urlImage,
                       int distance, int workers, double rating) {
         this.mLocation = location;
@@ -33,6 +35,7 @@ public class Restaurant {
         this.choice = false;
     }
 
+    //GETTER AND SETTER
     public boolean isChoice() {
         return choice;
     }

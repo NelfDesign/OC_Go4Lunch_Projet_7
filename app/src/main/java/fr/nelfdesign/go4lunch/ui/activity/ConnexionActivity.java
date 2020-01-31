@@ -24,7 +24,8 @@ import fr.nelfdesign.go4lunch.utils.Utils;
 
 public class ConnexionActivity extends BaseActivity {
 
-    @BindView(R.id.layout_main) ConstraintLayout mConstraintLayout;
+    @BindView(R.id.layout_main)
+    ConstraintLayout mConstraintLayout;
 
     //FOR DATA
     private static final int RC_SIGN_IN = 123;
@@ -41,12 +42,12 @@ public class ConnexionActivity extends BaseActivity {
         return null;
     }
 
-   @Override
+    @Override
     protected void onResume() {
-       super.onResume();
+        super.onResume();
         // Checks if user is signed in (non-null)
-        if (FirebaseAuth.getInstance().getCurrentUser() != null){
-           this.startMainActivity();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            this.startMainActivity();
         }
     }
 
@@ -54,8 +55,8 @@ public class ConnexionActivity extends BaseActivity {
             R.id.main_activity_facebook_login_button,
             R.id.main_activity_twitter_login_button,
             R.id.main_activity_email_login_button})
-    public void onClickLogginButton(View view){
-        switch (view.getId()){
+    public void onClickLogginButton(View view) {
+        switch (view.getId()) {
             case R.id.main_activity_google_login_button:
                 this.startSignInActivityGoogle();
                 break;
@@ -75,7 +76,7 @@ public class ConnexionActivity extends BaseActivity {
     // Authentications
     // --------------------
 
-    private void startSignInActivityGoogle(){
+    private void startSignInActivityGoogle() {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
@@ -86,7 +87,7 @@ public class ConnexionActivity extends BaseActivity {
                 RC_SIGN_IN);
     }
 
-    private void startSignInActivityMail(){
+    private void startSignInActivityMail() {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
@@ -97,7 +98,7 @@ public class ConnexionActivity extends BaseActivity {
                 RC_SIGN_IN);
     }
 
-    private void startSignInActivityFacebook(){
+    private void startSignInActivityFacebook() {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
@@ -108,7 +109,7 @@ public class ConnexionActivity extends BaseActivity {
                 RC_SIGN_IN);
     }
 
-    private void startSignInActivityTwitter(){
+    private void startSignInActivityTwitter() {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
@@ -120,23 +121,23 @@ public class ConnexionActivity extends BaseActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,@Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Handle SignIn Activity response on activity result
         this.handleResponseAfterSignIn(requestCode, resultCode, data);
     }
 
     // Method that handles response after SignIn Activity close
-    private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data){
+    private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data) {
 
         IdpResponse response = IdpResponse.fromResultIntent(data);
 
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) { // SUCCESS
                 Utils.showSnackBar(this.mConstraintLayout, getString(R.string.connection_succeed));
-                if (this.getCurrentUser() != null){
+                if (this.getCurrentUser() != null) {
                     this.startMainActivity();
-                }else{
+                } else {
                     this.createUserInFirestore();
                 }
             } else { // ERRORS
@@ -150,24 +151,25 @@ public class ConnexionActivity extends BaseActivity {
             }
         }
     }
-    /**
-     *  Http request that create user in firestore
-     */
-    private void createUserInFirestore(){
 
-        if (this.getCurrentUser() != null){
-                String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
-                String username = this.getCurrentUser().getDisplayName();
-                String resto = "";
-                String placeId = "";
-                WorkersHelper.createWorker(username, urlPicture, resto, placeId).addOnFailureListener(this.onFailureListener());
-            }
+    /**
+     * Http request that create user in firestore
+     */
+    private void createUserInFirestore() {
+
+        if (this.getCurrentUser() != null) {
+            String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
+            String username = this.getCurrentUser().getDisplayName();
+            String resto = "";
+            String placeId = "";
+            WorkersHelper.createWorker(username, urlPicture, resto, placeId).addOnFailureListener(this.onFailureListener());
+        }
     }
 
     /**
      * Start MainActivity after login
      */
-    private void startMainActivity(){
+    private void startMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
