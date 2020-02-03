@@ -82,4 +82,7 @@
     <string name="array_type_food">" 食物"</string>
     <string name="array_type_hotel">" ホテル"</string>
     <string name="array_type_resto">レストラン</string>
+    <string name="_1">1 星</string>
+    <string name="_2">2 星</string>
+    <string name="_3">3 星</string>
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -12,7 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             android:orientation="vertical">
 
             <TextView
@@ -40,14 +41,13 @@
                     style="@style/list_filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_yellow_star_32dp" />
+                    android:text="@string/_1"/>
 
                 <TextView
                     android:id="@+id/star_2"
                     style="@style/list_filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_yellow_star_32dp"
                     android:text="@string/_2" />
 
                 <TextView
@@ -55,8 +55,7 @@
                     style="@style/list_filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_yellow_star_32dp"
-                    android:text="@string/_3" />
+                    android:text="@string/_3"/>
 
                 <TextView
                     android:id="@+id/no_filter"
@@ -65,7 +64,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/no_filter" />
             </LinearLayout>
-
 
         </LinearLayout>
 

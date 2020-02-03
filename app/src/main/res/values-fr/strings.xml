@@ -82,4 +82,7 @@
     <string name="array_type_food">nouriture</string>
     <string name="array_type_hotel">hotel</string>
     <string name="array_type_resto">restaurant</string>
+    <string name="_1">1 étoile</string>
+    <string name="_2">2 étoiles</string>
+    <string name="_3">3 étoiles</string>
 </resources>

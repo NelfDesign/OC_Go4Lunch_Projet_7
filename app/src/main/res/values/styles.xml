@@ -10,9 +10,7 @@
     <!-- MAIN STYLE -->
 
     <style parent="AppTheme" name="AppTheme.Main">
-
         <item name="android:windowTranslucentStatus">true</item>
-
     </style>
 
     <!-- Connexion STYLE -->

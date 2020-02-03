@@ -168,6 +168,12 @@ public class RestaurantDetail extends BaseActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this , MainActivity.class));
+    }
+
     /**
      * update UI with restaurant detail information
      *
