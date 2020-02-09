@@ -19,6 +19,7 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import fr.nelfdesign.go4lunch.R;
 import fr.nelfdesign.go4lunch.apiFirebase.RepositoryFirebase;
 import fr.nelfdesign.go4lunch.models.Workers;
@@ -32,9 +33,11 @@ import fr.nelfdesign.go4lunch.utils.Utils;
 public class WorkersFragment extends Fragment implements WorkersListAdapter.workerClickListener {
 
     //FIELDS
-    private RecyclerView mRecyclerView;
+    //private RecyclerView mRecyclerView;
     private WorkersListAdapter adapter;
     private List<Workers> mWorkers = new ArrayList<>();
+
+    @BindView(R.id.recyclerView_workers) RecyclerView mRecyclerView;
 
     //constructor
     public WorkersFragment() {

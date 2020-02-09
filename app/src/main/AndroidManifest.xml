@@ -41,6 +41,7 @@
 
         <activity
             android:name=".ui.activity.RestaurantDetail"
+            android:theme="@style/AppTheme.Main"
             android:parentActivityName=".ui.activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

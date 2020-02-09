@@ -1,6 +1,7 @@
 package fr.nelfdesign.go4lunch.ui.adapter;
 
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +79,7 @@ public class WorkersListAdapter extends FirestoreRecyclerAdapter<Workers, Worker
         String text;
         if (!workers.getRestaurantName().trim().equals("")) {
             text = workers.getName() + " " + resource.getString(R.string.is_eating_at) + workers.getRestaurantName();
+            holder.mTextView.setTextColor(resource.getColor(color.secondary_text));
         } else {
             text = workers.getName() + " " + resource.getString(R.string.hasn_t_decided);
             holder.mTextView.setTextColor(resource.getColor(color.color_workers));

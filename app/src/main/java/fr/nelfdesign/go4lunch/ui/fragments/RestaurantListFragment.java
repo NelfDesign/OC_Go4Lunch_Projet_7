@@ -3,14 +3,11 @@ package fr.nelfdesign.go4lunch.ui.fragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -53,15 +50,15 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
     //FIELD
     private ArrayList<Restaurant> mRestaurants;
     private ArrayList<Restaurant> mRestaurantsToDisplay = new ArrayList<>();
+    private ArrayList<Workers> mWorkersArrayList;
     private MapViewModel mMapViewModel;
     private LatLng currentPosition;
     private FusedLocationProviderClient mFusedLocationClient;
-    private ArrayList<Workers> mWorkersArrayList;
+    private ListenerRegistration mListenerRegistration = null;
     //constant
     private static final String PREF_RADIUS = "radius_key";
     private static final String PREF_TYPE = "type_key";
     private final CollectionReference workersRef = WorkersHelper.getWorkersCollection();
-    private ListenerRegistration mListenerRegistration = null;
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -75,6 +72,8 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
     TextView no_star;
     @BindView(R.id.no_filter)
     TextView no_filter;
+    @BindView(R.id.text_no_restaurant)
+    TextView no_restaurant;
 
     //constructor
     public RestaurantListFragment() {
@@ -98,8 +97,8 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
         View view = inflater.inflate(R.layout.fragment_restaurant__list_, container, false);
 
         ButterKnife.bind(this, view);
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
         return view;
     }
 
@@ -132,7 +131,14 @@ public class RestaurantListFragment extends Fragment implements RestaurantListAd
                 setButtonChoiceChange(R.id.no_filter);
                 break;
         }
-        Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
+        if (mRestaurantsToDisplay.isEmpty()){
+            no_restaurant.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        }else{
+            Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
+            no_restaurant.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

@@ -7,10 +7,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!-- MAIN STYLE -->
-
-    <style parent="AppTheme" name="AppTheme.Main">
-        <item name="android:windowTranslucentStatus">true</item>
+    <!-- Detail restaurant Theme -->
+    <style parent="Theme.AppCompat.Light" name="AppTheme.Main">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorControlNormal">@color/white_text</item>
     </style>
 
     <!-- Connexion STYLE -->
@@ -99,6 +100,7 @@
         <item name="android:layout_marginStart">@dimen/margin_top_20</item>
         <item name="android:textSize">@dimen/text_size_16</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/secondary_text</item>
     </style>
 
     <!-- drawer style -->

@@ -6,6 +6,8 @@
     <color name="colorPrimaryDark">#C62828</color>
 
     <color name="colorAccent">#69F0AE</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#424242</color>
 
     <color name="background">#D3D1D1</color>
     <color name="color_workers">#BEBDBD</color>

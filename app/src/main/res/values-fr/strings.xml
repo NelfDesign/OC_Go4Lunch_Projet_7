@@ -66,8 +66,8 @@
     <string name="you_haven_t_choice_restaurant">Vous n\'avez pas choisis de restaurant</string>
     <string name="message_from_go4lunch">Message de Go4lunch</string>
     <string name="filter_restaurant_by">Filtrer les restaurants :</string>
-    <string name="no_star">Pas d\'étoiles</string>
-    <string name="no_filter">Pas de filtre</string>
+    <string name="no_star">Pas \n d\'étoiles</string>
+    <string name="no_filter">Pas \n de filtre</string>
     <string name="array_default">par défaut</string>
     <string name="array_high">Haut</string>
     <string name="array_less">Bas</string>
@@ -82,7 +82,7 @@
     <string name="array_type_food">nouriture</string>
     <string name="array_type_hotel">hotel</string>
     <string name="array_type_resto">restaurant</string>
-    <string name="_1">1 étoile</string>
-    <string name="_2">2 étoiles</string>
-    <string name="_3">3 étoiles</string>
+    <string name="_1">1 \n étoile</string>
+    <string name="_2">2 \n étoiles</string>
+    <string name="_3">3 \n étoiles</string>
 </resources>

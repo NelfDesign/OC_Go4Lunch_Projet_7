@@ -55,11 +55,11 @@ public class RestaurantDetail extends BaseActivity {
     private static final int PERMISSION_CALL = 100;
     private String phoneNumber;
     private String websiteUrl;
+    private String placeId;
+    private String nameResto;
     private ArrayList<Workers> mWorkers;
     private ArrayList<RestaurantFavoris> mRestaurantFavorises;
     private ListenerRegistration mListenerRegistration = null;
-    private String placeId;
-    private String nameResto;
     private RestaurantFavoris mRestaurantFavoris;
     private Query query;
     private boolean isLiked = false;
@@ -76,6 +76,8 @@ public class RestaurantDetail extends BaseActivity {
     TextView mRestaurantTextadress;
     @BindView(R.id.text_Like)
     TextView mTextLike;
+    @BindView(R.id.text_no_worker)
+    TextView mTextNoWorker;
     @BindView(R.id.text_favorite)
     TextView mTextFavorite;
     @BindView(R.id.restaurant_detail_star1)
@@ -166,12 +168,6 @@ public class RestaurantDetail extends BaseActivity {
                 this.deleteFavoriteRestaurant();
                 break;
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(this , MainActivity.class));
     }
 
     /**
@@ -459,9 +455,16 @@ public class RestaurantDetail extends BaseActivity {
      * @param workers list
      */
     private void initAdapter(ArrayList<Workers> workers) {
-        DetailWorkerAdapter adapter = new DetailWorkerAdapter(workers);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-        mRecyclerView.setAdapter(adapter);
+        if (workers.isEmpty()){
+            mTextNoWorker.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        }else{
+            DetailWorkerAdapter adapter = new DetailWorkerAdapter(workers);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+            mRecyclerView.setAdapter(adapter);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mTextNoWorker.setVisibility(View.GONE);
+        }
     }
 
 }

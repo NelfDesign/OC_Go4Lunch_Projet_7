@@ -126,5 +126,7 @@
     <string name="_2">2 stars</string>
     <string name="_3">3 stars</string>
     <string name="no_filter">No filter</string>
+    <string name="no_worker_has_chosen_this_restaurant">No Worker has chosen this restaurant</string>
+    <string name="no_restaurant_for_this_filter_selection">No restaurant for this filter selection</string>
 
 </resources>
