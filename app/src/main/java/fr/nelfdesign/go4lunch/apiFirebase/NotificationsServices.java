@@ -13,6 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -29,11 +34,18 @@ public class NotificationsServices extends FirebaseMessagingService {
 
     //FIELDS
     private static final String PREF_NOTIFICATION = "notification_firebase";
+    private String restaurant;
+    private Query query = WorkersHelper.getAllWorkers().whereEqualTo("name",
+            Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (remoteMessage.getNotification() != null && sharedPreferences.getBoolean(PREF_NOTIFICATION, false)) {
+        query.get().addOnCompleteListener(this::getRestaurantName);
+
+        if (remoteMessage.getNotification() != null &&
+                sharedPreferences.getBoolean(PREF_NOTIFICATION, false) &&
+                restaurant != null) {
             // 1 - Get message sent by Firebase
             String message = remoteMessage.getNotification().getBody();
             //2 - Show message in console
@@ -86,5 +98,13 @@ public class NotificationsServices extends FirebaseMessagingService {
         int NOTIFICATION_ID = 7;
         String NOTIFICATION_TAG = "Go4lunch";
         Objects.requireNonNull(notificationManager).notify(NOTIFICATION_TAG, NOTIFICATION_ID, notificationBuilder.build());
+    }
+
+    private void getRestaurantName(Task<QuerySnapshot> task) {
+        if (task.isSuccessful()) {
+            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                restaurant = Objects.requireNonNull(document.get("restaurant_name")).toString();
+            }
+        }
     }
 }

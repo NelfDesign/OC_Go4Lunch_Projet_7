@@ -24,6 +24,7 @@ import timber.log.Timber;
  * Created by Nelfdesign at 16/12/2019
  * fr.nelfdesign.go4lunch.apiGoogleMap
  */
+@SuppressWarnings("unused")
 public class RepositoryRestaurantList implements NearbyPlaces {
 
     //FIELDS
@@ -116,4 +117,6 @@ public class RepositoryRestaurantList implements NearbyPlaces {
 
         return mDetailRestaurantLiveData;
     }
+
+
 }

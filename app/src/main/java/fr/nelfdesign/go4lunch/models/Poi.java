@@ -6,7 +6,7 @@ package fr.nelfdesign.go4lunch.models;
  */
 public class Poi {
 
-    //FILEDS
+    //FIELDS
     private String title;
     private String placeId;
     private double lat;

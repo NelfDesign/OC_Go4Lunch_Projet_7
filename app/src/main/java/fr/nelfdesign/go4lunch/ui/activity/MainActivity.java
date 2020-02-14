@@ -23,7 +23,6 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -109,18 +108,18 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // fragment open first after permission granted
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.map_Fragment);
         Objects.requireNonNull(fragment).onActivityResult(requestCode, resultCode, data);
 
+        //  go to detail page when we click on result search
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 Intent intent = new Intent(this, RestaurantDetail.class);
                 intent.putExtra("placeId", place.getId());
                 startActivity(intent);
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_query), Toast.LENGTH_LONG).show();
-            } else if (resultCode == RESULT_CANCELED) {
+            } else {
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_query), Toast.LENGTH_LONG).show();
             }
         }

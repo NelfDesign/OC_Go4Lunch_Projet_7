@@ -85,4 +85,6 @@
     <string name="_1">1 星</string>
     <string name="_2">2 星</string>
     <string name="_3">3 星</string>
+    <string name="no_restaurant_for_this_filter_selection">" このフィルター選択のレストランはありません"</string>
+    <string name="no_worker_has_chosen_this_restaurant">" このレストランを選択したワーカーはいません"</string>
 </resources>

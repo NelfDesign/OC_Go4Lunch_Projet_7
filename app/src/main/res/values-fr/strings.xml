@@ -85,4 +85,6 @@
     <string name="_1">1 \n étoile</string>
     <string name="_2">2 \n étoiles</string>
     <string name="_3">3 \n étoiles</string>
+    <string name="no_restaurant_for_this_filter_selection">Pas de restaurant pour cette sélection</string>
+    <string name="no_worker_has_chosen_this_restaurant">Personne n\'a choisi ce restaurant</string>
 </resources>
