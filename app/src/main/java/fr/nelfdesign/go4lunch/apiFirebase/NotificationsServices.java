@@ -13,17 +13,17 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import fr.nelfdesign.go4lunch.R;
+import fr.nelfdesign.go4lunch.models.Workers;
 import fr.nelfdesign.go4lunch.ui.activity.MainActivity;
 
 /**
@@ -35,21 +35,32 @@ public class NotificationsServices extends FirebaseMessagingService {
     //FIELDS
     private static final String PREF_NOTIFICATION = "notification_firebase";
     private String restaurant;
-    private Query query = WorkersHelper.getAllWorkers().whereEqualTo("name",
-            Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
+    private ArrayList<Workers> mWorkers;
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        query.get().addOnCompleteListener(this::getRestaurantName);
 
+        //get restaurant name
+        getRestaurantUser();
+        //get workers list
+        mWorkers = getRestaurantUserAndWorkersAdd();
+        //put Thread on sleep for 2 sec to make sure that the query are finish
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // send message if able
         if (remoteMessage.getNotification() != null &&
-                sharedPreferences.getBoolean(PREF_NOTIFICATION, false) &&
+                sharedPreferences.getBoolean(PREF_NOTIFICATION, true) &&
                 restaurant != null) {
-            // 1 - Get message sent by Firebase
+            // Get message sent by Firebase
             String message = remoteMessage.getNotification().getBody();
-            //2 - Show message in console
-            this.sendVisualNotification(message);
+             message += "It's time to go to " + restaurant + " with ";
+            String message2 = createMessageNotification();
+            // Show message
+            this.sendVisualNotification(message, message2);
         }
     }
 
@@ -58,16 +69,17 @@ public class NotificationsServices extends FirebaseMessagingService {
      *
      * @param messageBody message receive by firebase
      */
-    private void sendVisualNotification(String messageBody) {
+    private void sendVisualNotification(String messageBody, String message) {
 
         //Create an Intent that will be shown when user will click on the Notification
         Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this.getApplicationContext(),
+                                                        0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         //Create a Style for the Notification
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
         inboxStyle.setBigContentTitle(getString(R.string.app_name));
-        inboxStyle.addLine(messageBody);
+        inboxStyle.addLine(messageBody).addLine(message);
 
         // Create a Channel (Android 8)
         String channelId = getString(R.string.default_notification_channel_id);
@@ -100,11 +112,63 @@ public class NotificationsServices extends FirebaseMessagingService {
         Objects.requireNonNull(notificationManager).notify(NOTIFICATION_TAG, NOTIFICATION_ID, notificationBuilder.build());
     }
 
-    private void getRestaurantName(Task<QuerySnapshot> task) {
-        if (task.isSuccessful()) {
-            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                restaurant = Objects.requireNonNull(document.get("restaurant_name")).toString();
+    /**
+     * get restaurant choice
+     */
+    private void getRestaurantUser(){
+        Query query = WorkersHelper.getAllWorkers().whereEqualTo("name",
+                Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
+        query.get().addOnCompleteListener(task -> {
+            restaurant = "";
+            if (task.isSuccessful()){
+                for (QueryDocumentSnapshot documentSnapshot : Objects.requireNonNull(task.getResult())){
+                    restaurant = Objects.requireNonNull(documentSnapshot.get("restaurantName")).toString();
+                }
             }
+        });
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+    }
+
+    /**
+     * get ArrayList of workers who are chosen the same restaurant
+     * @return Workers ArrayList
+     */
+    private ArrayList<Workers> getRestaurantUserAndWorkersAdd(){
+        Query query = WorkersHelper.getAllWorkers();
+        ArrayList<Workers> workers = new ArrayList<>();
+         query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot data : Objects.requireNonNull(task.getResult())) {
+                    if (Objects.requireNonNull(data.get("restaurantName")).toString().equals(restaurant)) {
+                        Workers w = data.toObject(Workers.class);
+                        workers.add(w);
+                    }
+                }
+            }
+        });
+         return workers;
+    }
+
+    /**
+     * Create a string with the workers name
+     * @return String message
+     */
+    private String createMessageNotification(){
+        StringBuilder message = new StringBuilder();
+        for (int i = 0; i< mWorkers.size(); i++){
+            if (!mWorkers.get(i).getName().
+                    equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName())){
+                message.append(mWorkers.get(i).getName());
+                if (i < mWorkers.size()-1){
+                    message.append(" and ");
+                }
+            }
+
+        }
+        return message.toString();
     }
 }
